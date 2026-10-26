@@ -1,0 +1,11 @@
+# generated in the build - never commit these
+node_modules/
+android/
+www/fonts/
+www/lib/
+*.apk
+*.aab
+
+# local test output
+tests/__pycache__/
+tests/out/

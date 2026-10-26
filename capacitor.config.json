@@ -1,0 +1,9 @@
+{
+  "appId": "com.recallrush.app",
+  "appName": "Recall Rush",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  },
+  "backgroundColor": "#e4e4e6"
+}
