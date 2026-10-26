@@ -1,0 +1,1826 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Recall Rush</title>
+
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+:root{color-scheme:light;--bg:#e4e4e6;--card:#fcfbfd;--card2:#f1f1f3;--ink:#1d1d1f;--mute:#6d6d72;--line:#dcdce0;--or:#fb4a1c;--dk:#2a2c31;--ok:#1f9d6b;--bad:#d64545;--lcd:#ececef;
+--px:"Doto","JetBrains Mono",monospace;--ui:"Roboto",system-ui,sans-serif;--kh:clamp(36px,calc((100vh - 700px)/10),48px);
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}[hidden]{display:none!important}
+body{margin:0;min-height:100vh;color:var(--ink);font:400 14px/1.5 var(--ui);background:var(--bg)}
+button{font-family:inherit}input[type=checkbox]{accent-color:var(--or)}
+.app{display:block;min-height:100vh}
+.side{padding:20px 14px}
+.nav{display:flex;gap:4px;background:var(--card);padding:4px;border-radius:999px;margin-left:8px}
+.nav button{text-align:left;font:600 12px var(--ui);letter-spacing:.1em;text-transform:uppercase;padding:8px 18px;border:0;border-radius:999px;background:transparent;color:var(--ink);cursor:pointer}
+.nav button small{font-weight:400;color:var(--mute);margin-right:8px}
+.nav button.on{background:#111;color:#fff}.nav button.on small{color:#aaa}
+main{padding:12px 28px;width:100%}
+.top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+.dot{width:26px;height:26px;border-radius:50%;border:5px solid var(--dk);border-top-color:var(--or);border-right-color:var(--or);transform:rotate(-20deg)}
+h1{font:700 34px/1 var(--px);margin:0;letter-spacing:.04em}.tag{color:var(--mute);font-size:12px;letter-spacing:.1em;text-transform:uppercase}
+.svb{border:0;border-radius:999px;background:var(--card);padding:9px 16px;font:700 12px var(--ui);cursor:pointer;display:inline-flex;gap:8px;align-items:center;color:var(--ink)}.svb i{font-style:normal;font-weight:500;color:var(--mute)}.svb.dirty{background:var(--or);color:#fff}.svb.dirty i{color:#fff}.svb:focus-visible{outline:2px solid var(--ink)}
+.hud{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 10px}.hc{flex:1 1 230px;display:flex;gap:10px;align-items:center;background:var(--card);border-radius:18px;padding:8px 14px;min-width:0}.he{font-size:26px;line-height:1}.hb{flex:1;min-width:0}.ht{font-size:13px;display:flex;gap:6px;align-items:baseline}.ht small,.hb>small{color:var(--mute);font-size:11px}
+.bar{height:8px;border-radius:99px;background:var(--card2);overflow:hidden;margin:4px 0}.bar i{display:block;height:100%;background:var(--or);border-radius:99px;transition:width .4s}.bar.g i{background:var(--ok)}.bar.m i{background:#e0a100}
+.pips{font:600 12px var(--ui);letter-spacing:.2em;color:#e0a100;text-transform:none;margin-left:10px;white-space:nowrap}
+#toasts{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);display:flex;flex-direction:column;gap:8px;align-items:center;z-index:50;pointer-events:none;width:max-content;max-width:94vw}.toast{background:var(--ink);color:#fff;padding:10px 18px;border-radius:999px;font:700 13px var(--ui);box-shadow:0 6px 20px rgba(0,0,0,.25)}.toast.gold{background:linear-gradient(90deg,#e0a100,var(--or))}
+@media(prefers-reduced-motion:no-preference){.toast{animation:pop .35s ease-out}@keyframes pop{from{transform:translateY(14px) scale(.9);opacity:0}}}
+.end{max-width:560px}.stars{font-size:46px;color:#e0a100;letter-spacing:.1em;line-height:1}.stars span{color:var(--line)}.pillrow{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}.pl2{background:var(--card2);border-radius:14px;padding:8px 14px;font-size:12px;color:var(--mute)}.pl2 b{display:block;font-size:18px;color:var(--ink)}
+.prh{display:flex;gap:16px;align-items:center;background:var(--card2);border-radius:20px;padding:16px 20px;max-width:760px}.prh .big{font-size:48px;line-height:1}.prh>div{flex:1}.prh h3{margin:0 0 4px;font-size:18px}.prh small{color:var(--mute)}
+.prg{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px;margin:12px 0;max-width:760px}.pc{background:var(--card2);border-radius:16px;padding:12px 14px;font-size:12px;color:var(--mute)}.pc b{display:block;font-size:22px;color:var(--ink)}.pc .btn{margin:6px 0 0!important;padding:6px 12px;font-size:12px}
+.trophies{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;max-width:760px}.tr{background:var(--card2);border-radius:16px;padding:12px 14px;font-size:12px;display:flex;gap:10px;align-items:center;color:var(--mute)}.tr .te{font-size:28px}.tr b{display:block;font-size:13px;color:var(--ink)}.tr.lock{opacity:.5;filter:grayscale(1)}
+.mrow{max-width:760px;margin:8px 0;font-size:13px}.mrow .bar{margin:4px 0 0}.rvm{max-width:560px;font-size:12px;color:var(--mute);margin:0 0 8px}
+.top .stats{margin-left:auto;display:flex;gap:10px;align-items:stretch}
+.sk{background:var(--card);border-radius:18px;padding:6px 18px;min-width:116px}.sk.hot{background:var(--or);color:#fff}
+.sk .k{font:500 10px var(--ui);letter-spacing:.14em;color:var(--mute);text-transform:uppercase}.sk.hot .k{color:#ffd9cc}
+.sk .v{font:700 26px/1.2 var(--px)}.sk b{font-weight:700}
+.pm{display:flex;align-items:center;gap:8px;font-size:12px;cursor:pointer;background:var(--card);border-radius:18px;padding:0 16px}
+#card{min-width:0}.pl{display:block}
+.gm{display:grid;grid-template-columns:minmax(0,780px);gap:12px;align-items:start}
+.lt,.rt{background:var(--card);border-radius:24px;padding:12px;min-width:0}.rt{padding:14px 20px;min-height:0}.rt .row,.rt .chips{max-width:640px}
+.name{font:700 clamp(18px,1.6vw,26px)/1.15 var(--px);overflow-wrap:anywhere;margin:0 0 6px;text-transform:uppercase;letter-spacing:.03em}.sub{color:var(--mute);margin:0 0 12px;font-size:13px}
+.dev{padding:2px 4px 6px}
+.disp{background:var(--lcd);color:var(--ink);border-radius:16px;padding:4px 14px 6px;min-height:clamp(130px,19vh,190px)}
+.st{display:flex;justify-content:space-between;gap:8px;font-size:.62rem;opacity:.5;letter-spacing:.1em;text-transform:uppercase}
+.ex{font:700 1.35rem/1.5 "JetBrains Mono",ui-monospace,monospace;overflow-wrap:anywhere;min-height:4.6em;padding-top:.7em}
+.ex .op{margin:0 .25em}.ex sup{font-size:.65em}.cr{display:inline-block;width:2px;height:1.1em;background:var(--or);vertical-align:-.15em}
+.tray{background:var(--card2);border-radius:16px;padding:6px 12px;margin:6px 0}
+.tl{font-size:11px;color:var(--mute);display:flex;gap:6px;flex-wrap:wrap;align-items:center;letter-spacing:.04em}.lv{display:inline-flex;background:#fff;border-radius:999px;padding:2px;gap:2px;margin-left:6px}.lv button{border:0;background:transparent;font:700 11px var(--ui);padding:5px 12px;border-radius:999px;cursor:pointer;color:var(--ink);letter-spacing:.04em}.lv button small{font-size:10px;opacity:.6;font-weight:600}.lv button.on{background:var(--ink);color:#fff}.lv button:focus-visible{outline:2px solid var(--or)}.tl label{cursor:pointer}.tl input{margin:0 3px 0 8px}
+.pool{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.sy{font:700 1.05rem "JetBrains Mono",monospace;min-width:44px;height:clamp(28px,3.6vh,38px);border-radius:10px;border:0;background:var(--dk);color:#fff;cursor:pointer;box-shadow:0 3px 0 #0e0f11}
+.typ{display:flex;gap:6px;margin-top:6px}
+input.tx{width:100%;font:400 14px var(--ui);padding:7px 12px;border:1.5px solid transparent;border-radius:10px;background:#fff;color:var(--ink)}
+.tray input.tx{border-color:var(--line)}.rt input.tx{background:var(--card2)}input.tx:focus{border-color:var(--or);outline:0}
+.top5{display:grid;grid-template-columns:1fr 1fr 1.7fr 1fr 1fr;gap:4px 8px;margin:4px 0 0;align-items:end}
+.kp{display:grid;margin-top:4px;gap:4px 8px}.s6{grid-template-columns:repeat(6,1fr)}.s5{grid-template-columns:repeat(5,1fr)}.s3{grid-template-columns:repeat(3,1fr);margin:8px 0}.s3 .ck{font-size:.85rem}.ck:disabled{opacity:.4;cursor:not-allowed}
+.kc{display:flex;flex-direction:column;min-width:0}.ks{min-height:11px;font-size:.56rem;display:flex;justify-content:space-between;gap:2px;line-height:1.2;padding:0 3px}
+.ks u{text-decoration:none;color:var(--or);font-weight:700}.ks i{font-style:normal;color:var(--dk);font-weight:700}
+.ck{height:var(--kh);width:100%;border-radius:12px;border:0;font:600 .75rem var(--ui);color:var(--ink);background:#e4e4e7;box-shadow:0 2px 0 #c9c9ce;padding:0;cursor:pointer}
+.ck.n{background:var(--card2);font-size:1.05rem;font-weight:500}.ck.d{background:var(--dk);color:#fff;box-shadow:0 2px 0 #0e0f11}
+.ck.r{background:var(--or);color:#fff;box-shadow:0 2px 0 #c43510}.ck.l{background:var(--card2)}.ck.on{background:var(--or);color:#fff;box-shadow:0 2px 0 #c43510}
+.ck:active,.sy:active{transform:translateY(2px);box-shadow:none}
+.fi{display:inline-flex;flex-direction:column;align-items:center;gap:1px}.fi i{display:block;width:8px;height:6px;border:1.5px solid currentColor}.fi b{display:block;width:16px;height:2px;background:currentColor}
+/* big round arrow pad */
+.dp{grid-column:3;grid-row:1/4;align-self:center;justify-self:center;height:100%;max-width:100%;aspect-ratio:1/1;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);border-radius:50%;background:#e4e4e7;box-shadow:inset 0 0 0 1px #d3d3d8,0 3px 0 #c9c9ce;padding:3px}
+.dp:after{content:"";grid-area:2/2;border-radius:50%;background:var(--card);box-shadow:inset 0 0 0 1px #d3d3d8;pointer-events:none}
+.dp .dpb{width:100%;height:100%;border-radius:50%;background:transparent;box-shadow:none;border:0;font-size:calc(var(--kh)*.5);color:var(--dk);padding:0}
+.dp .dpb:active{background:#ffd3c4;transform:none}
+.btn{font:600 12px var(--ui);letter-spacing:.04em;border:0;background:var(--or);color:#fff;padding:11px 18px;border-radius:12px;cursor:pointer;margin:14px 8px 0 0}
+.btn.g{background:var(--card2);color:var(--ink)}
+.typ .btn{margin:0;white-space:nowrap}.tb{margin:12px 0 10px}.tb .btn{margin:0 8px 0 0}
+.msg{min-height:1.4em;margin-top:2px;font-weight:700;font-size:13px}.msg.ok{color:var(--ok)}.msg.no{color:var(--bad)}
+.row{display:grid;grid-template-columns:70px 1fr;gap:10px;align-items:center;margin-top:8px}.row span{font:700 1.1rem "JetBrains Mono",monospace;text-align:right}.row.p{grid-template-columns:70px 1fr 96px}
+input.ok{border-color:var(--ok)!important}input.no{border-color:var(--bad)!important}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0 80px}.chips .btn{margin:0;padding:6px 12px}
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 .2em}.fn{border-bottom:2px solid var(--ink);padding:0 .25em .1em;min-width:.9em}.fd{padding:.1em .25em 0;min-width:.9em}.bx{display:inline-block;width:.6em;height:.85em;border:1.5px dashed var(--mute);vertical-align:-.1em}
+button:focus-visible,input:focus-visible,.fc:focus-visible{outline:3px solid #ffb59f;outline-offset:2px}
+.bk{max-width:1100px;padding:24px 28px;background:var(--card);border-radius:24px}
+.bk h2{font:700 28px/1.15 var(--px);margin:0 0 8px;text-transform:uppercase}.bk p{margin:6px 0;color:var(--mute);font-size:13px}
+.bk code{font:700 .78rem "JetBrains Mono",monospace;color:var(--or);background:#ffece5;padding:1px 5px;border-radius:5px}
+.bk pre{font:400 .72rem/1.5 "JetBrains Mono",monospace;background:var(--card2);color:var(--ink);padding:10px 12px;border-radius:12px;overflow-x:auto;margin:6px 0;white-space:pre}
+.bk textarea{width:100%;min-height:150px;font:400 .8rem/1.5 "JetBrains Mono",monospace;padding:12px;border:1.5px solid transparent;border-radius:12px;background:var(--card2);color:var(--ink);resize:vertical}.bk textarea:focus{border-color:var(--or);outline:0}
+.bk .btn{margin:8px 8px 0 0}.bk .rep{font-weight:700;font-size:12px;margin-top:8px;white-space:pre-wrap}.bk .rep.ok{color:var(--ok)}.bk .rep.no{color:var(--bad)}
+.bk details{margin-top:6px}.bk summary{cursor:pointer;font-weight:700;font-size:12px}
+.go{display:flex;flex-wrap:wrap;margin-top:14px}.bk p .btn{margin:0 0 0 6px;padding:4px 10px}
+.rvc{display:flex;gap:6px 14px;flex-wrap:wrap;align-items:center;font-size:12px;margin:6px 0 12px}
+.rvc select{font:inherit;padding:6px 10px;border:0;border-radius:10px;background:var(--card2);color:var(--ink)}
+.fc{border-radius:20px;padding:20px 22px;background:var(--or);color:#fff;cursor:pointer;min-height:190px;display:flex;flex-direction:column;gap:10px}
+.fcn{font:700 1.3rem/1.2 var(--px);text-transform:uppercase}
+.fc .scr{background:var(--card);color:var(--ink);border-radius:14px;padding:4px 14px}.fc .ex{min-height:0;font-size:1.3rem}
+.fch{color:#ffd9cc;font-size:11px;margin-top:auto}
+.fcd{border-top:1px dashed #ffb59f;padding-top:8px;font-size:13px}.fcd div{margin:2px 0}
+.fcd b{font:700 .95rem "JetBrains Mono",monospace;display:inline-block;min-width:3.2em;margin-right:6px}.fcd em{color:#ffd9cc;font-style:normal}
+.bk .fcnav{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-top:12px;font-size:12px}.bk .fcnav .btn{margin:0;padding:8px 12px}
+.pm select,.rvc select{font:inherit;padding:6px 10px;border:0;border-radius:10px;background:var(--card2);color:var(--ink);cursor:pointer}
+.tchips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.tc{font:600 12px var(--ui);border:0;border-radius:999px;background:var(--card2);color:var(--ink);padding:9px 14px;cursor:pointer;display:inline-flex;gap:8px;align-items:center}
+.tc em{font:700 11px var(--ui);font-style:normal;background:#fff;border-radius:999px;padding:1px 8px;color:var(--mute)}
+.tc.on{background:#111;color:#fff}.tc.on em{background:var(--or);color:#fff}.tc.add{background:#ffece5;color:var(--or)}
+.tnew{display:flex;gap:8px;align-items:center;margin:8px 0}.tnew .btn{margin:0;white-space:nowrap}.tnew input{max-width:380px}
+.fgrp{display:flex;flex-wrap:wrap;align-items:center;gap:8px;background:var(--card2);border-radius:16px;padding:6px 12px;margin:8px 0;max-width:760px}.fgrp .tchips{margin:0}.fgrp .tc{background:#fff}.fgrp .tc.on{background:#111}
+.fgn{font:700 12px var(--ui);letter-spacing:.06em;display:inline-flex;align-items:center;gap:8px}.fgn em{font:700 11px var(--ui);font-style:normal;background:#fff;border-radius:999px;padding:1px 8px;color:var(--mute)}
+.fx{border:0;background:transparent;color:var(--mute);font-size:16px;line-height:1;cursor:pointer;padding:0 2px}.fx:hover{color:var(--bad)}.fe{font-size:12px;color:var(--mute)}
+.tfl{margin-left:auto;font-size:12px;color:var(--mute)}.tfl select{font:500 13px var(--ui);padding:5px 8px;border-radius:8px;border:1.5px solid var(--line);background:#fff;color:var(--ink)}.tfl+.btn{margin-left:0!important}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;margin-top:16px;align-items:start}
+.fcrd{background:var(--card2);border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}.fcrd .btn.g{background:#fff;box-shadow:inset 0 0 0 1.5px var(--line)}.fcrd .fe{margin:2px 0}.fcrd.un{background:transparent;border:2px dashed var(--line)}
+.fch2{display:flex;align-items:center;flex-wrap:wrap;gap:4px 10px}.fch2 b{font-size:15px;overflow-wrap:break-word;min-width:0}.fch2 span{font-size:12px;color:var(--mute)}.fch2 .fx{margin-left:auto}
+.trow{display:flex;flex-direction:column;gap:8px;background:#fff;border-radius:14px;padding:10px 12px;font-size:13px;min-width:0}
+.trow .tn{display:flex;align-items:flex-start;gap:8px;min-width:0}.trow .ti{flex:none}.trow .tt{flex:1 1 auto;min-width:0;font-weight:600;line-height:1.35;overflow-wrap:break-word}
+.trow em{flex:none;white-space:nowrap;font:700 11px var(--ui);font-style:normal;background:var(--card2);border-radius:999px;padding:2px 9px;color:var(--mute)}
+.trow .mv{width:100%}
+.mv{font:500 12px var(--ui);padding:8px 10px;border-radius:8px;border:1.5px solid var(--line);background:#fff;color:var(--ink);cursor:pointer;max-width:100%}.mv.add{border-style:dashed;color:var(--or);font-weight:700;margin-top:2px}
+.facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}.facts .btn{margin:0!important;padding:8px 14px}
+.thd{display:flex;align-items:center;gap:10px;margin:6px 0 4px;font-size:13px}.thd .btn{margin:0 0 0 auto;padding:6px 12px}
+.tnew{background:var(--card2);padding:10px 14px;border-radius:14px;max-width:760px}.tnew input{flex:1;max-width:none}.tl2{font:600 11px var(--ui);letter-spacing:.1em;text-transform:uppercase;color:var(--mute);white-space:nowrap}
+.btn:disabled,.bk textarea:disabled{opacity:.4;cursor:not-allowed}
+.disp{position:relative;cursor:text}.disp:focus-within{box-shadow:inset 0 2px 6px #00000014,0 0 0 2px var(--or)}
+.kbin{position:absolute;left:0;top:0;width:1px;height:1px;opacity:0;border:0;padding:0;pointer-events:none}
+.tk{cursor:text}.cr{animation:bl 1s steps(1) infinite}@keyframes bl{50%{opacity:0}}
+.allsy{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;padding-top:6px;border-top:1px dashed var(--line);max-height:84px;overflow:auto}
+.allsy .sy{min-width:32px;height:30px;font-size:.9rem;box-shadow:0 2px 0 #0e0f11}
+@media(max-width:1200px){.gm{grid-template-columns:1fr}.top .stats{margin-left:0;width:100%;flex-wrap:wrap}}
+@media(max-width:700px){.app{grid-template-columns:1fr}.side{padding:10px}.nav{flex-direction:row;position:static;overflow-x:auto}.nav button{white-space:nowrap}main{padding:12px}h1{font-size:26px}.gm{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+.cf{position:fixed;top:-16px;width:9px;height:14px;border-radius:2px;z-index:60;pointer-events:none;animation:cfall linear forwards}
+@keyframes cfall{to{transform:translate(var(--dx),110vh) rotate(var(--r))}}
+.s4{grid-template-columns:repeat(4,1fr);margin:8px 0}.s4 .ck{font-size:.8rem}
+.hub{max-width:1100px}.hub .cats{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;margin:12px 0}
+.cat,.prac,.cp{background:var(--card);border-radius:20px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.cat.off{opacity:.7}.cat small,.prac small,.cp small{color:var(--mute);font-size:12px}.cat .btn{margin:2px 0 8px;width:100%}
+.cth{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.cth b{font:700 20px var(--px)}.cst{font-size:12px;font-weight:700;color:var(--or)}.fz{margin-left:auto;font-size:11px;color:var(--mute)}
+.prac{max-width:1100px;margin-top:8px}.prac .btn{margin:6px 0 0;align-self:flex-start}
+.rtag{font:700 11px var(--ui);letter-spacing:.1em;color:var(--or);margin:0 0 6px}
+.strk{display:flex;gap:6px;flex-wrap:wrap;margin:4px 0}.sp{background:var(--card2);border-radius:999px;padding:2px 10px;font-size:12px}.sp b{color:var(--or)}
+.cpan{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin:8px 0 14px}.cp{background:var(--card2);font-size:12px}
+.cal{display:flex;flex-wrap:wrap;max-width:260px}.cd{display:inline-block;width:14px;height:14px;border-radius:4px;background:var(--line);margin:1px}.cd.p{background:var(--ok)}.cd.f{background:var(--or)}
+@media(prefers-reduced-motion:no-preference){.shake{animation:shk .35s}@keyframes shk{20%{transform:translateX(-7px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(3px)}}}
+.s7{grid-template-columns:repeat(7,1fr)}.kp{gap:5px 6px}.ck.g{background:var(--dk);color:#fff;font:700 1.05rem "JetBrains Mono",monospace;box-shadow:0 2px 0 #0e0f11}.ck.f{font-size:.82rem}.gk{font:600 10px var(--ui);letter-spacing:.14em;text-transform:uppercase;color:var(--mute);margin:8px 2px 0}
+#pz{display:none}
+#pzc{position:fixed;left:-9999px;top:0}
+.pzs,.pzs *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.pzs .pp{width:194mm;height:281mm;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;background:#fff}
+.pzs .pc4{display:flex;align-items:center;justify-content:center;min-width:0;position:relative}
+.pzs .pk{text-align:left;position:relative;width:88mm;height:123mm;background:#fff;color:#fff;overflow:hidden;font-family:Roboto,system-ui,sans-serif;border:0;border-radius:0}
+.pzs .c_top{position:absolute;left:0;right:0;top:0;height:104mm;background:var(--or);padding:8mm 8mm 0;display:flex;flex-direction:column;gap:2.6mm;overflow:hidden;clip-path:polygon(0 0,100% 0,100% 100%,0 calc(100% - 9mm))}
+.pzs .c_qm{font:900 54pt/.7 Georgia,"Times New Roman",serif;height:9mm;color:#fff}
+.pzs .pn{font:700 14pt/1.15 Roboto,system-ui,sans-serif;color:#fff;text-transform:none;letter-spacing:0;text-align:left;padding-right:6mm}.pzs .pn.sm{font-size:13pt}
+.pzs .pf{background:#fff;color:#1d1d1f;border:0;border-radius:0;padding:3mm;text-align:left}.pzs .pf .ex{min-height:0;padding:0;font-size:12.5pt;overflow-wrap:anywhere;color:#1d1d1f}
+.pzs .c_pr{width:100%;display:flex;align-items:center;margin-top:.5mm}.pzs .c_pr::before{content:"";flex:1;border-top:.3mm solid rgba(255,255,255,.7)}
+.pzs .c_pr span{width:10mm;height:10mm;border:.3mm solid #fff;display:flex;align-items:center;justify-content:center;font:500 6pt Roboto,sans-serif;color:#fff}
+.pzs .c_dt{font:700 6.5pt/1 Roboto,sans-serif;letter-spacing:.16em;color:#fff}.pzs .c_dt s{text-decoration:none;opacity:.55}
+.pzs .pdt{display:grid;grid-template-columns:1fr 1fr;column-gap:3mm;font:400 7.5pt/1.3 Roboto,system-ui,sans-serif;color:#fff;border:0;padding:0;overflow:hidden}.pzs .pdt div{margin:.5mm 0}.pzs .pdt b{display:inline-block;min-width:3.2em;margin-right:1.5mm;color:#fff;opacity:.8}
+.pzs .c_qh{font:400 8pt Roboto,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#fff}
+.pzs .c_crx{position:absolute;right:8mm;top:90mm;text-align:right;white-space:nowrap;font:500 6.5pt/1.2 Roboto,sans-serif;color:#fff}.pzs .c_cr small{display:block;font-size:5pt;opacity:.8}
+.pzs .c_ft{position:absolute;left:0;right:0;bottom:0;height:19mm;display:flex;align-items:center;gap:4mm;padding:0 7mm;background:#fff}
+.pzs .c_ft .c_nm{background:#2a2c31;color:#fff;font:700 9pt "JetBrains Mono",monospace;padding:2.6mm 5mm}
+.pzs .c_ft .c_ln{flex:1;text-align:right;font:500 6.5pt/1.2 Roboto,sans-serif;color:#6d6d72}.pzs .c_ft .c_ln small{display:block;font-size:5pt;opacity:.8}
+.pzs .c_ft .c_pl{background:var(--or);color:#fff;width:8mm;height:8mm;display:flex;align-items:center;justify-content:center;font:400 8pt Roboto,sans-serif}
+.pzs .c_ft{justify-content:center;padding:0 9mm}
+.pzs .c_ft .c_q{flex:1;text-align:center;font:italic 400 7.6pt/1.35 Roboto,system-ui,sans-serif;color:#3a3b40}
+.pzs .cm{position:absolute;left:50%;top:50%;width:88mm;height:123mm;margin:-61.5mm 0 0 -44mm;pointer-events:none}
+.pzs .cm i{position:absolute;background:#444}
+.pzs .cm .h{height:.25mm;width:3mm}.pzs .cm .v{width:.25mm;height:3mm}
+.pzs .cm .h.t{top:0}.pzs .cm .h.b{bottom:0}.pzs .cm .h.l{right:calc(100% + 1mm)}.pzs .cm .h.r{left:calc(100% + 1mm)}
+.pzs .cm .v.l{left:0}.pzs .cm .v.r{right:0}.pzs .cm .v.t{bottom:calc(100% + 1mm)}.pzs .cm .v.b{top:calc(100% + 1mm)}
+.pzs .pk.bk .c_top{gap:3mm}.pzs .pk.bk .pn{font-size:17pt}
+.lsh{font:700 15px var(--ui);margin:18px 0 6px;text-transform:uppercase;letter-spacing:.04em}.lsf{font:800 17px var(--ui);margin:30px 0 4px;padding:8px 12px;border-radius:12px;background:var(--soft,#f3f1ee)}.lsf small{color:var(--mute);font-weight:600;margin-left:6px}.lsh.in{margin-left:14px}.lsh small{color:var(--mute);font-weight:600;margin-left:6px}
+.lso{margin:0;padding:0;list-style:none}.lso li{display:grid;grid-template-columns:minmax(150px,38%) 1fr;gap:6px 16px;align-items:center;padding:5px 0;border-bottom:1px solid rgba(0,0,0,.07)}.lsx{font-size:.95rem!important;min-height:0!important;padding:0!important;font-weight:600}
+.lspt{width:100%;border-collapse:collapse;font:12px/1.35 Arial,sans-serif}.lspt td{padding:3px 4px;border-bottom:.5px solid #bbb;vertical-align:middle}.lspt .a{width:22px;color:#666}.lspt .b{width:42%}.lspt tr{break-inside:avoid}.lspt .lsx{font-size:12px!important}
+.lsn{font:500 13px var(--ui);color:var(--ink);background:none;border:0;padding:4px 2px;text-align:left;cursor:pointer;border-radius:6px}.lsn:hover{color:var(--or);text-decoration:underline}
+@media(max-width:700px){.lso li{grid-template-columns:1fr}}
+#pz{display:none}
+@media print{@page{size:A4;margin:8mm}html,body{background:#fff!important}body>*:not(#pz){display:none!important}#pz{display:block}
+.pp{break-after:page;page-break-after:always}.pp:last-child{break-after:auto;page-break-after:auto}}
+
+/* ---- Match it (matching-style practice) ---- */
+.mtw{max-width:780px}
+.mtg{display:grid;grid-template-columns:1fr 1fr;gap:8px 14px;margin-top:6px}
+.mtc{display:flex;flex-direction:column;gap:8px;min-width:0}
+.mi{text-align:left;font:600 13px var(--ui);color:var(--ink);background:var(--card2);border:2px solid transparent;border-radius:14px;padding:10px 12px;cursor:pointer;min-height:52px;display:flex;flex-direction:column;justify-content:center;gap:2px;box-shadow:0 2px 0 #c9c9ce;min-width:0;overflow-wrap:anywhere}
+.mi .ex{min-height:0;padding:0;font-size:1rem}
+.mi small{color:var(--mute);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:.04em}
+.mi.sel{border-color:var(--or);background:#fff1ec}
+.mi.ok{background:#dff3ea;border-color:var(--ok);color:#14694a;box-shadow:none;opacity:.85;cursor:default}
+.mi.bad{border-color:var(--bad);background:#fbe4e4}
+.mi:disabled{pointer-events:none}
+.mi:focus-visible{outline:3px solid #ffb59f;outline-offset:2px}
+.mtp{font-size:12px;color:var(--mute);margin:4px 0 0}
+.prac .tl{margin-top:4px}
+@media(max-width:560px){.mtg{gap:6px 8px}.mi{padding:8px;font-size:12px}.mi .ex{font-size:.85rem}}
+.warn{background:#fff3cd;color:#6b4e00;border-radius:16px;padding:10px 14px;margin:8px 0;font-size:13px;max-width:1100px}.warn .btn{display:block;margin:6px 0 0;padding:6px 12px}
+.rvx{margin:10px 0 0}.rvx .btn{margin:0}.edb{margin-top:10px;max-width:760px}.edb #edt{min-height:80px}.edb .btn{margin:8px 8px 0 0}
+
+/* ---- minimal redesign ---- */
+:root{--bg:#f5f5f3;--card:#fff;--card2:#f3f3f1;--line:#e8e8e5;--mute:#8a8a8f}
+h1{font-size:22px}.dot{width:20px;height:20px;border-width:4px}.tag,#hud{display:none}
+.nav{background:transparent;padding:0;margin-left:12px}.nav button{font-weight:500;letter-spacing:.06em;color:var(--mute)}.nav button.on{color:#fff}
+.mn{order:9;margin-left:auto;position:relative}.mn summary{list-style:none;cursor:pointer;width:34px;height:34px;border-radius:50%;background:var(--card);display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--mute)}.mn summary::-webkit-details-marker{display:none}
+.mnb{position:absolute;right:0;top:40px;background:#fff;border-radius:16px;padding:8px;display:flex;flex-direction:column;gap:6px;z-index:20;box-shadow:0 8px 28px rgba(0,0,0,.12);min-width:190px}.mnb .svb{background:var(--card2);justify-content:flex-start}#sv i{display:none}
+.top .stats{margin-left:12px;gap:2px}.sk,.sk.hot{background:transparent;padding:0 10px;min-width:0}.sk .v{font-size:18px}.sk.hot{color:var(--or)}.pm{background:transparent;padding:0 6px;color:var(--mute)}
+.lt,.rt,.bk,.cat,.prac,.cp,.fcrd{box-shadow:none}.rt,.lt{border-radius:20px}
+.more{margin-top:8px}.more summary{cursor:pointer;font:600 12px var(--ui);color:var(--mute);padding:6px 2px}
+.toast{background:#3a3c42;font-weight:500;font-size:12px;padding:7px 14px;box-shadow:none}.toast.gold{background:var(--or)}
+.warn{background:none;color:var(--mute);padding:0;font-size:12px;margin:0 0 8px}.warn .btn{display:inline-block;margin:0 0 0 6px;padding:2px 10px}
+.prac{display:flex;flex-direction:column;gap:8px}.prac .tl:has([data-mg]){order:-1}.prac [data-mg]{padding:11px 22px;font-size:13px}
+body:not(.help) .hub .rt .sub,body:not(.help) .mtw .sub,body:not(.help) .bk>p:not(#bcnt),body:not(.help) .prac>small,body:not(.help) .cat small,body:not(.help) .fe,body:not(.help) .rvm{display:none}
+@media(max-width:700px){.nav{margin-left:0}.top .stats{margin-left:0;width:100%}}
+
+/* ---- v12 polish: dot-matrix finish ---- */
+:root{--bg:#f5f5f3;--line:#e4e2dc;--mute:#84848a;--or2:#ff7b4f;--rim:inset 0 1px 0 rgba(255,255,255,.95);--sh:0 1px 2px rgba(25,25,30,.05),0 14px 32px -18px rgba(25,25,30,.22);--dots:radial-gradient(circle,rgba(30,30,40,.14) 1px,transparent 1.5px)}
+html,body{background:#f5f5f3}
+body{-webkit-font-smoothing:antialiased}
+::selection{background:rgba(251,74,28,.22)}
+*{scrollbar-width:thin;scrollbar-color:#d2d0ca transparent}
+button:focus-visible,input:focus-visible,.fc:focus-visible{outline:3px solid rgba(251,74,28,.4);outline-offset:2px}
+
+/* header */
+.top{gap:14px;padding:6px 0;margin-bottom:14px}
+.dot{width:24px;height:24px;border-width:5px;box-shadow:0 0 0 5px rgba(251,74,28,.10),0 0 18px rgba(251,74,28,.4)}
+h1{font:900 26px/1 var(--px);letter-spacing:.1em}
+.nav{background:rgba(255,255,255,.75);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--line);box-shadow:var(--sh);padding:4px;margin-left:10px}
+.nav button{font:600 11px var(--ui);letter-spacing:.12em;padding:9px 16px;color:var(--mute);transition:color .2s,background .2s}
+.nav button:hover{color:var(--ink);background:rgba(0,0,0,.04)}
+.nav button.on{background:var(--dk);color:#fff;box-shadow:0 6px 14px -4px rgba(0,0,0,.4)}
+.nav button.on::before{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--or);margin-right:8px;vertical-align:1px;box-shadow:0 0 8px var(--or)}
+.mn summary{border:1px solid var(--line);box-shadow:var(--sh)}
+.mnb{border:1px solid var(--line);border-radius:18px;box-shadow:0 18px 40px -12px rgba(0,0,0,.22)}
+
+/* score chips */
+.top .stats{gap:8px;align-items:center}
+.sk,.sk.hot{background:#fff;border:1px solid var(--line);border-radius:14px;padding:5px 14px;min-width:80px;box-shadow:var(--sh)}
+.sk .k{font-size:9px;letter-spacing:.16em}
+.sk .v{font:700 22px/1.15 var(--px);letter-spacing:.03em}
+.sk.hot{background:linear-gradient(135deg,var(--or2),var(--or));color:#fff;border-color:transparent;box-shadow:0 10px 22px -10px rgba(251,74,28,.7)}
+.sk.hot .k{color:#ffe3d8}
+.pm{background:#fff;border:1px solid var(--line);border-radius:14px;padding:7px 12px;box-shadow:var(--sh)}
+
+/* surfaces */
+.lt,.rt,.bk,.cat,.prac,.cp,.fcrd,.prh,.pc,.tr,.pl2,.tray,.fgrp,.tnew{border:1px solid rgba(25,25,30,.06)}
+.lt,.rt,.bk,.cat,.prac{box-shadow:var(--sh),var(--rim)}
+.lt,.rt,.bk{border-radius:28px}
+.cat,.prac{border-radius:22px}
+.cp,.fcrd,.prh,.tr,.tray{border-radius:16px}
+.fcrd.un{border:2px dashed var(--line)}
+.bk h2{font:700 30px/1.1 var(--px);letter-spacing:.06em}
+.bk h2::before{content:"";display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--or);margin-right:12px;vertical-align:5px;box-shadow:0 0 12px rgba(251,74,28,.65)}
+.name{letter-spacing:.05em}
+.cth b{font:700 22px var(--px);letter-spacing:.04em}
+.cst{letter-spacing:.06em}
+.warn{border:1px solid #f0dc9a}
+
+/* the LCD: the one memorable thing */
+.disp{background:linear-gradient(180deg,#e7e7ea,#f1f1f3);border:1px solid rgba(25,25,30,.08);border-radius:20px;box-shadow:inset 0 3px 10px rgba(25,25,30,.10);overflow:hidden}
+.disp::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle,rgba(25,25,35,.11) .8px,transparent 1.2px) 0 0/6px 6px}
+.disp:focus-within{border-color:var(--or);box-shadow:inset 0 3px 10px rgba(25,25,30,.10),0 0 0 4px rgba(251,74,28,.16)}
+.st{font:700 .66rem var(--px);opacity:.55;letter-spacing:.14em}
+.cr{box-shadow:0 0 8px rgba(251,74,28,.7)}
+.tray{background:var(--card2)}
+
+/* buttons, inputs, chips */
+.btn{border-radius:13px;background:linear-gradient(180deg,var(--or2),var(--or));box-shadow:0 8px 16px -8px rgba(251,74,28,.7),inset 0 1px 0 rgba(255,255,255,.3);letter-spacing:.05em;transition:filter .15s,box-shadow .15s}
+.btn:hover{filter:brightness(1.05)}
+.btn:active{transform:translateY(1px)}
+.btn.g,.fcrd .btn.g{background:#fff;color:var(--ink);box-shadow:inset 0 0 0 1px var(--line),0 1px 2px rgba(25,25,30,.05)}
+.btn.g:hover{box-shadow:inset 0 0 0 1px #cbc9c2,0 6px 12px -8px rgba(25,25,30,.3)}
+input.tx{border:1.5px solid var(--line);border-radius:12px;padding:9px 13px;background:#fff;transition:border-color .15s,box-shadow .15s}
+.rt input.tx{background:#faf9f6}
+input.tx:focus{border-color:var(--or);box-shadow:0 0 0 4px rgba(251,74,28,.14)}
+.lv{border:1px solid var(--line);padding:3px}
+.lv button.on{background:var(--dk);box-shadow:0 4px 10px -4px rgba(0,0,0,.4)}
+.tc{border:1px solid rgba(25,25,30,.06);transition:background .15s}
+.tc.on{background:var(--dk)}.tc.on em{background:var(--or)}
+.trow{border:1px solid var(--line)}
+.bk textarea{border:1.5px solid var(--line);background:#faf9f6;border-radius:14px}
+.bk code{background:#ffe9e0}
+
+/* progress: segmented dot bars */
+.bar{height:10px;border-radius:99px;background:repeating-linear-gradient(90deg,#dedcd5 0 6px,transparent 6px 8px)}
+.bar i{background:var(--or);box-shadow:none;-webkit-mask:repeating-linear-gradient(90deg,#000 0 6px,transparent 6px 8px);mask:repeating-linear-gradient(90deg,#000 0 6px,transparent 6px 8px)}
+.bar.g i{background:var(--ok)}.bar.m i{background:#e0a100}
+.pl2,.pc{background:#fff}
+.pl2 b{font:700 22px var(--px);letter-spacing:.03em}
+.pc b{font:700 28px var(--px);letter-spacing:.03em}
+.stars{text-shadow:0 0 20px rgba(224,161,0,.5)}
+
+/* flashcard + match */
+.fc{position:relative;overflow:hidden;border-radius:26px;background:radial-gradient(circle at 88% 0%,#ff9a76,transparent 55%),linear-gradient(160deg,var(--or2),var(--or) 55%,#e53808);box-shadow:0 26px 40px -22px rgba(251,74,28,.75),inset 0 1px 0 rgba(255,255,255,.35)}
+.fc::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle,rgba(255,255,255,.22) 1px,transparent 1.5px) 0 0/10px 10px;-webkit-mask-image:linear-gradient(135deg,#000,transparent 65%);mask-image:linear-gradient(135deg,#000,transparent 65%)}
+.fc>*{position:relative}
+.fcn{font-size:1.5rem;letter-spacing:.04em}
+.fc .scr{box-shadow:inset 0 2px 8px rgba(0,0,0,.14)}
+.mi{background:#fff;border:1.5px solid var(--line);border-radius:15px;box-shadow:0 2px 0 rgba(25,25,30,.07);transition:border-color .12s,background .12s}
+.mi:not(.ok):hover{border-color:#cfcdc6}
+.mi.sel{border-color:var(--or);background:#fff4ef;box-shadow:0 0 0 4px rgba(251,74,28,.14)}
+
+/* toasts */
+.toast{background:rgba(29,29,31,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);font:600 12px var(--ui);letter-spacing:.03em;padding:9px 18px;box-shadow:0 14px 30px -10px rgba(0,0,0,.45)}
+.toast.gold{background:linear-gradient(90deg,#f0b400,var(--or))}
+
+@media(max-width:700px){h1{font-size:20px}.sk,.sk.hot{min-width:64px;padding:4px 10px}.sk .v{font-size:18px}.bk h2{font-size:24px}.lt,.rt,.bk{border-radius:22px}}
+
+/* ---- v12b: bigger type ---- */
+h1{font-size:32px}
+.nav button{font-size:13px;padding:10px 18px}
+.sk .k{font-size:11px}.sk .v{font-size:26px}
+.pm{font-size:13px}
+.name{font-size:clamp(22px,2vw,32px)}
+.sub,.bk p,.fe,.rvm,.mtp{font-size:15px}
+.bk h2{font-size:36px}
+.bk summary,.rvc,.thd{font-size:14px}
+.btn{font-size:14px;padding:12px 20px}
+.chips .btn,.pc .btn,.tc{font-size:13px}
+.tl{font-size:13px}.lv button{font-size:13px}
+.st{font-size:.78rem}
+.ex{font-size:1.6rem}
+.fc .ex{font-size:1.5rem}.fcn{font-size:1.7rem}.fcd{font-size:15px}
+.ck{font-size:.85rem}.ck.n{font-size:1.2rem}.s3 .ck{font-size:.95rem}.s4 .ck{font-size:.9rem}
+.ks{font-size:.66rem}.gk{font-size:11px}
+.sy{font-size:1.15rem}
+.msg{font-size:15px}
+input.tx{font-size:15px}
+.row span{font-size:1.25rem}
+.mi{font-size:15px}.mi small{font-size:12px}.mi .ex{font-size:1.15rem}
+.cat small,.prac small,.cp small,.cp{font-size:14px}
+.cth b{font-size:26px}.cst{font-size:13px}
+.pl2{font-size:14px}.pl2 b{font-size:26px}.pc{font-size:14px}.pc b{font-size:32px}
+.trow,.warn{font-size:14px}.fgn{font-size:14px}
+.toast{font-size:14px}
+@media(max-width:700px){h1{font-size:22px}.nav button{font-size:12px;padding:9px 14px}.bk h2{font-size:28px}.ex{font-size:1.3rem}.sk .v{font-size:20px}}
+
+/* ---- Greek toggle ---- */
+.greek{margin:10px 0 4px}
+.greek>summary{list-style:none;display:inline-flex;align-items:center;gap:10px;cursor:pointer;user-select:none;background:var(--dk);color:#fff;font:700 14px var(--ui);letter-spacing:.04em;padding:10px 18px;border-radius:12px;box-shadow:0 2px 0 #0e0f11}
+.greek>summary::-webkit-details-marker{display:none}
+.greek>summary::before{content:"α β γ";font:700 13px "JetBrains Mono",monospace;color:var(--or2)}
+.greek>summary::after{content:"▸";font-size:12px;opacity:.7}
+.greek[open]>summary::after{content:"▾"}
+.greek>summary:active{transform:translateY(2px);box-shadow:none}
+.greek>summary:focus-visible{outline:3px solid rgba(251,74,28,.4);outline-offset:2px}
+
+/* ---- Folder board (drag & drop) ---- */
+.board{display:flex;flex-direction:column;gap:14px;margin:12px 0 18px}
+.bz{border-radius:22px;padding:14px 16px;background:var(--card2);border:1px solid var(--line);min-width:0;transition:background .12s,box-shadow .12s}
+.bz h4{margin:0 0 10px;font:700 20px/1 var(--px);letter-spacing:.06em;display:flex;align-items:baseline;gap:10px}
+.bz h4 small{font:600 13px var(--ui);letter-spacing:0;color:var(--mute)}
+.bun{background:#fff4ef;border:2px dashed #ffb59f}
+.bun h4{color:var(--or)}
+.bts{display:flex;flex-wrap:wrap;gap:8px}
+.bcats{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:14px;align-items:start}
+.bcat{display:flex;flex-direction:column;gap:10px;min-height:150px}
+.bcat h4::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--or);align-self:center;box-shadow:0 0 10px rgba(251,74,28,.55)}
+.bno{background:transparent;border:2px dashed var(--line)}.bno h4{color:var(--mute)}
+.bfs{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.bf{background:#fff;border:1px solid var(--line);border-radius:16px;padding:10px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.bfh{display:flex;align-items:center;gap:8px;cursor:grab;touch-action:none;user-select:none;padding:2px 2px 4px}
+.bfh b{flex:1;min-width:0;font-size:15px;overflow-wrap:anywhere}
+.bt{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 12px;font:600 14px/1.3 var(--ui);cursor:grab;touch-action:none;user-select:none;box-shadow:0 2px 0 rgba(25,25,30,.08)}
+.bun .bt{border-color:#ffc9b8}
+.bf .bt{background:var(--card2);box-shadow:none}
+.bt span{flex:1;min-width:0;overflow-wrap:anywhere}
+.bt em,.bfh em{flex:none;font:700 11px var(--ui);font-style:normal;background:var(--card2);border-radius:999px;padding:2px 9px;color:var(--mute)}
+.bf .bt em{background:#fff}
+.bhint{margin:2px 0;font-size:13px;color:var(--mute);text-align:center;border:1.5px dashed var(--line);border-radius:12px;padding:10px}
+.bnote{margin:0;font-size:13px;color:var(--mute)}
+.ovr{background:#fff1ec!important;box-shadow:0 0 0 3px var(--or)}
+.bdrag{opacity:.3}
+.bgh{position:fixed;z-index:90;pointer-events:none;box-shadow:0 20px 40px -10px rgba(0,0,0,.4);opacity:.95;margin:0}
+body.dragging{user-select:none;-webkit-user-select:none;cursor:grabbing}
+.fhelp{margin:6px 0 10px}.fhelp>summary{cursor:pointer;font:700 14px var(--ui);color:var(--mute);padding:6px 2px}.thd{scroll-margin-top:12px}
+.fdet{margin-top:6px}.fdet>summary{cursor:pointer;font:700 14px var(--ui);color:var(--mute);padding:8px 2px}
+
+/* ---- merged folders: minimal tiles ---- */
+.fmh{display:flex;align-items:center;gap:10px;margin:6px 0 8px}.fmh h3{margin:0;font:700 22px var(--px);letter-spacing:.06em}.fmh .btn{margin:0 0 0 auto;padding:7px 14px;font-size:13px}
+.fcg{display:flex;gap:12px;align-items:flex-start;padding:8px 12px;border-radius:16px;background:var(--card2);margin-bottom:6px;transition:box-shadow .12s,background .12s}
+.fcl{flex:none;width:82px;font:700 17px/1.1 var(--px);letter-spacing:.05em;padding-top:9px}.fcl small{display:block;font:600 11px var(--ui);letter-spacing:0;color:var(--mute);margin-top:3px}
+.fog{flex:1;min-width:0;display:flex;flex-wrap:wrap;gap:8px;align-items:flex-start}
+.fo{background:#fff;border:1px solid var(--line);border-radius:14px;min-width:190px;max-width:100%}
+.fo.op{flex:1 1 100%}
+.fo.un{border:1.5px dashed #ffb59f;background:#fff8f5}
+.foh{display:flex;align-items:center;gap:8px;padding:9px 12px;cursor:pointer;user-select:none;font:600 14px var(--ui);border-radius:14px}
+.foh[data-dt]{touch-action:none}
+.foh b{flex:1;min-width:0;font-weight:700;overflow-wrap:anywhere}
+.foh em{flex:none;font:700 11px var(--ui);font-style:normal;background:var(--card2);border-radius:999px;padding:2px 9px;color:var(--mute)}
+.foh i{font-style:normal;color:var(--mute);font-size:12px}
+.foh:focus-visible{outline:3px solid rgba(251,74,28,.4)}
+.fob{padding:8px 10px 10px;display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--line)}
+.fox{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:6px}
+.fox .btn{margin:0;padding:7px 12px;font-size:13px}.fox .fe{margin:0;display:flex;align-items:center;gap:6px}
+.bk .bhint{margin:0;flex:1;font-size:13px;color:var(--mute);text-align:center;border:1.5px dashed var(--line);border-radius:12px;padding:9px}
+.tc[data-dt]{touch-action:none;cursor:grab}
+.fcg.ovr,.fo.ovr{background:#fff1ec!important;box-shadow:0 0 0 3px var(--or)}
+@media(max-width:560px){.fcg{flex-direction:column;gap:6px}.fcl{width:auto;padding-top:0;display:flex;gap:8px;align-items:baseline}.fcl small{margin:0}.fo{min-width:0;flex:1 1 100%}}
+.bt.cur{border-color:var(--or);box-shadow:0 0 0 2px rgba(251,74,28,.25)}
+.tchips:empty{display:none}
+
+/* ---- file-manager view ---- */
+.crumb{display:flex;align-items:center;gap:4px;flex-wrap:wrap;font:600 15px var(--ui);min-width:0}
+.crumb .cr0{font:700 22px var(--px);letter-spacing:.06em}
+.crumb button{border:0;background:transparent;font:inherit;color:var(--or);cursor:pointer;padding:4px 8px;border-radius:9px}
+.crumb button.cr0{font:700 22px var(--px)}.crumb button.home{font:400 22px var(--ui);padding:2px 10px}
+.crumb button:hover{background:#ffece5}.crumb span{color:var(--mute)}.crumb b{padding:4px 6px;overflow-wrap:anywhere}
+.fgd{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.ft{display:flex;flex-direction:column;align-items:center;gap:3px;text-align:center;padding:16px 10px 13px;border-radius:18px;background:var(--card2);border:1px solid var(--line);cursor:pointer;color:var(--ink);min-width:0;font:inherit;transition:background .12s}
+.ft:hover{background:#eceae6}
+.ft .fi2{font-size:42px;line-height:1.1}
+.ft b{font:700 14px/1.25 var(--ui);overflow-wrap:anywhere}
+.ft.c b{font:700 20px var(--px);letter-spacing:.05em}
+.ft small{font-size:12px;color:var(--mute)}
+.ft:focus-visible{outline:3px solid rgba(251,74,28,.4)}
+.ft.ovr{background:#fff1ec!important;box-shadow:0 0 0 3px var(--or)}
+.fgw,.fob2{border-radius:16px;min-width:0}
+.fob2{background:var(--card2);padding:12px;display:flex;flex-direction:column;gap:6px}
+.fgw.ovr,.fob2.ovr{box-shadow:0 0 0 3px var(--or);background:#fff1ec}
+.tchips.ovr{background:#fff1ec;box-shadow:0 0 0 3px var(--or);border-radius:18px;padding:6px}
+.ft[data-dt]{touch-action:none}
+.ft.c{background:#fff;border:1.5px solid var(--line)}
+.ft.c:hover{background:#fff8f5;border-color:#ffc9b8}
+.crumb button.ovr{background:#fff1ec;box-shadow:0 0 0 3px var(--or)}
+
+/* ---- scope picker ---- */
+#ts,#rs{display:none!important}
+.pkw{display:inline-block}
+.pkb{font:600 14px var(--ui);border:0;border-radius:10px;background:var(--card2);color:var(--ink);padding:7px 12px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;max-width:min(300px,60vw);border:1px solid var(--line)}
+.pkb .pkl{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.pkb i{font-style:normal;color:var(--mute);font-size:12px}
+.pkb:hover{border-color:#cfcdc7}
+#pkp{position:fixed;z-index:70;overflow:auto;background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:0 20px 50px -12px rgba(0,0,0,.3);padding:8px}
+#pkp[hidden]{display:none}
+.pkh{display:flex;align-items:center;gap:8px;padding:4px 6px 8px;font:700 13px var(--ui);color:var(--mute);flex-wrap:wrap}
+.pr{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:0;background:transparent;border-radius:12px;padding:10px 10px;font:600 14px var(--ui);color:var(--ink);cursor:pointer}
+.pr:hover{background:var(--card2)}
+.pr.cur{background:#fff1ec}
+.pr .pi{font-size:20px;flex:none}
+.pr .pt{flex:1;min-width:0;overflow-wrap:anywhere}
+.pr em{flex:none;font:700 11px var(--ui);font-style:normal;background:var(--card2);border-radius:999px;padding:2px 9px;color:var(--mute)}
+.pr i{font-style:normal;color:var(--mute);flex:none}
+.pr.cur i{color:var(--or)}
+.pr.bk0{width:auto;padding:5px 10px;background:var(--card2);font-size:13px}
+.pr:focus-visible,.pkb:focus-visible{outline:3px solid rgba(251,74,28,.4);outline-offset:1px}
+/* ---- startup splash ---- */
+#splash{position:fixed;inset:0;z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:var(--bg);animation:spOut .45s ease 1.5s forwards}
+#splash .sd{width:22px;height:22px;border-radius:50%;background:var(--or);box-shadow:0 0 22px rgba(251,74,28,.6);animation:spPop .5s cubic-bezier(.2,1.4,.4,1) both}
+#splash .sw{font:700 clamp(34px,9vw,64px)/1 var(--px);letter-spacing:.08em;color:var(--ink);white-space:nowrap;animation:spIn .6s ease .25s both}
+#splash .sb{width:min(240px,50vw);height:4px;border-radius:4px;background:var(--line);overflow:hidden}
+#splash .sb i{display:block;height:100%;width:100%;background:var(--or);transform-origin:left;animation:spBar 1.1s ease .3s both}
+@keyframes spPop{from{transform:scale(0)}to{transform:scale(1)}}
+@keyframes spIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes spBar{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes spOut{to{opacity:0;visibility:hidden}}
+@media (prefers-reduced-motion:reduce){#splash,#splash *{animation-duration:.01s!important;animation-delay:0s!important}#splash{animation-delay:.6s!important}}
+.top-sv{order:8;margin-left:auto;border:1px solid var(--line);box-shadow:var(--sh)}.top-sv+.mn{margin-left:0}
+/* ---- zoom-proof layout: no sizes tied to window height, content capped and centred ---- */
+:root{--kh:44px}
+.disp{min-height:160px}
+.sy{height:34px}
+.app{max-width:1280px;margin:0 auto}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+/* ---- polish: header, save button, play hub ---- */
+.top{gap:12px 14px}
+.top .stats{order:10;flex:0 0 100%;width:100%;margin-left:0;flex-wrap:wrap}
+.top-sv{order:8;margin-left:auto;background:#17181c;color:#fff;border:0;padding:10px 20px 10px 16px;font-size:13px;letter-spacing:.03em;box-shadow:0 10px 20px -10px rgba(0,0,0,.55);transition:transform .12s,box-shadow .12s}
+.top-sv:hover{transform:translateY(-1px);box-shadow:0 14px 24px -10px rgba(0,0,0,.6)}
+.top-sv svg{width:16px;height:16px;flex:none}.top-sv.dirty{background:var(--or)}
+.mn{order:9}.mn summary{width:40px;height:40px;background:#fff}
+.hub{max-width:none}
+.hub .rt{background:transparent;border:0;box-shadow:none;padding:6px 4px 0;min-height:0}
+.hub .rt .name{font:700 30px/1 var(--px);letter-spacing:.06em;margin:0;display:flex;align-items:center;gap:12px}
+.hub .rt .name::before{content:"";width:12px;height:12px;border-radius:50%;background:var(--or);box-shadow:0 0 12px rgba(251,74,28,.55)}
+.hub .cats{grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin:14px 0 18px}
+.cat{padding:18px 18px 16px;gap:10px}
+.cat.off{opacity:1;background:transparent;border:1.5px dashed #d3d1ca;box-shadow:none;justify-content:flex-start}
+.cat.off .cth b{color:var(--mute)}
+.cat.off small{display:block!important;font-size:13px}
+.cat.off .btn{width:auto;align-self:flex-start;margin:6px 0 0;padding:9px 16px}
+.prac{max-width:none;padding:20px 22px;gap:14px}
+.prac>b{font:700 22px var(--px);letter-spacing:.06em}
+.prac .btn[data-a="rprac"]{background:linear-gradient(180deg,var(--or2),var(--or));color:#fff;border-color:transparent;padding:13px 26px;font-size:14px;box-shadow:0 12px 22px -10px rgba(251,74,28,.75)}
+.prac .btn[data-a="rprac"]:disabled{background:#e4e2dc;color:#9a9aa0;box-shadow:none}
+/* ---- save button sits beside the score pills on Play ---- */
+.top .stats{flex:0 1 auto;width:auto}
+.top-sv{order:11;margin-left:0}
+.top:has(#stats[hidden]) .top-sv{order:8;margin-left:auto}
+.top .mn{margin-left:auto}
+@media(max-width:700px){.top .stats{width:100%}.top-sv{margin-left:0}}
+#pkp{overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+
+/* ================= v13 ADAPTIVE LAYOUT (portrait + landscape) =================
+   Everything below overrides earlier rules. Sizes come from viewport width/height
+   (dvh/dvw) so the game re-flows when the phone is rotated. */
+:root{
+  --pad:clamp(10px,3.2vw,28px);
+  --kh:clamp(38px,min(10.5vw,6.4dvh),56px);          /* key height */
+  --gap:clamp(4px,1.2vw,8px);
+}
+html,body{min-height:100dvh;overflow-x:hidden}
+body{padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+.app{min-height:100dvh;max-width:1280px}
+main{padding:var(--pad);padding-top:calc(var(--pad)*.6)}
+#toasts{bottom:calc(14px + env(safe-area-inset-bottom,0px))}
+
+/* ---------- header ---------- */
+.top{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin-bottom:10px;padding:0}
+.top h1{font-size:clamp(20px,4.6vw,30px);white-space:nowrap}
+.nav{order:5;max-width:100%;overflow-x:auto;scrollbar-width:none;margin-left:0;flex:0 1 auto}
+.nav::-webkit-scrollbar{display:none}
+.nav button{white-space:nowrap;font-size:clamp(11px,2.8vw,13px);padding:9px clamp(12px,3vw,18px)}
+.top-sv{order:8;margin-left:auto}
+.mn{order:9;margin-left:0}
+.top .stats{order:10;flex:1 1 100%;width:100%;display:flex;flex-wrap:nowrap;gap:8px;align-items:stretch;margin:0}
+.top .stats .sk{flex:1 1 0;min-width:0;padding:4px 10px}
+.top .stats .sk .v{font-size:clamp(17px,4.4vw,24px)}
+.top .stats .pm{flex:0 1 auto;font-size:12px}
+
+/* ---------- play screen ---------- */
+#card{min-width:0}
+.gm{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--gap);max-width:none;width:100%;margin:0 auto}
+.lt{padding:clamp(8px,2vw,14px)}
+.rt{padding:clamp(10px,2.4vw,18px) clamp(12px,3vw,22px)}
+.rt .row,.rt .chips{max-width:none}
+.chips{margin-left:0}
+.row{grid-template-columns:clamp(46px,12vw,70px) 1fr}
+.name{font-size:clamp(20px,5.2vw,30px)}
+.disp{min-height:clamp(96px,17dvh,180px);padding:6px 14px 8px}
+.ex{font-size:clamp(1.15rem,4.6vw,1.6rem);min-height:3.6em}
+.kp{gap:var(--gap)}
+.top5{gap:var(--gap)}
+.ck{height:var(--kh);font-size:clamp(.72rem,2.9vw,.9rem);border-radius:clamp(9px,2.2vw,12px)}
+.ck.n{font-size:clamp(1rem,4.2vw,1.25rem)}
+.sy{height:clamp(32px,5.4dvh,40px);min-width:clamp(38px,10vw,48px)}
+.tray{padding:6px 10px}
+.typ{flex-wrap:nowrap}
+.typ input.tx{min-width:0;flex:1}
+
+/* ---------- PORTRAIT: one column, thumb-friendly ---------- */
+@media (orientation:portrait),(max-width:699px){
+  .gm{max-width:760px}
+  .lt{border-radius:22px}
+  .hub .cats{grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))}
+  .fgrid{grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr))}
+  .bk{padding:clamp(14px,4vw,24px)}
+  .bk h2{font-size:clamp(24px,7vw,34px)}
+  .row.p{grid-template-columns:clamp(46px,12vw,70px) 1fr}
+}
+/* big portrait tablets: keep keys generous but centred */
+@media (orientation:portrait) and (min-width:760px){
+  :root{--kh:clamp(48px,6.2dvh,64px)}
+  .gm{max-width:820px}
+}
+
+/* ---------- LANDSCAPE: prompt/answers left, calculator right ---------- */
+@media (orientation:landscape) and (min-width:700px){
+  .gm{grid-template-columns:minmax(230px,.62fr) minmax(0,1.38fr);align-items:start;gap:calc(var(--gap)*2)}
+  .gm>.rt{position:sticky;top:8px;align-self:start}
+  .gm>.lt{min-width:0}
+  .top .stats{flex:0 1 auto;width:auto;margin-left:auto;order:6}
+  .top-sv{margin-left:0;order:7}
+  .mn{order:8}
+  .top .stats .sk{flex:0 0 auto;min-width:78px}
+}
+
+/* ---------- LANDSCAPE PHONES (short): everything fits, calculator scrolls ---------- */
+@media (orientation:landscape) and (max-height:520px){
+  :root{--kh:clamp(32px,10.5dvh,42px);--pad:clamp(8px,2vw,16px)}
+  main{padding-top:6px;padding-bottom:6px}
+  .top{flex-wrap:nowrap;gap:8px;margin-bottom:6px}
+  .top h1{font-size:18px;letter-spacing:.06em}
+  .dot{width:18px;height:18px;border-width:4px}
+  .nav{padding:2px}.nav button{padding:7px 12px;font-size:11px}
+  .top .stats{margin-left:auto;gap:6px;flex:0 0 auto}
+  .top .stats .sk{min-width:0;padding:2px 9px}
+  .top .stats .sk .k{font-size:8px}.top .stats .sk .v{font-size:15px}
+  .top .stats .pm{display:none}
+  .top-sv{padding:7px 12px;font-size:12px}.mn summary{width:32px;height:32px}
+  .gm{grid-template-columns:minmax(210px,.55fr) minmax(0,1.45fr);gap:10px}
+  .gm>.rt{top:0;max-height:calc(100dvh - 64px);overflow-y:auto;padding:10px 14px}
+  .gm>.lt{max-height:calc(100dvh - 64px);overflow-y:auto;overscroll-behavior:contain;padding:8px}
+  .name{font-size:18px;margin-bottom:2px}
+  .msg{font-size:13px}.sub{font-size:13px;margin-bottom:6px}
+  .disp{min-height:78px;position:sticky;top:0;z-index:3;padding:4px 12px 6px}
+  .ex{font-size:1.1rem;min-height:2.6em;padding-top:.3em}
+  .tray{margin:4px 0;padding:4px 8px}
+  .tl,.lv button{font-size:11px}
+  .sy{height:30px;min-width:36px;font-size:1rem}
+  .btn{padding:9px 14px;font-size:13px}
+  .ck{font-size:.72rem;border-radius:9px}.ck.n{font-size:1rem}
+  .ks{font-size:.55rem}
+  input.tx{padding:6px 10px;font-size:14px}
+  .row{margin-top:5px}
+  .hub .rt .name{font-size:22px}
+  .cat{padding:12px 14px}
+  .splash,#splash .sw{font-size:34px}
+}
+
+/* very narrow portrait phones */
+@media (max-width:380px){
+  .top .stats .pm{display:none}
+  .ck.f{font-size:.66rem}
+  .ks{display:none}
+}
+
+/* ================= v14 LAPTOP LANDSCAPE (>=900px wide, >=521px tall) =================
+   Keypad becomes two panels side by side: scientific keys (left) + number pad (right).
+   No keys removed. Greek letters are always shown here instead of tucked in a dropdown. */
+@media (orientation:landscape) and (min-width:900px) and (min-height:521px){
+  :root{--kh:clamp(28px,4.9dvh,50px);--gap:clamp(3px,.45vw,7px);--pad:clamp(12px,1.6vw,24px)}
+  .app{max-width:min(1600px,100%)}
+  main{padding-top:8px;padding-bottom:8px}
+  .top{margin-bottom:8px}
+  .top h1{font-size:24px}
+  .gm{grid-template-columns:minmax(220px,.42fr) minmax(0,1.58fr);gap:calc(var(--gap)*3)}
+  .gm>.rt{top:6px}
+  .lt{padding:12px 14px}
+  .ck{font-size:clamp(.7rem,.95vw,.9rem);border-radius:10px}
+  .ck.n{font-size:clamp(1rem,1.5vw,1.3rem)}
+  .ck.g{font-size:clamp(.95rem,1.3vw,1.15rem)}
+  .ks{min-height:0;font-size:0;padding:0}
+  .kp{margin-top:0}
+  .disp{min-height:clamp(64px,10.5dvh,130px);padding:4px 16px 6px}
+  .top{gap:6px 10px}
+  .top-sv{padding:7px 14px}
+  .top .stats{flex:0 1 auto;width:auto;margin-left:auto}
+  .top .stats .sk{min-width:70px;padding:2px 10px}
+  .top .stats .sk .v{font-size:20px}
+  .nav button{padding:8px 14px;font-size:12px}
+  .gm{margin-top:0}
+  .lt .gk{margin:0}
+  .dev{padding:0}
+  details.greek{margin-top:var(--gap)}
+  .tray{padding:4px 12px}
+  .tray .pool{margin-top:0}
+  .ex{font-size:clamp(1.1rem,1.9vw,1.6rem);min-height:2.8em}
+  .sy{height:clamp(28px,4.4dvh,36px)}
+
+  /* two-panel keypad */
+  .dev{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);column-gap:clamp(12px,1.8vw,24px);row-gap:var(--gap);align-items:stretch}
+  .dev>:nth-child(-n+3){grid-column:1/-1}                    /* screen, symbols tray, Check/Hint row */
+  .dev>:nth-child(n+4):nth-child(-n+8){grid-column:1}        /* sci rows + Greek */
+  .dev>:nth-child(9){grid-column:2;grid-row:4/9;grid-template-rows:repeat(4,1fr);align-content:stretch;
+    padding-left:clamp(10px,1.4vw,18px);border-left:2px dashed var(--line)}
+  .dev>:nth-child(9) .kc{height:100%}
+  .dev>:nth-child(9) .ck{height:100%;min-height:var(--kh);flex:1}
+  .dev>:nth-child(9) .ck.n{font-size:clamp(1.1rem,1.8vw,1.5rem)}
+  .dev>:nth-child(9) .ck.d,.dev>:nth-child(9) .ck.r{font-size:clamp(.8rem,1.1vw,1rem)}
+  details.greek{display:block}
+  details.greek>summary{display:none}
+  details.greek>.kp{margin-top:var(--gap)}
+  details.greek>.kp:first-of-type{margin-top:0}
+  .dev>.kp.s5:nth-child(3){margin:0}
+  .dev>.kp.s5:nth-child(3) .ck{height:clamp(30px,4.6dvh,42px)}
+
+  /* tray: level + typing side by side, symbol pool underneath */
+  .tray{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:4px 14px;align-items:center;margin:0;padding:6px 12px}
+  .tray .tl{grid-column:1;margin:0}
+  .tray .typ{grid-column:2;grid-row:1;margin:0}
+  .tray .pool{grid-column:1/-1;margin-top:2px}
+  .typ input.tx{padding:6px 10px}.typ .btn{padding:7px 14px}
+}
+
+/* ---- v15: bigger prompt card + bigger keys + one-row header on laptops ---- */
+@media (orientation:landscape) and (min-width:900px) and (min-height:521px){
+  :root{--kh:clamp(32px,5.5dvh,64px)}
+  .gm{grid-template-columns:minmax(280px,.62fr) minmax(0,1.38fr)}
+  .gm>.rt{padding:clamp(18px,2.4vw,34px) clamp(18px,2.2vw,30px);border-radius:28px}
+  .gm>.rt .name{font-size:clamp(30px,3.1vw,54px);line-height:1.12;letter-spacing:.04em;margin-bottom:12px}
+  .gm>.rt .pips{font-size:clamp(14px,1.3vw,20px);display:block;margin:12px 0 0}
+  .gm>.rt .msg{font-size:clamp(14px,1.2vw,18px)}
+  .gm>.rt .sub{font-size:clamp(14px,1.1vw,17px)}
+  .gm>.rt .btn{font-size:clamp(13px,1.1vw,16px);padding:12px 20px}
+  .ck{font-size:clamp(.8rem,1.1vw,1.05rem)}
+  .ck.n{font-size:clamp(1.15rem,1.9vw,1.7rem)}
+  .ck.g{font-size:clamp(1.05rem,1.5vw,1.35rem)}
+  .ex{font-size:clamp(1.3rem,2.3vw,2.2rem)}
+  .sy{height:clamp(30px,4.8dvh,42px);font-size:clamp(1rem,1.3vw,1.3rem);min-width:clamp(40px,3.4vw,52px)}
+}
+@media (orientation:landscape) and (min-width:1200px) and (min-height:521px){
+  .top{flex-wrap:nowrap;gap:8px}
+  .top h1{font-size:clamp(18px,1.6vw,30px)}
+  .nav{order:5;flex:0 0 auto;overflow:visible}
+  .nav button{padding:8px clamp(7px,.9vw,16px);font-size:clamp(10px,.85vw,12.5px);letter-spacing:.06em}
+  .top .stats .sk{min-width:62px;padding:2px 8px}
+  .top .stats .pm{padding:4px 8px;gap:4px}
+  .top .stats{order:6;flex:0 0 auto;margin-left:auto}
+  .top-sv{order:7;margin-left:0;white-space:nowrap}
+  .mn{order:8;margin-left:0}
+  .top .stats .pm{font-size:11px}
+}
+
+/* ---- v16: taller calculator screen + paper-notebook prompt card, same height as calculator ---- */
+@media (orientation:landscape) and (min-width:900px) and (min-height:521px){
+  :root{--kh:clamp(30px,5dvh,62px)}
+  .disp{min-height:clamp(84px,15dvh,230px)}
+  .ex{min-height:0;font-size:clamp(1.4rem,2.6vw,2.6rem)}
+  .gm:has(.dev){align-items:stretch}
+  .gm:has(.dev)>.rt{
+    position:relative;top:auto;align-self:stretch;display:flex;flex-direction:column;
+    color:#2b2a33;border-radius:6px 22px 22px 6px;border:1px solid #e3dcc6;
+    padding:clamp(18px,2.4vw,34px) clamp(16px,2vw,28px) 24px clamp(64px,5.4vw,92px);
+    background:
+      radial-gradient(circle at clamp(24px,2vw,34px) 14%,#d9d3bf 0 8px,transparent 9px),
+      radial-gradient(circle at clamp(24px,2vw,34px) 50%,#d9d3bf 0 8px,transparent 9px),
+      radial-gradient(circle at clamp(24px,2vw,34px) 86%,#d9d3bf 0 8px,transparent 9px),
+      linear-gradient(90deg,transparent clamp(50px,4.2vw,72px),rgba(226,84,84,.55) clamp(50px,4.2vw,72px) calc(clamp(50px,4.2vw,72px) + 2px),transparent calc(clamp(50px,4.2vw,72px) + 2px)),
+      repeating-linear-gradient(180deg,transparent 0 35px,rgba(96,150,196,.35) 35px 36px),
+      #fffcf1;
+    box-shadow:0 1px 0 #fff inset,0 2px 0 #e9e2cc,0 10px 24px rgba(60,50,20,.14)}
+  .gm:has(.dev)>.rt .name{text-shadow:none;margin-top:0}
+  .gm:has(.dev)>.rt .msg{margin-top:auto;padding-top:14px;font-size:clamp(15px,1.3vw,19px);line-height:36px}
+  .gm:has(.dev)>.rt .sub{line-height:36px}
+}
+
+/* ---- v17: smaller screen text + solid orange handwritten prompt card ---- */
+@media (orientation:landscape) and (min-width:900px) and (min-height:521px){
+  .ex{font-size:clamp(1.05rem,1.7vw,1.7rem)}
+  .gm:has(.dev)>.rt{
+    background:linear-gradient(180deg,#ff6a3d,var(--or,#fb4a1c));
+    border:0;border-radius:22px;color:#fff;
+    padding:clamp(18px,2.4vw,34px) clamp(18px,2.2vw,32px) 24px;
+    box-shadow:0 12px 28px rgba(251,74,28,.28)}
+  .gm:has(.dev)>.rt .name{font-family:"Caveat","Segoe Print","Bradley Hand","Comic Sans MS",cursive;font-weight:700;
+    text-transform:none;letter-spacing:.01em;color:#fff;font-size:clamp(38px,4vw,70px);line-height:1.05}
+  .gm:has(.dev)>.rt .pips{color:#fff;opacity:.9}
+  .gm:has(.dev)>.rt .msg,.gm:has(.dev)>.rt .sub{font-family:"Caveat","Segoe Print","Bradley Hand","Comic Sans MS",cursive;
+    color:#fff;font-size:clamp(20px,1.8vw,28px);line-height:1.2;font-weight:500}
+  .gm:has(.dev)>.rt .msg.ok,.gm:has(.dev)>.rt .msg.no{color:#fff}
+  .gm:has(.dev)>.rt .btn{background:#fff;color:var(--or,#fb4a1c);box-shadow:0 3px 0 rgba(0,0,0,.18)}
+  .gm:has(.dev)>.rt .btn.g{background:rgba(255,255,255,.2);color:#fff;box-shadow:none}
+  .gm:has(.dev)>.rt .sub,.gm:has(.dev)>.rt label,.gm:has(.dev)>.rt .row>span{color:#fff}
+  .gm:has(.dev)>.rt input.tx{background:#fff;color:#1d1d22}
+}
+/* big desktop monitors: let keys grow a little more */
+@media (orientation:landscape) and (min-width:1500px) and (min-height:800px){
+  :root{--kh:clamp(40px,5.6dvh,58px)}
+  .gm{grid-template-columns:minmax(300px,.45fr) minmax(0,1.55fr)}
+}
+
+/* keep the on-screen keypad from being hijacked by browser gestures */
+.ck,.sy,.btn,.nav button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+@media (prefers-reduced-motion:reduce){.cr{animation:none}}
+
+/* ===== v14 LAPTOP LAYOUT: matches the reference screenshots =====
+   Row 1: logo + page tabs, menu on the far right.
+   Row 2: Round / Score / Combo, Practice scope, Save.
+   Home: three equal category cards, then the Practice panel. */
+@media(min-width:900px){
+  .top{flex-wrap:wrap;row-gap:14px;column-gap:14px;margin-bottom:14px}
+  .dot{flex:none}
+  .top h1{font-size:34px}
+  .nav{order:5}
+  .mn{order:8;margin-left:auto}
+  .top::after{content:"";order:9;flex:0 0 100%;height:0}
+  .top .stats{order:10;flex:0 1 auto;width:auto;flex-wrap:nowrap;gap:12px;align-items:stretch;margin:0}
+  .top .stats .sk{flex:0 0 auto;min-width:86px;padding:6px 16px}
+  .top .stats .pm{padding:7px 16px}
+  .top-sv{order:11;margin-left:0}
+  .top:has(#stats[hidden])::after{display:none}
+  .top:has(#stats[hidden]) .top-sv{order:7;margin-left:auto}
+  .top:has(#stats[hidden]) .mn{order:8;margin-left:0}
+  .hub .rt .name{font-size:34px;margin-top:6px}
+  .hub .cats{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin:16px 0 20px;align-items:stretch}
+  .cat{padding:20px 20px 18px;gap:12px}
+  .cat.off{min-height:0}
+}
+@media(max-width:899px){.hub .cats{grid-template-columns:1fr}}
+
+/* ===== v15 MATCH IT: full width + landscape ===== */
+.gm:has(>.mtw){grid-template-columns:minmax(0,1fr);max-width:none;width:100%}
+.gm>.rt.mtw{position:static;max-width:none;width:100%;max-height:none;overflow:visible;padding:clamp(14px,2.2vw,30px)}
+.mtw .name{font-size:clamp(26px,3vw,40px);margin-bottom:10px}
+.mtw .tl{display:inline-flex;margin:0 clamp(18px,3vw,40px) 10px 0;vertical-align:top;align-items:center}
+.mtw .mtp{margin:12px 0 4px}
+.mtw .mtg{gap:12px clamp(16px,3vw,48px);margin-top:10px}
+.mtw .mi{min-height:64px;padding:12px 16px}
+.mtw .tb{margin-top:14px}
+@media(orientation:landscape) and (max-height:520px){
+  .mtw .name{font-size:22px;margin-bottom:4px}
+  .mtw .mi{min-height:46px;padding:8px 12px}
+  .mtw .mtg{gap:8px 24px}
+}
+@media (max-width:820px),(pointer:coarse){.nav{backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(255,255,255,.96)}.toast{backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(29,29,31,.96)}}
+
+/* ---- sync status chip (replaces the Save-a-copy button) ---- */
+#sv.rr-chip{background:#fff;color:var(--mute);border:1px solid var(--line);box-shadow:var(--sh);padding:8px 14px;font:600 12px var(--ui);letter-spacing:.02em;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transform:none;white-space:nowrap;max-width:100%}
+#sv.rr-chip:hover{transform:none;box-shadow:var(--sh)}
+#sv .rr-dot{width:8px;height:8px;border-radius:50%;background:#b8b8bd;flex:none}
+#sv[data-st=ok] .rr-dot{background:var(--ok);box-shadow:0 0 8px rgba(31,157,107,.6)}
+#sv[data-st=warn] .rr-dot{background:#e0a100;box-shadow:0 0 8px rgba(224,161,0,.6)}
+#sv[data-st=err] .rr-dot{background:var(--bad);box-shadow:0 0 8px rgba(214,69,69,.6)}
+#sv[data-st=err]{color:var(--bad)}
+@media(max-width:380px){#sv .rr-path{display:none}}
+
+/* ===== Batch 2: PORTRAIT PHONES (and the phone keyboard button) ===================================
+   Everything below the media query only applies to narrow portrait screens, so landscape and
+   laptop layouts above are untouched.
+   - Header: logo / title / sync chip / menu on row 1, tabs on row 2, score pills on row 3.
+   - Play screen: the prompt card, calculator display and keypad share one screen height (100dvh),
+     with no page scrolling. If a screen is too short, or the phone keyboard is open, it falls back
+     to scrolling instead of clipping anything. */
+#kbt{display:none}
+html.rr-touch #kbt{display:inline-flex}
+html.rr-touch .disp .st>span:last-child{display:none}           /* "tap to type" is replaced by the keyboard button */
+#kbt{position:absolute;top:4px;right:6px;z-index:4;align-items:center;justify-content:center;min-width:40px;height:24px;padding:0 10px;
+  border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--mute);font:600 16px/1 var(--ui);cursor:pointer;
+  box-shadow:0 2px 0 #c9c9ce;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+#kbt.on{background:var(--or);border-color:var(--or);color:#fff;box-shadow:0 2px 0 #c43510}
+#kbt.need:not(.on){border-color:var(--or);color:var(--or);animation:kbn 1.4s ease-in-out infinite}
+@keyframes kbn{50%{box-shadow:0 0 0 4px rgba(251,74,28,.25)}}
+@media (prefers-reduced-motion:reduce){#kbt.need:not(.on){animation:none;box-shadow:0 0 0 3px rgba(251,74,28,.25)}}
+
+@media (orientation:portrait) and (max-width:700px){
+  main{padding:6px 10px 6px}
+
+  /* ---------- header ---------- */
+  .top{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;
+    grid-template-areas:"dot ttl sv mn" "nav nav nav nav" "st st st st";
+    align-items:center;gap:4px 8px;margin:0 0 6px;padding:0}
+  .top:has(#stats[hidden]){grid-template-areas:"dot ttl sv mn" "nav nav nav nav"}
+  .top>.dot{grid-area:dot;width:20px;height:20px;border-width:4px;box-shadow:0 0 0 3px rgba(251,74,28,.10)}
+  .top>h1{grid-area:ttl;font-size:18px;letter-spacing:.05em;margin:0;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .top>#sv{grid-area:sv;margin:0;padding:5px 10px;font-size:11px;gap:6px;min-width:0;max-width:100%;justify-self:end;overflow:hidden}
+  #sv #svt{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  #sv .rr-path{display:none}
+  .top>.mn{grid-area:mn;margin:0}
+  .mn summary{width:32px;height:32px;font-size:17px}
+  .top>.nav{grid-area:nav;margin:0;padding:2px;gap:2px;justify-self:stretch;max-width:100%;overflow-x:auto;border-radius:999px;justify-content:space-between}
+  .nav button{font-size:10.5px;letter-spacing:.05em;padding:7px 9px;flex:1 1 auto;text-align:center}
+  .nav button.on::before{display:none}
+  @media (max-width:380px){.nav button{font-size:10px;padding:7px 6px;letter-spacing:.02em}.top>h1{font-size:16px}}
+  .top>.stats{grid-area:st;width:100%;display:flex;gap:6px;align-items:stretch;margin:0;flex-wrap:nowrap}
+  .top .stats .sk{flex:0 0 auto;min-width:0;display:flex;align-items:baseline;gap:6px;padding:3px 10px;border-radius:12px;box-shadow:none}
+  .top .stats .sk .k{font-size:8.5px;letter-spacing:.12em}
+  .top .stats .sk .v{font-size:16px;line-height:1.1}
+  .top .stats .pm{display:flex;flex:1 1 auto;min-width:0;padding:3px 4px;border-radius:12px;font-size:0;gap:0;box-shadow:none}
+  .top .stats .pm .pkw{display:block;flex:1 1 auto;min-width:0;font-size:12px}
+  .top .stats .pm .pkb{width:100%;max-width:100%;justify-content:space-between;padding:3px 9px;font-size:12px;border:0;background:transparent}
+
+  /* ---------- play screen: prompt card + display + keypad on one screen ---------- */
+  body:has(#pg-play:not([hidden]) .gm>.lt>.dev) .app{height:100vh;height:100dvh;min-height:0;display:flex;flex-direction:column}
+  body:has(#pg-play:not([hidden]) .gm>.lt>.dev) main{flex:1 1 auto;display:flex;flex-direction:column}
+  body:has(#pg-play:not([hidden]) .gm>.lt>.dev) .top{flex:none}
+  #pg-play:not([hidden]):has(.gm>.lt>.dev){flex:1 1 auto;display:flex;flex-direction:column}
+  #pg-play:has(.gm>.lt>.dev)>#card{flex:1 1 auto;display:flex;flex-direction:column}
+  #pg-play:has(.gm>.lt>.dev) .gm{flex:1 1 auto;display:flex;flex-direction:column;align-items:stretch;gap:4px;max-width:none;margin:0}
+
+  .gm>.rt:has(~.lt>.dev){flex:none;padding:5px 12px 4px;border-radius:16px;min-height:0}
+  .gm>.rt:has(~.lt>.dev) .name{font-size:clamp(17px,5.4vw,22px);line-height:1.1;margin:0;letter-spacing:.03em}
+  .gm>.rt:has(~.lt>.dev) .pips{font-size:11px;margin-left:8px;letter-spacing:.14em}
+  .gm>.rt:has(~.lt>.dev) .rtag{margin:0 0 2px;font-size:10px}
+  .gm>.rt:has(~.lt>.dev) .msg{min-height:1.25em;margin:2px 0 0;font-size:12.5px;line-height:1.25}
+  .gm>.rt:has(~.lt>.dev) .sub{margin:0 0 6px;font-size:12px}
+  .gm>.rt:has(~.lt>.dev) .row{margin-top:6px;gap:8px;grid-template-columns:clamp(40px,12vw,56px) 1fr}
+  .gm>.rt:has(~.lt>.dev) .row span{font-size:1rem}
+  .gm>.rt:has(~.lt>.dev) input.tx{padding:7px 10px;font-size:15px}
+  .gm>.rt:has(~.lt>.dev) .btn{margin:8px 8px 0 0;padding:10px 16px}
+  .gm>.rt:has(~.lt>.dev) .chips{margin:6px 0 0;gap:6px;display:flex;flex-wrap:wrap}
+  .gm>.rt:has(~.lt>.dev) .chips .btn{margin:0;padding:7px 12px}
+
+  .gm>.lt:has(>.dev){flex:1 1 auto;display:flex;flex-direction:column;padding:5px;border-radius:18px}
+  .lt>.dev{flex:1 1 auto;display:flex;flex-direction:column;gap:4px;padding:0;min-height:0}
+
+  .dev>.disp{flex:0 0 auto;min-height:clamp(84px,11.5dvh,124px);padding:2px 10px 6px;border-radius:14px;display:flex;flex-direction:column}
+  .dev>.disp .st{flex:none;font-size:.6rem;min-height:18px}
+  html.rr-touch .dev>.disp .st{min-height:26px}
+  .dev>.disp .ex{flex:1 1 auto;font-size:clamp(1.05rem,5vw,1.35rem);min-height:0;padding-top:.15em;line-height:1.5;display:block}
+
+  .dev>.tray{flex:none;margin:0;padding:4px 8px;border-radius:14px;display:flex;flex-direction:column;gap:4px}
+  .tray .tl{margin:0;flex-wrap:nowrap;gap:6px}
+  .tray .tl>span{flex:none}
+  .tray .lv{margin:0;flex:1 1 auto;display:flex;padding:2px}
+  .tray .lv button{flex:1 1 0;font-size:11px;padding:4px 4px;white-space:nowrap}
+  .tray .lv button small{font-size:10px}
+  .tray .pool{margin:0;gap:5px}
+  .tray .sy{height:27px;min-width:36px;padding:0 9px;font-size:.92rem;border-radius:9px}
+  .tray .typ{margin:0;gap:6px}
+  .tray .typ input.tx{height:30px;padding:0 10px;font-size:14px;min-width:0}
+  .tray .typ .btn{margin:0;height:30px;padding:0 16px;font-size:12px}
+
+  .dev>.kp{flex:1 1 0;min-height:30px;margin:0;grid-auto-rows:1fr;gap:4px 5px}
+  .dev>.kp:last-child{flex:4.4 1 0;min-height:128px}
+  .dev>.kp.s5:nth-child(3){flex:none;height:34px;min-height:0}
+  .kp .kc{min-height:0;height:100%}
+  .kp .ks{display:none}
+  .kp .ck{flex:1 1 auto;height:100%;min-height:0;border-radius:10px;font-size:.78rem}
+  .kp .ck.n{font-size:1.1rem}
+  .kp .ck.f{font-size:.78rem}
+  .kp .ck.g{font-size:1rem}
+  .dev>.kp.s5:nth-child(3) .ck{font-size:.74rem}
+
+  /* Greek letters: swap in for the function keys (same height, no growing, no scrolling) */
+  .dev>details.greek{flex:none;margin:0}
+  .dev>details.greek>summary{display:flex;justify-content:center;width:100%;box-sizing:border-box;height:28px;padding:0 12px;font-size:12px;border-radius:10px}
+  .dev>details.greek[open]{flex:3.2 1 0;min-height:112px;display:flex;flex-direction:column;gap:4px}
+  .dev>details.greek[open]::details-content{display:contents}
+  .dev>details.greek[open]>summary{flex:none}
+  .dev>details.greek[open]>.kp{flex:1 1 0;min-height:30px;margin:0}
+  .dev:has(>details.greek[open])>:nth-child(n+4):nth-child(-n+7){display:none}
+
+  /* units / answer step (and the revealed-answer step): the keypad isn't used, so give the room to the form */
+  .gm:has(.rt [data-a=ck2],.rt [data-a=nx])>.lt{flex:0 0 auto}
+  .gm:has(.rt [data-a=ck2],.rt [data-a=nx]) .dev>:nth-child(n+4),
+  .gm:has(.rt [data-a=ck2],.rt [data-a=nx]) .dev>.tray{display:none}
+  .gm:has(.rt [data-a=ck2],.rt [data-a=nx]) .dev>.disp{flex:0 0 auto}
+}
+</style></head>
+<body><div id="splash" aria-hidden="true"><span class="sd"></span><span class="sw">RECALL RUSH</span><div class="sb"><i></i></div></div><script>setTimeout(function(){var e=document.getElementById("splash");if(e)e.remove()},2100)</script><div class="app">
+<main>
+<div class="top"><span class="dot"></span><h1>RECALL RUSH</h1><nav class="nav" aria-label="Pages"><button data-go="play">Play</button><button data-go="bank">Formula bank</button><button data-go="review">Review</button><button data-go="list">List</button><button data-go="progress">Progress</button></nav><button class="svb top-sv rr-chip" id="sv" type="button" data-st="idle" title=""><span class="rr-dot"></span><span id="svt">Starting</span><span id="svp" class="rr-path"></span></button><details class="mn"><summary aria-label="Menu">⋯</summary><div class="mnb">
+<button class="svb" id="snd" aria-label="Sound on or off" title="Sound on/off">🔊</button><button class="svb" id="hlp" title="Show or hide the explanations">? Help text</button></div></details><div class="stats" id="stats"><div class="sk"><div class="k">Round</div><div class="v"><b id="rd">1</b>/<b id="tot"></b></div></div><div class="sk hot"><div class="k">Score</div><div class="v" id="sc">0</div></div><div class="sk"><div class="k">Combo</div><div class="v" id="stk">0</div></div><label class="pm">Practice scope <select id="ts"></select></label></div></div>
+<section id="pg-play" class="pl"><div class="hud" id="hud"></div><div id="card"></div></section>
+<section class="bk" id="pg-bank" hidden="">
+<h2>Formula bank</h2>
+<div id="pg-folders"><div id="fd"></div><div class="rep" id="frep" role="status"></div></div>
+<div id="tbar"></div>
+<details class="fhelp"><summary>How to write formulas</summary>
+<p>Paste everything in one go. One formula per line, parts separated by <code>;</code> (or a tab):</p>
+<pre>name ; formula ; accepted units ; unit shown ; symbol units</pre>
+<p>Formula: use <code>{top|bottom}</code> for fractions, <code>√{…}</code> for roots, <code>²</code> <code>³</code> for powers, <code>×</code> for multiply.</p>
+<p>Symbol units: <code>σ@Pa,MPa|F@N|A@m²</code>. Each symbol, then <code>@</code>, then the units accepted for it (the first is shown as the answer). Symbols are separated by <code>|</code>. Leave a symbol out and its unit isn’t asked. Everything after the formula is optional. You can also paste lines in the built-in array style <code>["name","formula","units","shown","symbol units"],</code>.</p>
+<details><summary>Show example</summary><pre>Normal stress ; σ = {F|A} ; pa,n/m2,mpa ; Pa (N/m²) ; σ@Pa,MPa|F@N|A@m²
+Kinetic energy ; KE = {1|2} × m × v² ; j,joule ; J (joule) ; KE@J|m@kg|v@m/s</pre></details>
+</details>
+<textarea id="bt" spellcheck="false" placeholder="Paste your formulas here…"></textarea>
+<div><button class="btn" data-b="save">Save to topic</button><button class="btn g" data-b="add">Add to topic</button><button class="btn g" data-b="clear">Clear topic</button></div>
+<div class="rep" id="brep" role="status"></div>
+<p id="bcnt"></p>
+<div class="go"><button class="btn g" data-go="review">Review cards →</button><button class="btn g" data-go="play">Play →</button></div>
+</section>
+<section class="bk" id="pg-progress" hidden="">
+<h2>Progress</h2>
+<div id="pr"></div>
+</section>
+<section class="bk" id="pg-review" hidden="">
+<h2>Review</h2>
+<p>Flashcards for your formulas. Tap a card to flip it.</p>
+<div class="rvc"><label>Topic <select id="rs"></select></label><label>Find <input id="rk" class="tx" style="width:150px;padding:5px 10px" placeholder="formula name" autocomplete="off"></label><label style="cursor:pointer"><input type="checkbox" id="rq"> Quiz me (hide the formula)</label><label>Print <select id="pdm"><option value="s">Formula shown</option><option value="q">Quiz: card back, then face</option></select></label><button class="btn" id="prb" style="margin:0" title="Opens the print dialog">🖨 Print</button><button class="btn" id="pdfb" style="margin:0" title="Downloads a PDF file straight away">💾 Save PDF</button></div>
+<div id="rv"></div>
+</section>
+<section class="bk" id="pg-list" hidden="">
+<h2>Formula list</h2>
+<p>Every formula name, grouped by topic. Tap a name to open its flashcard in Review.</p>
+<div class="rvc"><label>Find <input id="lk" class="tx" style="width:170px;padding:5px 10px" placeholder="formula name" autocomplete="off"></label><label>Folder / topic <select id="lt"></select></label><button class="btn" id="lpr" style="margin:0" title="Opens the print dialog">🖨 Print list</button><button class="btn" id="lsv" style="margin:0" title="Download the list as a PDF">💾 Save as PDF</button><button class="btn g" id="lst" style="margin:0">Save as .txt</button><button class="btn g" id="lcp" style="margin:0">Copy as text</button></div>
+<div id="ll"></div>
+</section>
+</main></div>
+<div id="pz" class="pzs"></div>
+<div id="toasts" aria-live="polite"></div>
+<textarea id="ff-data" hidden="" readonly="" tabindex="-1" aria-hidden="true"></textarea>
+<script type="text/plain" id="rr-main">
+let SRC="<!DOCTYPE html>\n"+document.documentElement.outerHTML;
+const D=[];
+const $=s=>document.querySelector(s),card=$("#card");
+const shuf=a=>{a=a.slice();for(let k=a.length-1;k>0;k--){const j=Math.random()*(k+1)|0;[a[k],a[j]]=[a[j],a[k]]}return a};
+const norm=s=>s.toLowerCase().replace(/[\s·*.]/g,"").replace(/−/g,"-").replace(/\^/g,"").replace(/²/g,"2").replace(/³/g,"3").replace(/⁴/g,"4");
+const parse=str=>{const tk=str.match(/[{}|√]|[^\s{}|√]+/g);let p=0;const seq=()=>{const a=[];while(p<tk.length&&tk[p]!=="}"&&tk[p]!=="|"){const t=tk[p++];if(t==="{"){const n=seq();p++;const d=seq();p++;a.push({fr:[n,d]})}else if(t==="√"){p++;let r=seq();if(tk[p]==="|"){p++;const d=seq();r=[{fr:[r,d]}]}p++;a.push({rt:r})}else a.push(t)}return a};return seq()};
+const sym=x=>/[²³]$/.test(x)?[x.slice(0,-1),"^",x.endsWith("²")?"2":"3"]:[x];
+const toks=it=>it.flatMap(x=>typeof x==="string"?sym(x):x.fr?["{",...toks(x.fr[0]),"¦",...toks(x.fr[1]),"}"]:["√(",...toks(x.rt),")"]);
+const AL={n:["newton","newtons"],pa:["pascal","pascals"],j:["joule","joules"],w:["watt","watts"],v:["volt","volts"],m:["meter","metre","meters","metres"],mm:["millimeter","millimetre","millimeters","millimetres"],kg:["kilogram","kilograms"],s:["sec","second","seconds"],hz:["hertz"],a:["amp","amps","ampere","amperes"],"ω":["ohm","ohms"],f:["farad","farads"],h:["henry","henries"]};
+const spaceOut=(f,syms)=>{const S=[...new Set(syms.filter(Boolean))].sort((x,y)=>y.length-x.length),out=[];
+f=f.replace(/\*/g,"×").replace(/\//g,"÷").replace(/-/g,"−");
+const cover=ch=>{const r=[];let i=0;while(i<ch.length){const m=S.find(x=>ch.startsWith(x,i));if(!m)return null;r.push(m);i+=m.length}return r};
+f.split(/\s+/).filter(Boolean).forEach(ch=>{
+if(S.includes(ch)||/^[{}|√]$/.test(ch)){out.push(ch);return}
+if(/^\p{L}[\p{L}\d_]*$/u.test(ch)){out.push(...(cover(ch)||[ch]));return}
+let i=0;while(i<ch.length){const c=ch[i];
+if("{}|√".includes(c)){out.push(c);i++;continue}
+if(c==="²"||c==="³"){out.push("^",c==="²"?"2":"3");i++;continue}
+const m=S.find(x=>ch.startsWith(x,i));if(m){out.push(m);i+=m.length;continue}
+out.push(c);i++}});
+const o=[];for(let i=0;i<out.length;i++){o.push(out[i]);if(out[i]==="√"&&i+1<out.length&&out[i+1]!=="{"){let j=i+1;o.push("{");if(out[j]==="("){let d=0,k=j;for(;k<out.length;k++){if(out[k]==="(")d++;else if(out[k]===")"&&--d===0)break}o.push(...out.slice(j+1,k));j=k+1}else if(/^[\d.]$/.test(out[j])){while(j<out.length&&/^[\d.]$/.test(out[j]))o.push(out[j++])}else o.push(out[j++]);o.push("}");i=j-1}}
+return o.join(" ")};
+const mk=([n,s,u,ud,p],bank)=>{const pp=(p||"").split("|").filter(x=>x.includes("=")||x.includes("@")).map(x=>{const at=x.indexOf("@"),eq=x.indexOf("="),he=eq>=0&&(at<0||eq<at),sp=z=>z.split(",").map(y=>y.trim()).filter(Boolean),us=sp(at<0?"":x.slice(at+1));return{s:x.slice(0,he?eq:(at<0?x.length:at)).trim(),m:he?sp(x.slice(eq+1,at<0?undefined:at)):[],d:us[0]||"",u:us.flatMap(y=>{const q=norm(y);return[q,...(AL[q]||[])]}).filter(Boolean)}});
+const t=toks(parse(bank?spaceOut(s,pp.map(x=>x.s)):s));
+/* keep only the symbols that really appear in the formula, in the order they appear */
+const pk=bank?pp.filter(x=>t.includes(x.s)).sort((x,y)=>t.indexOf(x.s)-t.indexOf(y.s)):pp;
+return{n,bank,t,u:(u||"").split(",").map(norm).filter(Boolean),ud:ud||"",p:pk}};
+const BASE=D.map(x=>mk(x,false));BASE.forEach(b=>b.topic="Built-in");let F=BASE.slice();
+const isSym=t=>/^[^\d+−×÷^()=.!√{¦}]/.test(t)&&!t.endsWith("(");
+const ALLSY=[..."ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz","α","β","γ","δ","ε","η","θ","λ","μ","π","ρ","σ","τ","φ","ω","Δ","Θ","Σ","Φ","Ω"];
+const EXTRA="abgknqrxyzsuwLMTCEBGHSZΔθλμω".split("");
+/* expression checker: compares formulas by value, so any equivalent arrangement is accepted */
+const evx=(t0,env)=>{const tk=[];t0.forEach(t=>{const l=tk[tk.length-1];/^[\d.]$/.test(t)&&l&&/^[\d.]+$/.test(l)?tk[tk.length-1]=l+t:tk.push(t)});let p=0;
+const at=()=>{const t=tk[p++];if(t===undefined)return NaN;if(t==="(")return gr();if(t==="√(")return Math.sqrt(gr());if(t==="cbrt(")return Math.cbrt(gr());if(t.endsWith("(")){gr();return NaN}if(/^[\d.]+$/.test(t))return+t;if(t==="π")return Math.PI;if(t==="e")return Math.E;if(/^[+−×÷^)=!]$/.test(t))return NaN;return env[t]};
+const gr=()=>{const v=ex();if(tk[p]!==")")return NaN;p++;return v};
+const pw=()=>{const b=at();if(tk[p]==="^"){p++;return b**un()}return b};
+const un=()=>{if(tk[p]==="−"){p++;return-un()}if(tk[p]==="+"){p++;return un()}return pw()};
+const tm=()=>{let v=un();for(;;){const t=tk[p];if(t==="×"||t==="÷"){p++;const r=un();v=t==="×"?v*r:v/r}else if(t!==undefined&&!/^[+−)^=]$/.test(t))v*=un();else return v}};
+const ex=()=>{let v=tm();while(tk[p]==="+"||tk[p]==="−"){const o=tk[p++],r=tm();v=o==="+"?v+r:v-r}return v};
+const v=ex();return p<tk.length?NaN:v};
+const sides=t=>{const i=t.indexOf("=");return i<0||i!==t.lastIndexOf("=")?null:[t.slice(0,i),t.slice(i+1)]};
+const same=(a,b)=>{const A=sides(a),B=sides(b);if(!A||!B)return false;for(let n=0;n<4;n++){const env=new Proxy({},{get:(o,k)=>o[k]??(o[k]=.6+Math.random()*2)});const f=s=>evx(s[0],env)-evx(s[1],env),x=Math.abs(f(A)),y=Math.abs(f(B));if(!isFinite(x)||Math.abs(x-y)>1e-9*Math.max(1,y))return false}return true};
+/* calculator keys: id -> [normal tokens, shift tokens] */
+const ACT={"a/b":[["#frac"]],"√":[["√("],["cbrt("]],"xʸ":[["^"]],"x²":[["^","2"],["^","3"]],"log":[["log("]],"ln":[["ln("]],"(−)":[["−"]],"sin":[["sin("],["asin("]],"cos":[["cos("],["acos("]],"tan":[["tan("],["atan("]],"Abs":[["abs("]],"(":[["("]],")":[[")"]],"DEL":[["#del"]],"CA":[["#ac"]],"×":[["×"]],"÷":[["÷"]],"+":[["+"]],"−":[["−"]],".":[["."]],"EXP":[["×","1","0","^"],["π"]],"=":[["="]],"x⁻¹":[["^","(","−","1",")"],["!"]],"CALC":[["#chk"]],"ON":[["#ac"]],"LT":[["#lt"]],"RT":[["#rt"]],"UP":[["#up"]],"DN":[["#dn"]]};
+"0123456789".split("").forEach(d=>ACT[d]=[[d]]);ACT["9"]=[["9"],["#ac"]];
+ACT["9"]=[["9"]];
+Object.assign(ACT,{"x³":[["^","3"]],"∛":[["cbrt("]],"asin":[["asin("]],"acos":[["acos("]],"atan":[["atan("]],"e":[["e"]],"π":[["π"]],"!":[["!"]],"x⁻¹":[["^","(","−","1",")"]],"EXP":[["×","1","0","^"]],"x²":[["^","2"]],"√":[["√("]]});
+[..."αβγδεηθλμρστφωΔΘΣΦΩΛΠ"].forEach(c=>ACT[c]=[[c]]);
+let deck,i,score=0,streak=0,cur,stage,ed,pool,mode={level:"medium"},rvl=new Set(),deckN=0,run=null,lvPrev=null;const LV={easy:["Easy",1,"Only this formula’s symbols, and unit choices to pick from"],medium:["Medium",2,"Symbols mixed with decoys, units typed"],hard:["Hard",3,"Type every parameter yourself, no symbol buttons"]};const mult=()=>LV[mode.level][1];
+const stats=()=>{$("#rd").textContent=Math.min(i+1,deck.length);$("#tot").textContent=deck.length;$("#sc").textContent=score;$("#stk").textContent=streak;hud()};
+const note=(t,c)=>{const m=$("#msg");if(m){m.textContent=t;m.className="msg "+(c||"")}};
+/* ---- progress, goals and rewards ---- */
+const PK="ff_progress_v1",MAST=3,CATS=["ESAS","MATH","EE"];
+const RANKS=[[0,"Rookie","🌱"],[100,"Apprentice","🔧"],[300,"Calculator","🧮"],[650,"Engineer","⚙️"],[1100,"Physicist","⚛️"],[1800,"Wizard","🧙"],[2800,"Formula Master","👑"]];
+const P0=()=>({xp:0,m:{},b:{},bd:{},dl:{d:"",n:0,g:5,ok:0},bx:{},cs:{ESAS:{n:0,last:0,best:0,fz:0},MATH:{n:0,last:0,best:0,fz:0},EE:{n:0,last:0,best:0,fz:0}},hist:{ESAS:{},MATH:{},EE:{}},boss:{ESAS:{},MATH:{},EE:{}},bh:{ESAS:[],MATH:[],EE:[]},t:{solved:0,perfect:0,combo:0,hard:0,days:0,rounds:0,stars3:0,pure:0,boss:0}});
+let P=P0(),rm=0,RS={done:0,clean:0,combo:0,xp0:0,bd:[]};
+const dk=()=>{const d=new Date();return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()};
+const dly=()=>{if(!P.dl||P.dl.d!==dk())P.dl={d:dk(),n:0,g:(P.dl&&P.dl.g)||5,ok:0};return P.dl};
+/* ---- categories, spaced boxes, daily run, weekly boss ---- */
+const has=(o,k)=>Object.prototype.hasOwnProperty.call(o,k);
+const INT=[1,3,7,14,30],NEWCAP=5,QCAP=30,MINQ=5,PASS=.8;
+const dayN=()=>{const d=new Date();return Math.floor(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/864e5)};
+const weekN=()=>Math.floor((dayN()+3)/7);
+const dlab=d=>new Date(d*864e5).toISOString().slice(5,10);
+const bxOf=n=>has(P.bx,n)?P.bx[n]:null;
+const cdOf=f=>{const e=bxOf(f.n);return e?e.cd:0};
+const MC={},mclear=()=>{for(const k in MC)MC[k].clear()},memo=(k,fn)=>a=>{const m=MC[k]||(MC[k]=new Map());if(m.has(a))return m.get(a);const v=fn(a);m.set(a,v);return v};
+const catOfT=memo("co",tn=>{const t=TP.find(x=>x.n===tn);return t&&t.f?fcat(t.f):""});
+const catOf=f=>catOfT(f.topic);
+const catSize=memo("cs",c=>F.filter(f=>catOf(f)===c));
+const scope=()=>{const pl=mode.topic?F.filter(f=>inSel(f,mode.topic)):F;return pl.length?pl:F};
+const dRec=c=>{const t=dayN(),h=P.hist[c];if(!h[t])h[t]={n:0,ok:0,done:0,pass:0,ans:{}};if(!h[t].ans)h[t].ans={};return h[t]};
+const bRec=c=>{const w=weekN();let b=P.boss[c];if(!b||b.wk!==w)b=P.boss[c]={wk:w,ans:{},done:0,pass:0,sc:0};return b};
+const touchCats=()=>CATS.forEach(c=>{if(!catSize(c).length&&P.cs[c].n&&P.cs[c].last<dayN()-1)P.cs[c].last=dayN()-1});
+const catStreak=c=>{const s=P.cs[c],t=dayN();if(!s.n)return 0;if(s.last>=t-1)return s.n;if(s.last===t-2&&s.fz!==weekN())return s.n;return 0};
+const bestAll=()=>Math.max(0,...CATS.map(c=>P.cs[c].best||0));
+const queueFor=c=>{const t=dayN(),R=dRec(c),all=F.filter(f=>catOf(f)===c),ex=new Set();
+if(!all.length)return{q:[],ex,size:0};
+const left=all.filter(f=>!has(R.ans,f.n));
+const rev=left.filter(f=>{const e=bxOf(f.n);return e&&e.due<=t}).sort((a,b)=>bxOf(a.n).b-bxOf(b.n).b||bxOf(a.n).due-bxOf(b.n).due);
+const seen=all.filter(f=>{const e=bxOf(f.n);return e&&e.fd===t}).length;
+const news=left.filter(f=>!bxOf(f.n)).slice(0,Math.max(0,NEWCAP-seen));
+const q=rev.concat(news).slice(0,QCAP);
+const need=Math.min(MINQ,all.length)-(Object.keys(R.ans).length+q.length);
+if(need>0)left.filter(f=>bxOf(f.n)&&!q.includes(f)).sort((a,b)=>bxOf(a.n).due-bxOf(b.n).due).slice(0,need).forEach(f=>{q.push(f);ex.add(f.n)});
+return{q,ex,size:all.length}};
+const streakUp=c=>{const s=P.cs[c],t=dayN();if(s.last===t)return;const gap=t-s.last-1;
+if(s.last&&gap===0)s.n++;
+else if(s.last&&gap===1&&s.fz!==weekN()){s.fz=weekN();s.n++;toast("🧊 Streak freeze used for "+c,"gold")}
+else s.n=1;
+s.last=t;s.best=Math.max(s.best,s.n)};
+const boxUpdate=(f,clean,extra)=>{const t=dayN();let e=bxOf(f.n);
+if(!e){if(clean&&extra)return;e=P.bx[f.n]={b:1,due:0,cd:0,ld:-1,fd:t}}
+if(e.ld===t)return;
+if(clean){if(extra)return;e.cd++;e.b=Math.min(5,e.b+1)}else{e.cd=0;e.b=1}
+e.due=t+INT[e.b-1];e.ld=t};
+const grade=(f,clean)=>{if(!run||run.type==="practice")return;const R=run.rec;if(has(R.ans,f.n))return;R.ans[f.n]=clean?1:0;boxUpdate(f,clean,run.ex&&run.ex.has(f.n));saveP()};
+const evalDaily=c=>{const R=dRec(c);if(R.done)return;const ks=Object.keys(R.ans),n=ks.length,ok=ks.filter(k=>R.ans[k]).length;R.n=n;R.ok=ok;R.done=1;
+const pass=n>0&&ok/n>=PASS;R.pass=pass?1:0;
+if(pass){streakUp(c);P.t.days++;if(ok===n)P.t.pure++;const s=P.cs[c].n,b=40+8*Math.min(s,10);addXp(b);toast("🔥 "+c+" daily cleared · "+s+"-day streak · +"+b+" XP","gold");sfx.big();boom(100)}
+else{toast("📝 "+c+" daily recorded at "+(n?Math.round(ok/n*100):0)+"% (needs 80%)");sfx.bad()}
+chkBadges();saveP()};
+const bossEval=c=>{const B=bRec(c);if(B.done)return;const ks=Object.keys(B.ans),n=ks.length,ok=ks.filter(k=>B.ans[k]).length,pct=n?Math.round(ok/n*100):0,pass=n>0&&ok/n>=PASS;
+B.done=1;B.sc=pct;if(pass)B.pass=1;
+P.bh[c].push({d:dayN(),sc:pct,n,ok,pass:pass?1:0,miss:ks.filter(k=>!B.ans[k]).slice(0,30)});P.bh[c]=P.bh[c].slice(-20);
+if(pass){P.t.boss++;addXp(150);toast("🐉 "+c+" boss defeated · "+pct+"% · +150 XP","gold");sfx.big();boom(160)}
+else{toast("🐉 "+c+" boss survived this time ("+pct+"%). Retry any time this week.");sfx.bad()}
+chkBadges();saveP()};
+const runTag=()=>run&&run.type!=="practice"?`<p class="rtag">${run.cat} · ${run.type==="boss"?"🐉 WEEKLY BOSS":"DAILY RUN"} · ${Math.min(i+1,deck.length)}/${deck.length}</p>`:"";
+const catsum=()=>`<div class="fgrp" style="margin-top:0">${CATS.map(c=>{const fs=FL.filter(fo=>FC[fo]===c).length,n=catSize(c).length;return `<span class="fgn">${c}<em>${fs} folder${fs===1?"":"s"} · ${n} formula${n===1?"":"s"}</em></span>`}).join("")}</div><p class="fe">Choose a category inside each folder card. Only folders in ESAS, MATH or EE get streaks, daily queues and boss rounds.</p>`;
+const catPanels=()=>{touchCats();const t=dayN(),wk=weekN();return `<h3>Categories</h3><div class="cpan">${CATS.map(c=>{const L=catSize(c),n=L.length,s=P.cs[c],cs=catStreak(c),m=L.filter(isM).length,B=P.boss[c]&&P.boss[c].wk===wk?P.boss[c]:null;
+if(!n)return `<div class="cp"><div class="cth"><b>${c}</b></div><small>No formulas yet. Nothing counts here and your streak is safe.</small></div>`;
+const cal=Array.from({length:28},(_,k)=>{const d=t-27+k,h=P.hist[c][d],cl=h&&h.done?(h.pass?"p":"f"):"";return `<i class="cd ${cl}" title="${dlab(d)}${h&&h.done?" · "+h.ok+"/"+h.n:""}"></i>`}).join("");
+const bh=(P.bh[c]||[]).slice(-3).reverse().map(x=>`<small>${dlab(x.d)} · ${x.sc}% ${x.pass?"✅":"❌"}${x.miss&&x.miss.length?" · missed: "+x.miss.slice(0,5).map(esc).join(", ")+(x.miss.length>5?"…":""):""}</small>`).join("");
+const boxes=[1,2,3,4,5].map(b=>L.filter(f=>{const e=bxOf(f.n);return e&&e.b===b}).length),fresh=L.filter(f=>!bxOf(f.n)).length;
+return `<div class="cp"><div class="cth"><b>${c}</b><span class="cst">🔥 ${cs} · best ${s.best}</span><span class="fz">🧊 ${s.fz!==wk?"ready":"used"}</span></div><small>${n} formula${n===1?"":"s"} · ${m} mastered · ${fresh} not started</small><div class="bar m"><i style="width:${Math.round(m/n*100)}%"></i></div><div class="cal">${cal}</div><small>Last 28 days: green = streak day, orange = recorded under 80%</small><small>Boxes 1 to 5: ${boxes.join(" / ")}</small><small>Boss this week: ${B?(B.pass?"defeated "+B.sc+"%":B.done?"failed "+B.sc+"%":"in progress"):"not fought yet"}</small>${bh}</div>`}).join("")}</div>`};
+const rk=x=>{let i=0;RANKS.forEach((r,k)=>{if(x>=r[0])i=k});const c=RANKS[i],n=RANKS[i+1];return{i,n:c[1],e:c[2],next:n?n[0]:0,nn:n?n[1]:"",p:n?Math.round((x-c[0])/(n[0]-c[0])*100):100}};
+const isM=f=>cdOf(f)>=MAST,mastN=()=>F.filter(isM).length;
+const pipsOf=n=>n>=MAST?"⭐ mastered":"●".repeat(n)+"○".repeat(MAST-n);
+const saveP=()=>{P.ts=Date.now();try{localStorage.setItem(PK,JSON.stringify(P))}catch(e){}};
+const loadP=()=>{let a=null;try{a=JSON.parse(localStorage.getItem(PK)||"null")}catch(e){}const j=ffRead(),b=j&&j.p,pick=[a,b].filter(x=>x&&typeof x.xp==="number").sort((x,y)=>(y.ts||0)-(x.ts||0)||y.xp-x.xp)[0];P=Object.assign(P0(),pick||{});P.t=Object.assign(P0().t,P.t||{});const d0=P0();P.bx=P.bx||{};["cs","hist","boss"].forEach(k=>{P[k]=P[k]||{};CATS.forEach(c=>{P[k][c]=k==="cs"?Object.assign(d0.cs[c],P[k][c]||{}):(P[k][c]||{})})});P.bh=P.bh||{};CATS.forEach(c=>{P.bh[c]=P.bh[c]||[];Object.keys(P.hist[c]).forEach(d=>{if(+d<dayN())delete P.hist[c][d].ans})})};
+const toast=(t,k,ms)=>{const b=$("#toasts");if(!b)return;if(!k&&!/saved|downloaded|deleted|Couldn|need at least/i.test(t))return;const e=document.createElement("div");e.className="toast "+(k||"");e.textContent=t;b.appendChild(e);setTimeout(()=>e.remove(),ms||2400)};
+/* ---- game feel: sound, confetti, shake ---- */
+let SND=true;try{SND=localStorage.getItem("ff_snd")!=="0"}catch(e){}
+let AC;const tone=(f,d,ty,v,at)=>{if(!SND)return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();const o=AC.createOscillator(),g=AC.createGain(),s=AC.currentTime+(at||0);o.type=ty||"sine";o.frequency.value=f;g.gain.setValueAtTime(v||.06,s);g.gain.exponentialRampToValueAtTime(.0001,s+d);o.connect(g);g.connect(AC.destination);o.start(s);o.stop(s+d)}catch(e){}};
+const sfx={ok:()=>{tone(660,.12);tone(880,.18,"sine",.06,.1)},bad:()=>tone(150,.28,"sawtooth",.04),big:()=>[523,659,784,1047,1319].forEach((f,k)=>tone(f,.22,"triangle",.07,k*.09))};
+const boom=n=>{if(window.matchMedia&&matchMedia("(prefers-reduced-motion:reduce)").matches)return;const cs=["#fb4a1c","#e0a100","#1f9d6b","#2a2c31","#ff8a65","#6c63ff"];for(let k=0;k<n;k++){const e=document.createElement("i");e.className="cf";e.style.cssText="left:"+Math.random()*100+"vw;background:"+cs[k%cs.length]+";--dx:"+((Math.random()-.5)*240)+"px;--r:"+Math.random()*720+"deg;animation-duration:"+(1.4+Math.random()*1.6)+"s;animation-delay:"+Math.random()*.3+"s";document.body.appendChild(e);setTimeout(()=>e.remove(),3600)}};
+const shake=()=>{const d=card.querySelector(".disp");if(d){d.classList.remove("shake");void d.offsetWidth;d.classList.add("shake")}};
+const PRAISE=["Nailed it!","Locked in!","Brain 1, forgetting 0.","Clean recall!","Formula forged!","Big brain energy!","From memory. Respect."];
+const hud=()=>{const h=$("#hud");if(!h)return;const r=rk(P.xp),dkk=scope(),dm=dkk.filter(isM).length,mp=dkk.length?Math.round(dm/dkk.length*100):0;
+h.innerHTML=`<div class="hc"><span class="he">${r.e}</span><div class="hb"><div class="ht"><b>${r.n}</b><small>Level ${r.i+1}</small></div><div class="bar"><i style="width:${r.p}%"></i></div><small>${r.next?(r.next-P.xp)+" XP to "+r.nn:"Top rank reached!"}</small></div></div><div class="hc"><span class="he">🔥</span><div class="hb"><div class="ht"><b>Streaks</b><small>Hard daily · 80% first try</small></div><div class="strk">${CATS.map(c=>{const n=catSize(c).length;return `<span class="sp">${c} <b>${n?catStreak(c):"–"}</b></span>`}).join("")}</div><small>Daily runs and weekly bosses start on the Play page</small></div></div><div class="hc"><span class="he">⭐</span><div class="hb"><div class="ht"><b>Mastery (current scope)</b><small>${dm}/${dkk.length}</small></div><div class="bar m"><i style="width:${mp}%"></i></div><small>3 clean Hard recalls on 3 different days</small></div></div>`};
+const addXp=n=>{const a=rk(P.xp).i;P.xp+=n;const b=rk(P.xp);if(b.i>a)toast(b.e+" Rank up! You are now a "+b.n,"gold");saveP();hud()};
+const gain=n=>{score+=n;addXp(n)};
+const BADGES=[["first","🌟","First Rush","Solve your first formula",()=>P.t.solved>=1],["fire","🔥","On Fire","Get a 3 combo",()=>P.t.combo>=3],["blaze","⚡","Unstoppable","Get a 10 combo",()=>P.t.combo>=10],["flaw","💎","Flawless","Solve one with no mistakes",()=>P.t.perfect>=1],["hard","💀","Hardcore","Solve a formula on Hard",()=>P.t.hard>=1],["daily","🎯","Daily Cleared","Clear a daily run with 80%+ first try",()=>P.t.days>=1],["d3","🔥","Habit Forming","3-day streak in any category",()=>bestAll()>=3],["wk","📅","Week Warrior","7-day streak in any category",()=>bestAll()>=7],["mo","🗓","Unbreakable","30-day streak in any category",()=>bestAll()>=30],["pure","🧊","Ice Cold","Clear a daily with 100% first try",()=>P.t.pure>=1],["boss","🐉","Boss Slayer","Beat a weekly boss round",()=>P.t.boss>=1],["tri","🎖","Triple Threat","Clear ESAS, MATH and EE dailies on the same day",()=>CATS.every(c=>{const h=P.hist[c][dayN()];return h&&h.pass})],["m5","🧠","Locked In","Master 5 formulas",()=>mastN()>=5],["fin","🏁","Finisher","Finish a whole round",()=>P.t.rounds>=1],["star","🏆","Three Stars","Finish a round with 3 stars",()=>P.t.stars3>=1]];
+const chkBadges=()=>BADGES.forEach(b=>{if(!P.bd[b[0]]&&b[4]()){P.bd[b[0]]=dk();RS.bd.push(b);toast(b[1]+" Badge unlocked: "+b[2],"gold");addXp(25)}});
+const solved=base=>{const was=cdOf(cur),clean=rm===0&&!rvl.has(cur.n);RS.done++;if(clean){RS.clean++;P.t.perfect++}if(run&&run.type!=="practice")grade(cur,clean);
+RS.combo=Math.max(RS.combo,streak);P.t.solved++;P.t.combo=Math.max(P.t.combo,streak);if(mode.level==="hard")P.t.hard++;
+const bonus=streak>=3?Math.min(streak,10)*mult():0;if(bonus)gain(bonus);
+let x=streak>=2?" 🔥 "+streak+" in a row!":"";if(bonus)x+=" Combo bonus +"+bonus+".";
+if(was<MAST&&cdOf(cur)>=MAST){addXp(20);toast("⭐ Mastered: "+cur.n,"gold");boom(50);x+=" ⭐ Mastered!"}
+
+chkBadges();saveP();return{t:base+bonus,x}};
+
+const ins=a=>{ed.e.splice(ed.pos,0,...a);ed.pos+=a.length};
+const esc=t=>t.replace(/[<&]/g,c=>'&#'+c.charCodeAt(0)+';');
+const lin=E=>E.flatMap(t=>t==='{'?['(']:t==='¦'?[')','÷','(']:t==='}'?[')']:[t]);
+const rend=(E,pos)=>{let k=0;const seq=()=>{let h='';for(;;){if(k===pos)h+="<span class='cr'></span>";if(k>=E.length)break;const t=E[k];if(t==='¦'||t==='}')break;
+if(t==='{'){k++;const ns=k,n=seq(),ne=k;let d='',ds=-1,de=-1;if(E[k]==='¦'){k++;ds=k;d=seq();de=k}if(E[k]==='}')k++;h+=`<span class='fr'><span class='fn' data-q='${ne}'>${n||`<i class='bx' data-q='${ns}'></i>`}</span><span class='fd' data-q='${de}'>${d||`<i class='bx' data-q='${ds}'></i>`}</span></span>`}
+else if(t==='^'&&/^\d$/.test(E[k+1]||'')&&!/^\d$/.test(E[k+2]||'')){h+=`<sup class='tk' data-ti='${k}' data-tn='2'>${E[k+1]}</sup>`;k+=2}
+else{h+=`<span class='${/^[+−×÷=]$/.test(t)?"op ":""}tk' data-ti='${k}'>${esc(t)}</span>`;k++}}return h};let h=seq();while(k<E.length){k++;h+=seq()}return h};
+const del=()=>{const E=ed.e,p=ed.pos;if(!p)return;const t=E[p-1];if(t==='}'||t==='¦')ed.pos--;else if(t==='{'){if(E[p]==='¦'&&E[p+1]==='}'){E.splice(p-1,3)}ed.pos--}else E.splice(--ed.pos,1)};
+const vert=c=>{const E=ed.e,st=[];for(let k=0;k<ed.pos;k++){if(E[k]==='{')st.push(k);else if(E[k]==='}')st.pop()}
+if(!st.length){ed.pos=c==='up'?0:E.length;return}
+const o=st[st.length-1];let d=0,bar=-1;for(let j=o;j<E.length;j++){if(E[j]==='{')d++;else if(E[j]==='}')d--;else if(E[j]==='¦'&&d===1)bar=j;if(d===0)break}
+if(c==='dn'&&ed.pos<=bar)ed.pos=bar+1;else if(c==='up'&&ed.pos>bar)ed.pos=bar};
+const onScr=sym=>{if(ed.e.includes(sym))return true;const cs=[...sym];if(cs.length<2)return false;for(let k=0;k+cs.length<=ed.e.length;k++)if(cs.every((c,j)=>ed.e[k+j]===c))return true;return false};
+let autoT;
+const lcd=()=>{const L=$("#lcd");if(!L)return;const h=rend(ed.e,ed.pos);card.querySelectorAll(".pool .sy").forEach(b=>{b.hidden=onScr(b.dataset.t)});
+L.innerHTML=h;$("#fl").textContent=(ed.sh?"S ":"")+(ed.al?"A":"");card.querySelectorAll("[data-k=SHIFT]").forEach(b=>b.classList.toggle("on",!!ed.sh));card.querySelectorAll("[data-k=ALPHA]").forEach(b=>b.classList.toggle("on",!!ed.al));
+clearTimeout(autoT);if(stage===1&&ed.e.length&&same(lin(ed.e),lin(cur.t)))autoT=setTimeout(()=>{if(stage===1&&ed.e.length&&same(lin(ed.e),lin(cur.t))){check();if(stage===2)note("Correct, checked automatically. Now the units.","ok")}},300)};
+const cmd=c=>{if(c==="del")del();else if(c==="frac"){ed.e.splice(ed.pos,0,"{","¦","}");ed.pos++}else if(c==="up"||c==="dn")vert(c);else if(c==="ac"){ed.e=[];ed.pos=0}else if(c==="lt")ed.pos=Math.max(0,ed.pos-1);else if(c==="rt")ed.pos=Math.min(ed.e.length,ed.pos+1);else if(c==="hm")ed.pos=0;else if(c==="en")ed.pos=ed.e.length;else if(c==="chk")check()};
+const tap=k=>{if(stage!==1)return;const s=ed.sh,al=ed.al;ed.sh=ed.al=0;
+if(k==="SHIFT")ed.sh=!s;else if(k==="ALPHA")ed.al=!al;
+else{const A=al&&k==="EXP"?[["e"]]:ACT[k],a=A&&A[s?1:0];if(!a)note("This key isn’t used in the game.");else{note("");if(a[0][0]==="#")cmd(a[0].slice(1));else{ins(a);if(a.length===1&&/^[\p{L}\p{N}]$/u.test(a[0]))mergeSym()}}}
+lcd()};
+const K=(id,t,s,a,x)=>`<div class="kc"><span class="ks"><u>${s||""}</u><i>${a||""}</i></span><button class="ck ${x||""}" data-k="${id}">${t}</button></div>`;
+const R=(c,r)=>`<div class="kp ${c}">${r.map(x=>K(...x)).join("")}</div>`,E0="<div></div>";
+const dev=()=>{const o=[["a/b","<span class='fi'><i></i><b></b><i></i></span>","","","f"],["√","√▫","∛▫","","f"],["xʸ","x▫","","","f"],["x²","x²","x³","","f"],["log","log","","","f"],["ln","ln","","","f"]];
+const dp=`<div class="dp"><button class="ck dpb" style="grid-area:1/2" data-k="UP" aria-label="Start">▲</button><button class="ck dpb" style="grid-area:2/1" data-k="LT" aria-label="Left">◀</button><button class="ck dpb" style="grid-area:2/3" data-k="RT" aria-label="Right">▶</button><button class="ck dpb" style="grid-area:3/2" data-k="DN" aria-label="End">▼</button></div>`;
+const top=[K("SHIFT","Shift","","","f"),K("ALPHA","Alpha","","","f"),dp,K("MODE","MODE","","","f"),K("ON","ON","","","f"),K("APPS","Apps","","","f"),E0,E0,K("CONVT","CONVT","","","f"),K("CALC","CALC","Check","","f"),K("x⁻¹","x⁻¹","x!","","f"),K("INT","∫▫","","","f"),K("ENG","ENG","","","f")].join("");
+const act=`<div class="kp s5">${[["chk","Check","r"],["hint","💡 Hint","d"],["clr","Clear","d"],["skp","I forgot","d"],["end","■ End","d"]].map(([a,t,x])=>`<div class="kc"><button class="ck ${x}" data-a="${a}"${stage===1||a==="end"?"":" disabled"}>${t}</button></div>`).join("")}</div>`;
+return `<div class="dev"><div class="disp"><div class="st"><span id="fl"></span><span>tap to type</span></div><div class="ex" id="lcd"></div><input class="kbin" id="kb" value="&#8203;" inputmode="none" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="Type the formula"><button class="kbt" id="kbt" type="button" aria-pressed="false" aria-label="Show or hide the phone keyboard" title="Show the phone keyboard">⌨</button></div>
+<div class="tray"><div class="tl"><span>Level</span>${run&&run.type!=="practice"?`<div class="lv"><button class="on" disabled>Hard <small>graded run</small></button></div>`:""}<div class="lv" role="group" aria-label="Level"${run&&run.type!=="practice"?" hidden":""}>${Object.entries(LV).map(([k,v])=>`<button data-lv="${k}" class="${mode.level===k?"on":""}" aria-pressed="${mode.level===k}" title="${v[2]}">${v[0]} <small>×${v[1]}</small></button>`).join("")}</div></div>
+<div class="pool" ${mode.level==="hard"?"hidden":""}>${pool.map(s=>`<button class="sy" data-t="${s}">${s}</button>`).join("")}</div>
+<div class="typ"><input class="tx" id="ty" inputmode="none" placeholder="type a symbol, e.g. σ or Vrms" autocomplete="off"><button class="btn" data-a="ty">Add</button></div></div>
+${act}
+`+R("s7",[["=","=","","","r"],["a/b","<span class='fi'><i></i><b></b><i></i></span>","","","f"],["xʸ","xⁿ","","","f"],["x²","x²","","","f"],["x³","x³","","","f"],["√","√▫","","","f"],["∛","∛▫","","","f"]])
++R("s6",[["(","(","","","l"],[")",")","","","l"],["x⁻¹","x⁻¹","","","f"],["!","n!","","","f"],["e","e","","","f"],["π","π","","","f"]])
++R("s6",[["sin","sin","","","f"],["cos","cos","","","f"],["tan","tan","","","f"],["ln","ln","","","f"],["log","log","","","f"],["Abs","|x|","","","f"]])
++R("s7",[["asin","sin⁻¹","","","f"],["acos","cos⁻¹","","","f"],["atan","tan⁻¹","","","f"],["LT","◀","","","l"],["RT","▶","","","l"],["UP","▲","","","l"],["DN","▼","","","l"]])
++'<div class="gk">Greek</div>'
++R("s7",[["α","α","","","g"],["β","β","","","g"],["γ","γ","","","g"],["δ","δ","","","g"],["ε","ε","","","g"],["η","η","","","g"],["θ","θ","","","g"]])+R("s7",[["λ","λ","","","g"],["μ","μ","","","g"],["ρ","ρ","","","g"],["σ","σ","","","g"],["τ","τ","","","g"],["φ","φ","","","g"],["ω","ω","","","g"]])+R("s7",[["Δ","Δ","","","g"],["Θ","Θ","","","g"],["Σ","Σ","","","g"],["Φ","Φ","","","g"],["Ω","Ω","","","g"],["Λ","Λ","","","g"],["Π","Π","","","g"]])
++R("s5",[["7","7","","","n"],["8","8","","","n"],["9","9","","","n"],["DEL","DEL","","","d"],["CA","CA","","","r"],["4","4","","","n"],["5","5","","","n"],["6","6","","","n"],["×","×","","","n"],["÷","÷","","","n"],["1","1","","","n"],["2","2","","","n"],["3","3","","","n"],["+","+","","","n"],["−","−","","","n"],["0","0","","","n"],[".","·","","","n"],["=","=","","","n"],["(−)","(−)","","","n"],["EXP","×10ⁿ","","","n"]])+"</div>"};
+const form=()=>`${cur.u.length?`<div class="row"><span>unit</span><input class="tx" id="u" inputmode="none" placeholder="e.g. m/s" autocomplete="off"></div>`:""}${mode.level==="easy"&&cur.u.length&&cur.ud?'<div class="chips">'+shuf([cur.ud,...shuf([...new Set(F.map(f=>f.ud).filter(x=>x!==cur.ud))]).slice(0,4)]).map(x=>`<button class="btn g" data-a="chip" data-u="${x.split(" ")[0]}">${x}</button>`).join("")+"</div>":""}
+${cur.p.map((x,k)=>x.u.length?`<div class="row"><span>${esc(x.s)}</span><input class="tx" data-pu="${k}" inputmode="none" placeholder="unit of ${esc(x.s)}" aria-label="unit of ${esc(x.s)}" autocomplete="off"></div>`:"").join("")}
+<button class="btn" data-a="ck2">Check answers</button><button class="btn g" data-a="sh">Show answers</button>`;
+const draw=(m,c)=>{stats();const S=stage;card.innerHTML=`<div class="gm"><div class="rt"><h2 class="name">${cur.n}<span class="pips" title="Mastered = 3 clean Hard recalls on 3 different days">${pipsOf(cdOf(cur))}</span></h2>${runTag()}${S===2?'<p class="sub">Formula correct ✓</p>':""}<div class="msg ${c||""}" id="msg">${m||""}</div>`+
+(S===1?'':S===2?form():`<p class="sub">${cur.ud?"Unit: "+cur.ud+"<br>":""}${cur.p.filter(x=>x.d).map(x=>esc(x.s)+" → "+esc(x.d)).join(" · ")}</p><button class="btn" data-a="nx">Next formula</button>`)+`</div><div class="lt">${dev()}</div></div>`;tidy();lcd();kbApply(true)};
+const round=()=>{cur=deck[i];stage=1;rm=0;ed={sh:0,al:0,e:[],pos:0};const need=[...new Set(cur.t.filter(isSym))];
+const ex=mode.level==="easy"?[]:shuf(EXTRA.filter(x=>!need.includes(x))).slice(0,5);pool=shuf([...need,...ex]);draw()};
+const hint=()=>{if(stage!==1)return;if(ed.e.length)return note("Hint only works on an empty screen. Press Clear first.","no");const k=cur.t.indexOf("=");ed.e=cur.t.slice(0,k+1);ed.pos=ed.e.length;rm++;note("Hint used. This one won’t count as first try.");lcd()};
+const unlock=()=>{if(lvPrev!==null){mode.level=lvPrev;lvPrev=null}};
+const hub=()=>{unlock();run=null;stage=0;deck=[];deckN=0;i=0;touchCats();stats();const wk=weekN();
+const cardFor=c=>{const L=catSize(c),sz=L.length,s=catStreak(c),fr=P.cs[c].fz!==wk;
+if(!sz)return `<div class="cat off"><div class="cth"><b>${c}</b></div><small>Nothing here yet. Your streak is safe.</small><button class=\"btn g\" data-go=\"bank\">Add formulas</button></div>`;
+const R=dRec(c),Q=queueFor(c),B=bRec(c),dn=Object.keys(R.ans).length,tot=dn+Q.q.length,pct=tot?Math.round(dn/tot*100):100,bn2=Object.keys(B.ans).length;
+const dl=R.done?(R.pass?"✅ cleared today ("+R.ok+"/"+R.n+" first try)":"📝 recorded today ("+R.ok+"/"+R.n+", needs 80%)"):(dn?dn+"/"+tot+" done · "+Q.q.length+" left":tot+" to recall today");
+const bl=B.pass?"🐉 defeated this week ("+B.sc+"%)":B.done?"survived this week ("+B.sc+"%). Retry any time":bn2?bn2+"/"+sz+" fought so far":"open all week · all "+sz+" formulas";
+return `<div class="cat"><div class="cth"><b>${c}</b><span class="cst">${s?"🔥 "+s+"-day streak":"No streak yet"}</span><span class="fz" title="One freeze per week covers one missed day">🧊 ${fr?"ready":"used"}</span></div><div class="bar g"><i style="width:${R.done?100:pct}%"></i></div><small>Daily · ${dl}</small><button class="btn" data-a="rdaily" data-c="${c}"${R.done?" disabled":""}>${R.done?"Done for today":dn?"Continue daily":"Start daily"}</button><small>Weekly boss · ${bl}</small><button class="btn g" data-a="rboss" data-c="${c}"${B.pass?" disabled":""}${B.done&&!B.pass?' data-r="1"':""}>${B.pass?"Boss defeated":B.done?"Retry boss":bn2?"Continue boss":"Fight boss"}</button></div>`};
+const sc=scope().length;
+card.innerHTML=`<div class="hub"><div class="rt"><h2 class="name">Today’s runs</h2><p class="sub">Daily runs and weekly bosses are always on Hard, and they are the only runs that count. Get 80% or more right on the first try to extend a streak. Each category keeps its own streak.</p></div>${warnUI()}<div class="cats">${CATS.map(cardFor).join("")}</div><div class="prac"><b>Practice</b><small>Ungraded: no streak and no spacing changes. Choose what to practise with the “Practice scope” menu at the top. Easy and Medium are practice only.</small><div class="tl"><span>Level</span><div class="lv" role="group" aria-label="Practice level">${Object.entries(LV).map(([k,v])=>`<button data-lv="${k}" class="${mode.level===k?"on":""}" aria-pressed="${mode.level===k}" title="${v[2]}">${v[0]} <small>×${v[1]}</small></button>`).join("")}</div></div>${fmtUI()}<button class="btn g" data-a="rprac"${sc?"":" disabled"}>${mode.game==="match"?"Start matching":"Start practice"} · ${sc} formula${sc===1?"":"s"}</button></div></div>`};
+const startRun=(type,c,retry)=>{rvl=new Set();score=0;streak=0;i=0;stage=0;RS={done:0,clean:0,combo:0,xp0:P.xp,bd:[]};
+if(type==="practice"){unlock();const L=scope();if(!L.length)return hub();if(mode.game==="match")return startMatch(L);run={type:"practice"};deck=shuf(L);deckN=deck.length;return round()}
+const L=catSize(c);if(!L.length)return hub();
+if(lvPrev===null)lvPrev=mode.level;mode.level="hard";
+if(type==="daily"){const R=dRec(c),Q=queueFor(c);if(R.done)return hub();if(!Q.q.length&&!Object.keys(R.ans).length)return hub();run={type,cat:c,rec:R,ex:Q.ex};if(!Q.q.length)return endDaily();deck=Q.q.slice()}
+else{const B=bRec(c);if(B.pass)return hub();if(B.done&&retry){B.ans={};B.done=0;B.sc=0}run={type,cat:c,rec:B,ex:new Set()};const rem=L.filter(f=>!has(B.ans,f.n));if(B.done||!rem.length)return endBoss();deck=shuf(rem)}
+deckN=deck.length;round()};
+const endDaily=()=>{const c=run.cat;evalDaily(c);const R=dRec(c),pct=R.n?Math.round(R.ok/R.n*100):0,s=catStreak(c),miss=Object.keys(R.ans).filter(k=>!R.ans[k]);stats();
+card.innerHTML=`<div class="rt end"><div class="stars">${R.pass?"🔥":"📝"}</div><h2 class="name">${c} daily ${R.pass?"cleared":"recorded"}</h2><p class="sub">${R.pass?"First-try recall "+pct+"%. Your "+c+" streak is now "+s+" day"+(s===1?"":"s")+".":"First-try recall "+pct+"%. You need 80% to extend the streak, so today doesn’t count. Tomorrow is a fresh queue, and the formulas you missed come back first."}</p><div class="pillrow"><div class="pl2"><b>${R.ok}/${R.n}</b>First try</div><div class="pl2"><b>${pct}%</b>Accuracy</div><div class="pl2"><b>🔥 ${s}</b>${c} streak</div></div>${miss.length?`<p class="sub">Missed: ${miss.map(esc).join(", ")}</p>`:""}<button class="btn" data-a="hub">Back to runs</button></div>`};
+const endBoss=()=>{const c=run.cat;bossEval(c);const B=bRec(c),ks=Object.keys(B.ans),n=ks.length,ok=ks.filter(k=>B.ans[k]).length,miss=ks.filter(k=>!B.ans[k]);stats();
+card.innerHTML=`<div class="rt end"><div class="stars">${B.pass?"🐉":"💥"}</div><h2 class="name">${c} boss ${B.pass?"defeated":"survived"}</h2><p class="sub">${B.pass?"First-try recall "+B.sc+"% across "+n+" formulas. Big XP bonus earned.":"First-try recall "+B.sc+"% (needs 80%). Retry any time this week."}</p><div class="pillrow"><div class="pl2"><b>${ok}/${n}</b>First try</div><div class="pl2"><b>${B.sc}%</b>Score</div></div>${miss.length?`<p class="sub">Missed: ${miss.map(esc).join(", ")}</p>`:""}${B.pass?"":`<button class="btn" data-a="rboss" data-c="${c}" data-r="1">Retry boss</button>`}<button class="btn g" data-a="hub">Back to runs</button></div>`};
+const start=()=>hub();
+/* ---- formula bank with topics ---- */
+const TK="ff_topics_v2",BK="ff_bank_v1";
+let TP=[],FL=[],FC={},FPR={},tsel=0,delArm=false;const FP="\u0001";
+const fpar=fo=>FL.includes(FPR[fo])&&FPR[fo]!==fo?FPR[fo]:"";
+const froot=fo=>{let x=fo,n=0;while(fpar(x)&&n++<50)x=fpar(x);return x};
+const fcat=fo=>fo?(has(FC,froot(fo))?FC[froot(fo)]:""):"";
+const fdesc=memo("fd",fo=>{const o=[fo];for(let i=0;i<o.length&&i<200;i++)FL.forEach(x=>{if(fpar(x)===o[i]&&!o.includes(x))o.push(x)});return o});
+const escA=t=>String(t).replace(/[&<>"]/g,c=>'&#'+c.charCodeAt(0)+';');
+let dirty=false;
+const ffRead=()=>{try{return JSON.parse($("#ff-data").value)}catch(e){return null}};
+const ffOk=j=>j&&Array.isArray(j.t)&&(j.t.length||(Array.isArray(j.f)&&j.f.length));
+const loadT=()=>{let j=ffRead(),mig=false;
+try{const o=JSON.parse(localStorage.getItem(TK)||"null");if(ffOk(o)&&(!ffOk(j)||(o.ts||0)>(j.ts||0)))j=o}catch(e){}
+if(j&&Array.isArray(j.t)){TP=j.t.filter(x=>x&&x.n);FL=Array.isArray(j.f)?j.f.filter(x=>typeof x==="string"&&x):[];FC=j.c&&typeof j.c==="object"?j.c:{};FPR=j.r&&typeof j.r==="object"?j.r:{};if(!TP.length)TP=[{n:"My formulas",t:""}];if(LV[j.l])mode.level=j.l;tsel=Math.min(+j.s||0,Math.max(0,TP.length-1));if(mig)dirty=true;return}
+let old="";try{old=localStorage.getItem(BK)||""}catch(e){}TP=old?[{n:"My formulas",t:old}]:[];if(old)dirty=true};
+const svUI=()=>{dirty=false};
+const saveT=()=>{mclear();try{localStorage.setItem(TK,JSON.stringify({v:1,t:TP,f:FL,c:FC,r:FPR,l:mode.level,s:tsel,ts:Date.now()}))}catch(e){}svUI()};
+
+
+window.addEventListener("beforeunload",e=>{if(dirty){e.preventDefault();e.returnValue=""}});
+const parseBank=txt=>{const items=[],errs=[];
+txt.split(/\r?\n/).forEach((raw,ln)=>{let line=raw.trim();if(!line||/^(#|\/\/)/.test(line))return;let f;
+if(line[0]==="["){try{f=JSON.parse(line.replace(/,\s*$/,""))}catch(e){errs.push("Line "+(ln+1)+": couldn’t read the [ … ] format.");return}}
+else f=(line.includes("\t")?line.split("\t"):line.split(";")).map(x=>x.trim());
+const [n,s,u,ud,p]=f;
+if(!n||!s){errs.push("Line "+(ln+1)+": needs at least a name and a formula.");return}
+if((s.match(/=/g)||[]).length!==1){errs.push("Line "+(ln+1)+" ("+n+"): formula needs exactly one “=”.");return}
+if((s.match(/\{/g)||[]).length!==(s.match(/\}/g)||[]).length){errs.push("Line "+(ln+1)+" ("+n+"): { } don’t match.");return}
+let c;try{c=mk([n,s,u,ud,p],true)}catch(e){errs.push("Line "+(ln+1)+" ("+n+"): couldn’t parse formula.");return}
+if(!c.t.length||!same(lin(c.t),lin(c.t))){errs.push("Line "+(ln+1)+" ("+n+"): formula isn’t valid maths (check brackets, ×, ÷, {top|bottom}).");return}
+items.push(c)});return{items,errs}};
+let PC=new Map();
+const applyAll=()=>{mclear();const items=[],errs=[],nc=new Map();TP.forEach(tp=>{const ck=tp.n+"\u0000"+tp.t;let r=PC.get(ck);if(!r)r=parseBank(tp.t);nc.set(ck,r);r.items.forEach(x=>{x.topic=tp.n;items.push(x)});r.errs.forEach(e=>errs.push(tp.n+" · "+e))});PC=nc;const names=new Set(items.map(x=>x.n.toLowerCase()));F=BASE.filter(b=>!names.has(b.n.toLowerCase())).concat(items);mclear();return{items,errs}};
+const brep=(t,c)=>{const e=$("#brep");e.textContent=t;e.className="rep "+(c||"")};
+const inSel=(f,sel)=>{if(!sel)return true;if(sel[0]==="\u0002")return catOf(f)===sel.slice(1);if(sel[0]===FP){const ds=fdesc(sel.slice(1));return TP.some(t=>ds.includes(t.f)&&t.n===f.topic)}return f.topic===sel};
+const selHas=sel=>F.some(f=>inSel(f,sel));
+const cntF=memo("cf",fo=>F.filter(f=>inSel(f,FP+fo)).length);
+const opt=(v,l,sel)=>`<option value="${escA(v)}"${v===sel?" selected":""}>${escA(l)}</option>`;
+const opts=(sel,all)=>opt("",all,sel)+(CATS.some(c=>catSize(c).length)?`<optgroup label="Categories">${CATS.filter(c=>catSize(c).length).map(c=>opt("\u0002"+c,"🎓 "+c+" ("+catSize(c).length+" formulas)",sel)).join("")}</optgroup>`:"")+(FL.length?`<optgroup label="Folders">${FL.map(fo=>opt(FP+fo,"📁 "+fo+" ("+cntF(fo)+" formulas)",sel)).join("")}</optgroup>`:"")+(TP.length?`<optgroup label="Topics">${TP.map(t=>opt(t.n,(t.f?t.f+" › ":"")+t.n,sel)).join("")}</optgroup>`:"");
+const cntT=n=>F.filter(f=>f.topic===n).length;
+const syncSel=()=>{const ok=new Set(["",...TP.map(t=>t.n),...FL.map(x=>FP+x),...CATS.map(c=>"\u0002"+c)]);if(!ok.has(mode.topic||""))mode.topic="";if(!ok.has(rv.s))rv.s="";$("#ts").innerHTML=opts(mode.topic||"","All formulas");$("#rs").innerHTML=opts(rv.s,"All formulas");pkSync()};
+function pkSync(){if(window.__pk)window.__pk.sync()}
+const chipsHTML=()=>TP.map((t,k)=>(t.f&&FL.includes(t.f))?"":`<button class="tc${k===tsel?" on":""}" data-t2="${k}" data-dt="topic" data-dn="${escA(t.n)}">${escA(t.n)}<em>${cntT(t.n)}</em></button>`).join("")+`<button class="tc add" data-b="newt">+ New topic</button>`;
+const tbarDraw=()=>{const c=document.querySelector("#tbar .tchips");if(c)c.innerHTML=chipsHTML()};
+const tdraw=()=>{const cur=TP[tsel],n=cur?cntT(cur.n):0;
+$("#tbar").innerHTML=`<div class="tchips" data-dz="unf">${chipsHTML()}</div><div class="tnew" id="tnew"><span class="tl2">New topic name</span><input class="tx" id="tn" maxlength="40" placeholder="e.g. Strength of materials" autocomplete="off"><button class="btn" data-b="mkt">+ Create topic</button></div>${cur?`<div class="thd"><span>Editing <b>${escA(cur.n)}</b> · ${n} formula${n===1?"":"s"}</span><button class="btn g" data-b="delt">${delArm?"Click again to delete":"Delete topic"}</button></div>`:`<p>No topics yet. Create one to start your bank. Each topic keeps its own formulas. Use the folders above to group topics and practise a whole folder.</p>`}`;
+const ta=$("#bt");ta.value=cur?cur.t:"";ta.disabled=!cur;document.querySelectorAll('#pg-bank [data-b="save"],#pg-bank [data-b="add"],#pg-bank [data-b="clear"]').forEach(b=>b.disabled=!cur);
+const tot=F.filter(f=>f.bank).length;$("#bcnt").textContent=TP.length?TP.length+" topic"+(TP.length===1?"":"s")+" · "+tot+" custom formula"+(tot===1?"":"s")+".":"";
+syncSel()};
+const bank=a=>{
+if(a==="newt"){$("#tnew").hidden=false;$("#tn").focus();return}
+if(a==="cnl"){$("#tnew").hidden=true;return}
+if(a==="mkt"){const n=$("#tn").value.replace(/["<>&]/g,"").trim();if(!n)return brep("Give the topic a name.","no");if(n.toLowerCase()==="built-in"||TP.some(t=>t.n.toLowerCase()===n.toLowerCase()))return brep("A topic with that name already exists.","no");TP.push({n,t:""});tsel=TP.length-1;delArm=false;saveT();applyAll();tdraw();brep("Topic “"+n+"” created. Paste its formulas below.","ok");return}
+if(a==="delt"){if(!delArm){delArm=true;tdraw();return}const n=TP[tsel].n;TP.splice(tsel,1);tsel=Math.max(0,tsel-1);delArm=false;saveT();applyAll();tdraw();start();rvReset();brep("Deleted topic “"+n+"”.","ok");return}
+const cur=TP[tsel];if(!cur)return brep("Create a topic first.","no");
+if(a==="clear"){cur.t="";saveT();applyAll();tdraw();start();rvReset();brep("Topic cleared.","ok");return}
+const txt=$("#bt").value;if(!txt.trim())return brep("Paste some formulas first.","no");
+const prev=cur.t;cur.t=a==="add"?(prev?prev.replace(/\s+$/,"")+"\n":"")+txt:txt;
+const r=parseBank(cur.t);if(!r.items.length){cur.t=prev;return brep(r.errs.join("\n")||"Nothing usable found.","no")}
+saveT();applyAll();tdraw();
+brep("Saved "+r.items.length+" formula"+(r.items.length===1?"":"s")+" in “"+cur.n+"”."+(r.errs.length?"\nSkipped:\n"+r.errs.join("\n"):""),r.errs.length?"no":"ok");start();rvReset()};
+loadT();loadP();applyAll();svUI();
+$("#pg-bank").addEventListener("click",e=>{const t=e.target.closest("[data-t2]");if(t){tsel=+t.dataset.t2;delArm=false;saveT();tdraw();fdraw();brep("","");if(t.closest("#fd")){const h=$("#tbar .thd");(h||$("#tbar")).scrollIntoView({behavior:"smooth",block:"start"});setTimeout(()=>{const x=$("#bt");if(x&&!x.disabled)x.focus({preventScroll:true})},350)}return}const b=e.target.closest("button");if(b&&b.dataset.b){if(b.dataset.b!=="delt")delArm=false;bank(b.dataset.b)}});
+$("#pg-bank").addEventListener("keydown",e=>{if(e.target.id==="tn"&&e.key==="Enter")bank("mkt")});
+$("#ts").addEventListener("change",e=>{mode.topic=e.target.value;start();if(mode.topic&&!selHas(mode.topic))note("That topic or folder is empty, so the full deck is used.","no")});
+/* ---- review flashcards ---- */
+let rv={i:0,f:false,q:false,s:"",l:[]};
+const rvList=()=>{const l=rv.s?F.filter(f=>inSel(f,rv.s)):F,k=(rv.k||"").trim().toLowerCase();if(k)return l.filter(f=>f.n.toLowerCase().includes(k));return l.length?l:F};
+const rvDraw=()=>{const box=$("#rv");if(!rv.l.length)rv.l=rvList();if(!rv.l.length){box.innerHTML="<p>"+(rv.k?"No formula matches that search.":"No formulas yet.")+" <button class='btn g' data-go='bank'>Add formulas</button></p>";return}if(rv.i>=rv.l.length)rv.i=0;const c=rv.l[rv.i],showF=!rv.q||rv.f;
+const rows=c.p.filter(x=>x.d).map(x=>`<div><b>${esc(x.s)}</b>${esc(x.d)}</div>`).join("");
+const det=`<div class="fcd">${c.ud?`<div><b>unit</b>${esc(c.ud)}</div>`:""}${rows||(c.ud?"":"<div><em>No units saved for this one.</em></div>")}</div>`;
+box.innerHTML=`${rv.s&&!selHas(rv.s)?"<p>This topic or folder has no formulas yet, so all formulas are shown. <button class='btn g' data-go='bank'>Add formulas</button></p>":""}<div class="rvm">⭐ Mastered ${rv.l.filter(isM).length} of ${rv.l.length} in this set</div><div class="fc" role="button" tabindex="0" data-r="flip" aria-label="Flashcard, press to flip"><span class="fcn">${esc(c.n)}<span class="pips">${pipsOf(cdOf(c))}</span></span>${showF?`<div class="scr"><div class="ex">${rend(c.t,-1)}</div></div>`:""}${det}<span class="fch">${rv.q?(rv.f?"Tap to hide the formula":"Tap to reveal the formula"):""}</span></div><div class="fcnav"><button class="btn g" data-r="prev">◀ Prev</button><span>${rv.i+1} / ${rv.l.length}</span><button class="btn g" data-r="shuf">Shuffle</button><button class="btn g" data-r="next">Next ▶</button></div><div class="rvx"><button class="btn g" data-e="open">✏ Edit this formula</button></div>${rvEd(c)}`};
+const rvReset=()=>{rv.l=rvList();rv.i=0;rv.f=false;rvDraw()};
+const rvGo=a=>{const n=rv.l.length;if(a==="flip")rv.f=!rv.f;else if(a==="next"){rv.i=(rv.i+1)%n;rv.f=false}else if(a==="prev"){rv.i=(rv.i-1+n)%n;rv.f=false}else if(a==="shuf"){rv.l=shuf(rv.l);rv.i=0;rv.f=false}rvDraw();const k=$('#rv [data-r="'+a+'"]');if(k)k.focus()};
+$("#rv").addEventListener("click",e=>{const b=e.target.closest("[data-r]");if(b)rvGo(b.dataset.r)});
+$("#rv").addEventListener("keydown",e=>{if(!e.target.classList.contains("fc"))return;if(e.key==="Enter"||e.key===" "){e.preventDefault();rvGo("flip")}else if(e.key==="ArrowRight"){e.preventDefault();rvGo("next");$("#rv .fc").focus()}else if(e.key==="ArrowLeft"){e.preventDefault();rvGo("prev");$("#rv .fc").focus()}});
+$("#rs").addEventListener("change",e=>{rv.s=e.target.value;rvReset()});
+$("#rq").addEventListener("change",e=>{rv.q=e.target.checked;rv.f=false;rvDraw()});
+const ldjs=u=>new Promise((ok,no)=>{if(document.querySelector('script[src="'+u+'"]'))return ok();const s=document.createElement("script");s.src=u;s.onload=ok;s.onerror=no;document.head.appendChild(s)});
+const pgHTML=()=>{const L=rvList();if(!L.length){toast("No formulas to print yet.");return""}
+const det=c=>(c.ud?`<div><b>unit</b>${esc(c.ud)}</div>`:"")+c.p.filter(x=>x.d).map(x=>`<div><b>${esc(x.s)}</b>${esc(x.d)}</div>`).join("");
+const dd=new Date().toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long"}).toUpperCase();
+const QUOTES=`Every hour of review you put in today is a brick building the foundation of your professional future.
+Small progress each day adds up to big results on exam day.
+Hard work beats talent when talent doesn't work hard.
+Your future title is worth every sacrifice you are making right now.
+Embrace the struggle; it is making your mind sharper and stronger.
+Doubt kills more dreams than failure ever will. Believe in your preparation.
+Keep your eyes on the goal and your hands on your reviewers.
+The expert in anything was once a beginner who refused to quit.
+When you feel like quitting, remember why you started this journey.
+Success is the sum of small efforts, repeated day in and day out.
+Turn your pressure into power and your stress into focus.
+You are not just memorizing answers; you are learning how to solve real-world problems.
+Rest if you must, but never, ever quit.
+Pain is temporary, but a license and a professional title last a lifetime.
+Trust the process, trust your hard work, and trust yourself.
+Today’s sacrifice is tomorrow’s success story.
+The hardest climbs lead to the most breathtaking views.
+You don't have to be extreme, just consistent.
+Let your desire to succeed outweigh your fear of failure.
+Every difficult problem you solve today is one less obstacle on exam day.
+Your brain is adapting, growing, and retaining more than you realize.
+Stay patient and trust your journey. You are getting closer every day.
+A river cuts through rock not because of its power, but because of its persistence.
+Visualize your success, then work relentlessly to make it reality.
+Don't watch the clock; do what it does. Keep going.
+You are planting seeds of dedication now so you can harvest success later.
+Dream big, study hard, and stay focused.
+Challenges are what make board exam preparation interesting; overcoming them makes it meaningful.
+Your dedication today will be your proudest memory tomorrow.
+Keep pushing through the fatigue; the reward is worth every second.
+Failure is only an opportunity to begin again, only wiser.
+Success isn't given. It's earned in the quiet hours of review.
+You have come too far to only come this far.
+Take a deep breath, clear your mind, and tackle the next chapter.
+Focus on progress, not perfection.
+Your potential is limitless; let your study habits reflect that.
+Be proud of the work you are putting in when no one is watching.
+A setback is just a setup for a comeback on exam day.
+Great things never came from comfort zones.
+Keep your mind sharp, your heart steady, and your spirit resilient.
+Every correct practice answer builds your confidence for the real exam.
+Doubt vanishes when action takes over. Open your book and begin.
+You are building the professional version of yourself right now.
+Stay humble, stay hungry, and keep studying.
+The harder you work for something, the greater you’ll feel when you achieve it.
+Your mind is a powerful tool—feed it with knowledge and focus.
+Rome wasn't built in a day, and neither is mastery. Keep building.
+Make your future self proud by giving your best today.
+Obstacles can’t stop you. Only you can stop you.
+Believe in the person you are becoming through this review process.
+Let every complex formula or difficult concept fuel your determination.
+You are stronger than any complex question the examiners can throw at you.
+Consistency is the secret weapon of top-notchers.
+Keep your vision clear: a passing score and a license.
+Turn late nights into stepping stones toward your career.
+You are writing the opening chapter of your professional success.
+Do something today that your future self will thank you for.
+Even on slow days, showing up and reviewing makes a difference.
+Patience is bitter, but its fruit is a passing board exam result.
+Focus on what you can control: your attitude and your effort.
+You are fully equipped to master this material.
+Let your passion for your profession drive you through the difficult topics.
+There is no substitute for thorough and honest preparation.
+Your dedication is proof of your commitment to your future career.
+Keep moving forward, no matter how slow the progress feels.
+The summit is worth every single step of the climb.
+Wake up determined, go to bed satisfied with your study output.
+Every mock exam is a stepping stone toward perfection.
+You don't need to see the whole staircase, just take the next study step.
+Discipline is choosing between what you want now and what you want most.
+Your hard work will speak for itself when the results come out.
+Embrace the mistakes in your practice tests—they are your best teachers.
+Keep your goals high and your distractions low.
+Success is built on a mountain of reviewed notes and solved problems.
+You have the intelligence, the grit, and the heart to conquer this exam.
+Don't count the days; make the review days count.
+Your persistence will outlast any difficult subject.
+Keep shining your light on your books, and success will find you.
+When everything feels like an uphill struggle, think of the view from the top.
+Push yourself, because no one else is going to do it for you.
+A champion is someone who gets up when they can't.
+Your dedication today determines your competence tomorrow.
+Stay positive, work hard, and make it happen.
+The pain of studying is nothing compared to the joy of passing.
+Keep your focus sharp and your determination unbreakable.
+You are closer to your license today than you were yesterday.
+Let your drive overcome any temporary exhaustion.
+Success demands sacrifice, and you are paying the price for greatness.
+Every page you read brings you closer to your professional dream.
+Believe you can and you’re halfway through your reviewer.
+The key to passing is consistency combined with resilience.
+Treat every practice question like it's the actual board exam.
+Your future clients and colleagues are waiting for the expertise you're building now.
+Don't let a hard topic discourage you; take a break, then conquer it.
+You are capable of far more than you think.
+Excellence is not an act, but a habit formed through daily review.
+Keep your courage high and your doubts low.
+The journey is tough, but it's shaping you into a resilient professional.
+Turn your hurdles into stepping stones.
+Your hard work is compounding daily into unstoppable competence.
+Focus like a professional long before you become one.
+Let your ambition be louder than your self-doubt.
+Review with purpose, rest with peace, and test with confidence.
+You hold the pen that writes your professional destiny.
+Every expert started right where you are sitting now.
+Keep your vision focused on the day you see your name on the passing list.
+Your dedication is your most valuable asset right now.
+Don't look back; you're not going that way. Look forward to exam day.
+It’s not about having time to study; it’s about making time.
+Success is rented, and rent is due every single day.
+Keep going until your review notes become second nature.
+A little progress each day adds up to massive results.
+Trust your instincts, rely on your review, and ace that exam.
+You are building a fortress of knowledge brick by brick.
+Let your commitment eclipse your comfort.
+There are no shortcuts to any place worth going—especially a board exam.
+Keep your spirit strong when your brain feels tired.
+Your resilience will be the secret to your passing score.
+Step by step, concept by concept, you are mastering the syllabus.
+Challenges are gifts that force us to search for a new center of strength.
+Your mind can achieve anything if you condition it with discipline.
+Let your passion for your field fuel your late-night study sessions.
+Every solved problem is a victory worth celebrating.
+Stay steady through the storm of review materials; you will weather it.
+You are planting the seeds of a brilliant professional career.
+Doubt kills ambition. Silence it with a solved practice set.
+The view from the finish line makes every sacrifice worthwhile.
+Push past your limits because your dreams demand it.
+Keep your eyes on the prize: your professional license.
+Your future colleagues are counting on the knowledge you build today.
+Let your focus be razor-sharp and your determination unbreakable.
+Success favors the prepared mind. Prepare relentlessly.
+You are stronger than any difficult module or complex topic.
+Take pride in your hustle and the hours you invest in your future.
+Every time you choose to study instead of quit, you win.
+Keep moving forward. Stagnation is the only true failure.
+Your determination will turn complex theories into simple solutions.
+Believe in your preparation, trust your instincts, and conquer the test.
+Let your hard work echo louder than your worries.
+You are crafting your own success story, word by word, formula by formula.
+Keep your posture straight, your mind clear, and your goals in sight.
+A positive attitude during review changes everything.
+You have what it takes to finish this journey victoriously.
+Let your past achievements remind you of what you are capable of.
+Hard choices, easy life. Easy choices, hard life. Choose to study.
+Your persistence today is a guarantee of your growth tomorrow.
+Keep your mind open to learning and your heart open to success.
+Every mistake caught during review is a mistake avoided on exam day.
+You are engineering your own bright future.
+Let grit and grace guide you through your review months.
+Don't let the volume of the reviewers overwhelm you; take it one page at a time.
+Your discipline will carry you where motivation can't reach.
+Keep striving, keep learning, and keep believing in yourself.
+You are transforming potential into absolute excellence.
+Let your focus be your shield against distractions.
+Success belongs to those who refuse to give up.
+Your dedication is an investment that will pay dividends for a lifetime.
+Keep your head down and your standards high.
+Every challenge you conquer makes you a better professional.
+Trust that all these long hours will culminate in a triumphant passing rate.
+Let your enthusiasm outshine your exhaustion.
+You are molding your intellect into a precision instrument.
+Keep your goals front and center every time you open your books.
+The struggle you're in today is developing the strength you need for tomorrow.
+Be relentless in your pursuit of excellence.
+Your hard work is building a bridge to your dreams.
+Keep pushing through the rough patches; smooth sailing is ahead.
+You are more than capable of passing this board exam.
+Let your review routine reflect how much you value your profession.
+Success is the natural consequence of consistent, quality preparation.
+Keep your focus locked on your ultimate objective.
+Your commitment is the engine driving you toward your license.
+Don't look at how much is left to study; look at how far you've already come.
+Every minute spent reviewing is a vote of confidence in yourself.
+Let your courage be bigger than your fears.
+You are building a legacy of hard work and perseverance.
+Keep your pace steady and your determination fierce.
+Your breakthrough is just around the next review chapter.
+Let your dedication turn pressure into diamond-hard competence.
+You have fought this far—finish strong!
+Keep your faith strong and your study habits stronger.
+Every concept mastered is a weapon gained for the board exam.
+Your hard work will soon turn into a license to practice.
+Let your discipline speak when your voice is tired.
+You are creating a future where all your hard work pays off.
+Keep your mind resilient and your spirit high.
+Success is earned by those who refuse to back down from a challenge.
+Your dedication is setting the standard for your professional life.
+Keep reading, keep practicing, and keep believing.
+You are just a few weeks of intense focus away from achieving your dream.
+Let your passion for your chosen field pull you through the toughest topics.
+Every review session brings you closer to the title you've always wanted.
+Keep your vision clear and your resolve unshakeable.
+You have the power to turn your review efforts into a top-notched triumph.
+Let perseverance be your hallmark during this review season.
+You are standing on the threshold of your professional career—step through with confidence.
+Keep pushing forward; your name belongs on the list of successful examinees.
+Your persistence is your superpower.
+Trust in your preparation, walk into that exam room with confidence, and claim your success.
+You are going to pass this board exam. Now, back to studying!`.split("\n");
+const qd=shuf(QUOTES);let qi=0;const nq=()=>qd[qi++%qd.length];
+const CM='<div class="cm"><i class="h t l"></i><i class="h t r"></i><i class="h b l"></i><i class="h b r"></i><i class="v t l"></i><i class="v t r"></i><i class="v b l"></i><i class="v b r"></i></div>';
+const head=c=>`<div class="c_qm">&ldquo;</div>`;
+const foot=c=>`<div class="c_ft"><span class="c_q">${esc(nq())}</span></div>`;
+const row=c=>`<div class="c_pr"></div>`;
+const back=(c,sm)=>`<div class="pc4">${CM}<div class="pk"><div class="c_top">${head(c)}<div class="pn${sm?" sm":""}">${esc(c.n)}</div><div class="pf"><div class="ex">${rend(c.t,-1)}</div></div>${row(c)}<div class="pdt">${det(c)}</div></div>${foot(c)}</div></div>`;
+const front=c=>`<div class="pc4">${CM}<div class="pk bk"><div class="c_top">${head(c)}<div class="pn">${esc(c.n)}</div><div class="c_qh">Write the formula</div>${row(c)}</div>${foot(c)}</div></div>`;
+const E='<div class="pc4"></div>',page=cells=>`<div class="pp">${[0,1,2,3].map(k=>cells[k]||E).join("")}</div>`;
+const q=$("#pdm").value==="q";let out="";
+for(let k=0;k<L.length;k+=4){const ch=L.slice(k,k+4);
+if(!q)out+=page(ch.map(c=>back(c,false)));
+else{out+=page(ch.map(front));const sw=[ch[1],ch[0],ch[3],ch[2]];out+=page(sw.map(c=>c?back(c,true):""))}}
+return out};
+const nx=()=>window.RR&&window.RR.native&&window.RR.exportFile;
+const pdfName=()=>"Recall-Rush-Cards-"+new Date().toISOString().slice(0,10)+".pdf";
+const prn=()=>{if(nx())return savePdf("print");const h=pgHTML();if(!h)return;$("#pz").innerHTML=h;window.print()};
+const savePdf=async how=>{const h=pgHTML();if(!h)return;const prt=how==="print",b=$(prt?"#prb":"#pdfb"),lab=b.textContent;b.disabled=true;b.textContent="Building PDF…";
+const host=document.createElement("div");host.id="pzc";host.className="pzs";host.innerHTML=h;document.body.appendChild(host);
+try{await Promise.all([ldjs("lib/html2canvas.min.js"),ldjs("lib/jspdf.umd.min.js")]);
+if(document.fonts&&document.fonts.ready)await document.fonts.ready;
+const {jsPDF}=window.jspdf,pdf=new jsPDF({unit:"mm",format:"a4"}),pgs=host.querySelectorAll(".pp");
+for(let i=0;i<pgs.length;i++){const cv=await html2canvas(pgs[i],{scale:2.5,backgroundColor:"#ffffff",useCORS:true});if(i)pdf.addPage();pdf.addImage(cv.toDataURL("image/jpeg",.95),"JPEG",8,8,194,281)}
+if(nx()){await nx()(pdfName(),new Uint8Array(pdf.output("arraybuffer")),"application/pdf",prt?"print":"")}
+else{pdf.save(pdfName());toast("PDF saved.")}}
+catch(e){toast(nx()?"Couldn't build the PDF: "+((e&&e.message)||e):"Couldn't build the PDF (needs internet for the PDF library).","info")}
+finally{host.remove();b.disabled=false;b.textContent=lab}};
+$("#prb").addEventListener("click",prn);
+$("#pdfb").addEventListener("click",()=>savePdf());
+window.addEventListener("afterprint",()=>{$("#pz").innerHTML=""});
+tdraw();
+/* ---- pages: Play / Formula bank / Review ---- */
+const fdraw=()=>{const box=$("#fd"),pl=n=>n===1?"":"s",N=window.__nv||(window.__nv={c:null,f:null});
+if(N.f&&!FL.includes(N.f))N.f=null;
+const roots=FL.filter(x=>!fpar(x)),lost=roots.filter(x=>!CATS.includes(FC[x])),inC=c=>roots.filter(x=>FC[x]===c);
+if(N.f){const c=fcat(N.f);N.c=CATS.includes(c)?c:"none"}else if(N.c==="none")N.c=null;
+const hasCat=CATS.includes(N.c);
+const ntop=fo=>{const ds=fdesc(fo);return TP.filter(t=>ds.includes(t.f)).length};
+const bt=t=>`<div class="bt${TP[tsel]===t?" cur":""}" data-t2="${TP.indexOf(t)}" data-dt="topic" data-dn="${escA(t.n)}"><span>${escA(t.n)}</span><em>${cntT(t.n)}</em></div>`;
+const tile=fo=>{const e=escA(fo),k=ntop(fo),n=cntF(fo);return `<button class="ft f" data-nav="f:${e}" data-dt="folder" data-dn="${e}" data-dz="folder" data-zn="${e}"><span class="fi2">📁</span><b>${e}</b><small>${k} topic${pl(k)} · ${n} formula${pl(n)}</small></button>`};
+const chain=[];for(let x=N.f;x&&chain.length<50;x=fpar(x))chain.unshift(x);
+let cr=N.c?`<button class="cr0 home" data-nav="" data-dz="nocat" aria-label="All">⌂</button>`:"";
+if(hasCat)cr+=(cr?`<span>›</span>`:"")+(N.f?`<button data-nav="c:${N.c}" data-dz="cat" data-zn="${N.c}">${N.c}</button>`:`<b>${N.c}</b>`);
+chain.forEach((x,i)=>{const e=escA(x);cr+=`<span>›</span>`+(i===chain.length-1?`<b>📁 ${e}</b>`:`<button data-nav="f:${e}" data-dz="folder" data-zn="${e}">📁 ${e}</button>`)});
+const hdr=`<div class="fmh"><div class="crumb">${cr}</div><button class="btn g" data-f="nw">${window.__fnw?"Cancel":"+ New folder"}</button></div>`;
+const nw=window.__fnw?`<div class="tnew"><span class="tl2">New folder${N.f?" in "+escA(N.f):hasCat?" in "+N.c:""}</span><input class="tx" id="fn" maxlength="40" placeholder="e.g. Mechanical engineering" autocomplete="off"><button class="btn" data-f="mk">Create</button></div>`:"";
+let body;
+if(!TP.length)body="<p>Create a topic first, then sort it into a folder.</p>";
+else if(N.f){const fo=N.f,e=escA(fo),ts=TP.filter(t=>t.f===fo),subs=FL.filter(x=>fpar(x)===fo),n=cntF(fo),oth=TP.filter(t=>t.f!==fo),dis=n?"":" disabled",sub=!!fpar(fo);
+body=`<div class="fob2" data-dz="folder" data-zn="${e}">${subs.length?`<div class="fgd">${subs.map(tile).join("")}</div>`:""}${ts.map(bt).join("")||(subs.length?"":'<p class="bhint">Empty. Drag a topic or a folder here.</p>')}<div class="fox">${sub?"":`<label class="fe">Category <select class="mv" data-cat="${e}"><option value="">None</option>${CATS.map(c=>`<option value="${c}"${FC[fo]===c?" selected":""}>${c}</option>`).join("")}</select></label>`}${oth.length?`<select class="mv add" data-add="${e}" aria-label="Add a topic to ${e}"><option value="">+ Add a topic…</option>${oth.map(t=>`<option value="${escA(t.n)}">${escA(t.n)}${t.f&&FL.includes(t.f)?" (in "+escA(t.f)+")":""}</option>`).join("")}</select>`:""}<button class="btn" data-f="play" data-n="${e}"${dis}>▶ Play</button><button class="btn g" data-f="rev" data-n="${e}"${dis}>Review</button><button class="btn g" data-f="del" data-n="${e}">Delete folder</button></div><p class="bnote">Tap a topic to edit it. Drag a topic down to the topic list to take it out. Drag a folder onto a name in the path above to move it up.</p></div>`}
+else if(N.c){const fs=inC(N.c);
+body=`<div class="fgw" data-dz="cat" data-zn="${N.c}">${fs.length?`<div class="fgd">${fs.map(tile).join("")}</div>`:`<p class="bhint">No folders here yet. Tap + New folder, or drag a topic here to start one.</p>`}${fs.length?'<p class="bnote">Drag a folder onto another folder to put it inside. Drag it onto ⌂ above to take it out of this category.</p>':""}</div>`}
+else{body=`<div class="fgd">${CATS.map(c=>{return `<button class="ft c" data-nav="c:${c}" data-dz="cat" data-zn="${c}"><span class="fi2">🗂️</span><b>${c}</b><small>${catSize(c).length} formula${pl(catSize(c).length)}</small></button>`}).join("")}${lost.map(tile).join("")}</div>${lost.length?'<p class="bnote">Drag a folder onto ESAS, MATH or EE to file it, or onto another folder to put it inside.</p>':""}`}
+box.innerHTML=hdr+nw+body};
+$("#fd").addEventListener("click",e=>{const b=e.target.closest("[data-nav]");if(!b)return;const v=b.dataset.nav,N=window.__nv;if(v==="")N.c=N.f=null;else if(v[0]==="c"){N.c=v.slice(2);N.f=null}else N.f=v.slice(2);window.__fnw=false;fdraw()});
+const frep=(t,c)=>{const r=$("#frep");r.textContent=t;r.className="rep "+(c||"")};
+const flushStale=()=>{if(!window.__stale)return;window.__stale=false;syncSel();if(!run)hub();if(rv.s&&rv.s[0]===FP)rvReset()};
+window.__flush=flushStale;
+const fchanged=()=>{saveT();fdraw();tbarDraw();window.__stale=true};
+const fmk=()=>{const n=$("#fn").value.replace(/["<>&]/g,"").trim();if(!n)return frep("Give the folder a name.","no");if(FL.some(x=>x.toLowerCase()===n.toLowerCase()))return frep("A folder with that name already exists.","no");FL.push(n);if(window.__nv&&window.__nv.f)FPR[n]=window.__nv.f;else if(window.__nv&&CATS.includes(window.__nv.c))FC[n]=window.__nv.c;$("#fn").value="";window.__fnw=false;fchanged();frep("Folder “"+n+"” created. Add topics to it below.","ok")};
+$("#pg-folders").addEventListener("click",e=>{const b=e.target.closest("button[data-f]");if(!b||b.disabled)return;const a=b.dataset.f,n=b.dataset.n;
+if(a==="nw"){window.__fnw=!window.__fnw;fdraw();if(window.__fnw){const i=$("#fn");if(i)i.focus()}}
+else if(a==="mk")fmk();
+else if(a==="del"){const pr=fpar(n),ct=FC[n];FL.forEach(x=>{if(fpar(x)===n){if(pr)FPR[x]=pr;else{delete FPR[x];if(ct)FC[x]=ct}}});TP.forEach(t=>{if(t.f===n){if(pr)t.f=pr;else delete t.f}});FL=FL.filter(x=>x!==n);delete FC[n];delete FPR[n];fchanged();frep("Folder “"+n+"” deleted. Its topics and subfolders were kept.","ok")}
+else if(a==="play"){mode.topic=FP+n;syncSel();startRun("practice");go("play")}
+else if(a==="rev"){rv.s=FP+n;syncSel();rvReset();go("review")}});
+$("#pg-folders").addEventListener("change",e=>{const el=e.target,v=el.value;if(el.dataset.cat!==undefined){if(v)FC[el.dataset.cat]=v;else delete FC[el.dataset.cat];fchanged();frep(v?"“"+el.dataset.cat+"” is now in "+v+".":"“"+el.dataset.cat+"” taken out of its category.","ok");return}if(!v)return;let t,fo;
+if(el.dataset.mv!==undefined){t=TP.find(x=>x.n===el.dataset.mv);fo=v==="__none"?"":v}
+else if(el.dataset.add!==undefined){t=TP.find(x=>x.n===v);fo=el.dataset.add}else return;
+if(!t)return;if(fo)t.f=fo;else delete t.f;fchanged();frep(fo?"“"+t.n+"” is now in “"+fo+"”.":"“"+t.n+"” taken out of its folder.","ok")});
+(()=>{const bank=$("#pg-bank");let d=null;
+const ok=(t,z)=>t==="topic"?(z==="folder"||z==="unf"||z==="cat"):(z==="cat"||z==="nocat"||z==="folder");
+const zoneAt=(x,y)=>{let z=document.elementFromPoint(x,y);z=z&&z.closest("[data-dz]");while(z&&!ok(d.t,z.dataset.dz))z=z.parentElement&&z.parentElement.closest("[data-dz]");return z};
+const clear=()=>{document.querySelectorAll(".ovr").forEach(x=>x.classList.remove("ovr"))};
+const end=()=>{if(d&&d.raf)cancelAnimationFrame(d.raf);if(d&&d.g)d.g.remove();clear();document.querySelectorAll(".bdrag").forEach(x=>x.classList.remove("bdrag"));document.body.classList.remove("dragging");d=null};
+bank.addEventListener("pointerdown",e=>{if(e.button>0)return;const el=e.target.closest("[data-dt]");if(!el)return;const bb=e.target.closest("button,select,input,summary");if(bb&&bb!==el)return;
+d={el,t:el.dataset.dt,n:el.dataset.dn,x:e.clientX,y:e.clientY,on:0,id:e.pointerId,g:null,z:null}});
+document.addEventListener("pointermove",e=>{if(!d||e.pointerId!==d.id)return;
+if(!d.on){if(Math.hypot(e.clientX-d.x,e.clientY-d.y)<6)return;d.on=1;const r=d.el.getBoundingClientRect(),g=d.el.cloneNode(true);g.classList.add("bgh");g.removeAttribute("data-dt");g.style.cssText="width:"+r.width+"px;left:"+r.left+"px;top:"+r.top+"px";document.body.appendChild(g);d.g=g;d.el.classList.add("bdrag");document.body.classList.add("dragging")}
+e.preventDefault();d.g.style.transform="translate("+(e.clientX-d.x)+"px,"+(e.clientY-d.y)+"px) rotate(2deg)";
+d.mx=e.clientX;d.my=e.clientY;if(!d.raf)d.raf=requestAnimationFrame(()=>{if(!d)return;const q=d;q.raf=0;const z=zoneAt(q.mx,q.my);if(z!==q.z){clear();if(z)z.classList.add("ovr");q.z=z}})},{passive:false});
+document.addEventListener("pointerup",e=>{if(!d||e.pointerId!==d.id)return;const x=d,z=x.on?zoneAt(e.clientX,e.clientY):null;if(x.on)window.__dd=Date.now();end();if(z)dropDo(x.t,x.n,z.dataset.dz,z.dataset.zn)});
+document.addEventListener("pointercancel",e=>{if(d&&e.pointerId===d.id)end()});
+document.addEventListener("click",e=>{if(Date.now()-(window.__dd||0)<300){e.stopPropagation();e.preventDefault()}},true);
+const done=(m,c)=>{fchanged();frep(m,c||"ok");toast(m)};
+const dropDo=(t,n,zt,zn)=>{
+if(t==="topic"){const tp=TP.find(x=>x.n===n);if(!tp)return;
+if(zt==="folder"){if(tp.f===zn)return;tp.f=zn;done("“"+n+"” is now in “"+zn+"”.")}
+else if(zt==="unf"){if(!tp.f)return;delete tp.f;done("“"+n+"” taken out of its folder.")}
+else if(zt==="cat"){const fs=FL.filter(x=>!fpar(x)&&FC[x]===zn);
+if(fs.length===1){tp.f=fs[0];done("“"+n+"” is now in “"+fs[0]+"” ("+zn+").")}
+else if(!fs.length){let nm=zn,k=2;while(FL.some(x=>x.toLowerCase()===nm.toLowerCase()))nm=zn+" "+k++;FL.push(nm);FC[nm]=zn;tp.f=nm;done("Made folder “"+nm+"” in "+zn+" and put “"+n+"” in it.")}
+else{frep("Drop it on one of the folders inside "+zn+".","no");toast("Drop it on one of the folders inside "+zn+".")}}}
+else if(t==="folder"){
+if(zt==="folder"){if(n===zn)return;if(fdesc(n).includes(zn)){frep("A folder can’t go inside its own subfolder.","no");toast("A folder can’t go inside its own subfolder.");return}if(fpar(n)===zn)return;FPR[n]=zn;delete FC[n];done("“"+n+"” is now inside “"+zn+"”.")}
+else if(zt==="cat"){if(FC[n]===zn&&!fpar(n))return;delete FPR[n];FC[n]=zn;done("“"+n+"” is now in "+zn+".")}
+else{if(!has(FC,n)&&!fpar(n))return;delete FPR[n];delete FC[n];done("“"+n+"” moved to the top level.")}}};
+})();
+$("#pg-folders").addEventListener("keydown",e=>{if(e.target.id==="fn"&&e.key==="Enter")fmk()});
+let prArm=false;
+const prDraw=()=>{const r=rk(P.xp),dl=dly(),t=P.t,grp=[...TP.map(x=>[x.n,F.filter(f=>f.topic===x.n)]),...FL.map(fo=>["📁 "+fo,F.filter(f=>inSel(f,FP+fo))])].filter(g=>g[1].length);
+$("#pr").innerHTML=`<div class="prh"><span class="big">${r.e}</span><div><h3>${r.n} · Level ${r.i+1}</h3><div class="bar"><i style="width:${r.p}%"></i></div><small>${P.xp} XP${r.next?" · "+(r.next-P.xp)+" XP to "+r.nn:" · top rank reached"}</small></div></div>
+<div class="prg"><div class="pc"><b>${CATS.map(c=>catStreak(c)).join(" / ")}</b>Day streaks (ESAS / MATH / EE)</div><div class="pc"><b>${t.solved}</b>Formulas solved</div><div class="pc"><b>${t.perfect}</b>Flawless solves</div><div class="pc"><b>🔥 ${t.combo}</b>Best combo</div><div class="pc"><b>${mastN()}</b>Formulas mastered</div></div>
+${catPanels()}<h3>Trophies</h3><div class="trophies">${BADGES.map(b=>{const on=!!P.bd[b[0]];return `<div class="tr${on?"":" lock"}"><span class="te">${on?b[1]:"🔒"}</span><div><b>${b[2]}</b>${b[3]}</div></div>`}).join("")}</div>
+<h3>Mastery</h3>${grp.map(g=>{const m=g[1].filter(isM).length;return `<div class="mrow"><b>${escA(g[0])}</b> · ${m}/${g[1].length} mastered<div class="bar m"><i style="width:${Math.round(m/g[1].length*100)}%"></i></div></div>`}).join("")}
+<p><button class="btn g" data-p="reset">${prArm?"Tap again to erase all progress":"Reset progress"}</button></p>`};
+$("#pg-progress").addEventListener("click",e=>{const b=e.target.closest("button[data-p]");if(!b)return;const a=b.dataset.p;
+if(a==="goal"){const o=[3,5,10,15],d=dly();d.g=o[(o.indexOf(d.g)+1)%o.length];saveP();hud();prArm=false;prDraw()}
+else if(a==="reset"){if(!prArm){prArm=true;prDraw();return}prArm=false;P=P0();saveP();hud();prDraw();start()}});
+/* ---- formula list page ---- */
+const lsPath=fo=>{const o=[];for(let x=fo,i=0;x&&i<20;x=fpar(x),i++)o.unshift(x);return o.join(" › ")};
+const lsFo=n=>{const tp=TP.find(x=>x.n===n);return tp&&tp.f&&FL.includes(tp.f)?tp.f:""};
+const lsLab=g=>(g[2]?g[2]+" › ":"")+g[0];
+const lsGroups=()=>{const k=($("#lk").value||"").trim().toLowerCase(),t=$("#lt").value,g=[];
+[...new Set([...TP.map(x=>x.n),...F.map(f=>f.topic)])].forEach(n=>{const l=F.filter(f=>f.topic===n&&inSel(f,t)&&(!k||f.n.toLowerCase().includes(k)));if(l.length)g.push([n,l,lsFo(n)?lsPath(lsFo(n)):""])});
+g.sort((a,b)=>(!a[2])!==(!b[2])?(a[2]?-1:1):(a[2]<b[2]?-1:a[2]>b[2]?1:0));return g};
+const lsDraw=()=>{const sel=$("#lt"),cur=sel.value;
+sel.innerHTML=opts(cur,"All formulas")+(F.some(f=>f.topic==="Built-in")?`<optgroup label="Other">${opt("Built-in","Built-in ("+cntT("Built-in")+")",cur)}</optgroup>`:"");
+const g=lsGroups(),box=$("#ll"),tot=g.reduce((a,x)=>a+x[1].length,0);LSF=g.flatMap(x=>x[1]);let i=0,last=null;
+const nf=new Set(g.map(x=>x[2]).filter(Boolean)).size,hasF=nf>0;
+box.innerHTML=tot?`<p><b>${tot}</b> formulas in <b>${g.length}</b> topic${g.length>1?"s":""}${nf?` across <b>${nf}</b> folder${nf>1?"s":""}`:""}</p>`+g.map(([n,l,p])=>{let h="";if(hasF&&p!==last){const c=g.filter(x=>x[2]===p).reduce((a,x)=>a+x[1].length,0);h=`<h2 class="lsf">${p?"📁 "+esc(p):"Not in a folder"} <small>${c}</small></h2>`}last=p;return h+`<h3 class="lsh${p?" in":""}">${esc(n)} <small>${l.length}</small></h3><ol class="lso">${l.map(f=>`<li><button class="lsn" data-ls="${i++}">${esc(f.n)}</button><span class="ex lsx">${rend(f.t,-1)}</span></li>`).join("")}</ol>`}).join(""):"<p>No formula matches that search.</p>"};
+let LSF=[];
+const lsOpen=i=>{const f=LSF[i];if(!f)return;rv.s=f.topic;rv.k="";$("#rk").value="";syncSel();$("#rs").value=rv.s;rv.l=rvList();rv.i=Math.max(0,rv.l.indexOf(f));rv.f=false;go("review")};
+const ftx=t=>t.map(x=>x==="{"?"(":x==="¦"?")/(":x==="}"?")":x).join("").replace(/\s*([=+−×÷])\s*/g," $1 ").replace(/\(\s*−\s*/g,"(−").replace(/\s+/g," ").trim();
+const lsText=()=>lsGroups().map(g=>{const l=g[1];return lsLab(g)+" ("+l.length+")\n"+l.map((f,j)=>(j+1)+". "+f.n+"  —  "+ftx(f.t)).join("\n")}).join("\n\n");
+const lsSheet=g=>{const tot=g.reduce((a,x)=>a+x[1].length,0);return `<div class="pp" style="font:12px/1.45 Arial,sans-serif;color:#000"><h1 style="font:700 20px Arial;margin:0 0 2px">FORMULA LIST</h1><div style="margin-bottom:10px;color:#444">${tot} formulas</div>${g.map(gr=>{const l=gr[1];return `<h3 style="font:700 13px Arial;margin:12px 0 4px;border-bottom:1.5px solid #000;break-after:avoid">${gr[2]?"📁 ":""}${esc(lsLab(gr))} (${l.length})</h3><table class="lspt">${l.map((f,j)=>`<tr><td class="a">${j+1}.</td><td class="b">${esc(f.n)}</td><td class="c"><span class="ex lsx">${rend(f.t,-1)}</span></td></tr>`).join("")}</table>`}).join("")}</div>`};
+const lsPrint=()=>{const g=lsGroups();if(!g.length){toast("No formulas to print yet.");return}if(nx()){try{nx()(lsName("pdf"),lsPdf(g),"application/pdf","print")}catch(e){toast("Could not make the PDF here.","info")}return}$("#pz").innerHTML=lsSheet(g);window.print()};
+const lsDl=(data,type,name)=>{if(nx()){nx()(name,data,type);return"n"}const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([data],{type}));a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000)};
+const lsName=ext=>{const t=$("#lt").value.replace(/^[\u0001\u0002]/,"");return "formula-list"+(t?"-"+t.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,""):"")+"."+ext};
+const lsFont=px=>`${px}px Arial,"Segoe UI Symbol","DejaVu Sans",sans-serif`;
+const lsBox=(ctx,E,fs)=>{let k=0;const txt=(t,s,pad)=>{ctx.font=lsFont(s);const w=ctx.measureText(t).width+2*(pad||0);return{w,a:s*.78,d:s*.22,draw:(x,y)=>{ctx.font=lsFont(s);ctx.fillText(t,x+(pad||0),y)}}};
+const comp=it=>{const w=it.reduce((a,b)=>a+b.w,0);return{w,a:Math.max(0,...it.map(b=>b.a)),d:Math.max(0,...it.map(b=>b.d)),draw:(x,y)=>{let cx=x;it.forEach(b=>{b.draw(cx,y);cx+=b.w})}}};
+const frac=(n,d,s)=>{const ax=s*.3,gp=s*.12,w=Math.max(n.w,d.w)+s*.3;return{w,a:ax+gp+n.d+n.a,d:-ax+gp+d.a+d.d,draw:(x,y)=>{ctx.lineWidth=Math.max(.6,s*.06);ctx.beginPath();ctx.moveTo(x+1,y-ax);ctx.lineTo(x+w-1,y-ax);ctx.stroke();n.draw(x+(w-n.w)/2,y-ax-gp-n.d);d.draw(x+(w-d.w)/2,y-ax+gp+d.a)}}};
+const seq=s=>{const it=[];while(k<E.length&&E[k]!=="¦"&&E[k]!=="}"){const t=E[k];
+if(t==="{"){k++;const n=seq(s*.92);let d=comp([]);if(E[k]==="¦"){k++;d=seq(s*.92)}if(E[k]==="}")k++;it.push(frac(n,d,s))}
+else if(t==="^"&&/^\d$/.test(E[k+1]||"")&&!/^\d$/.test(E[k+2]||"")){const e=txt(E[k+1],s*.65);it.push({w:e.w,a:e.a+s*.38,d:0,draw:(x,y)=>e.draw(x,y-s*.38)});k+=2}
+else{it.push(txt(t,s,/^[+−×÷=]$/.test(t)?s*.28:t==="∠"?s*.15:0));k++}}return comp(it)};
+let b=seq(fs);return b};
+const lsPdf=g=>{const SC=3,PW=595.28,PH=841.89,M=38,NW=232,FX=312,FW=PW-M-FX;const cvs=[],cxs=[];let ctx,y;
+const np=()=>{const c=document.createElement("canvas");c.width=Math.round(PW*SC);c.height=Math.round(PH*SC);ctx=c.getContext("2d");ctx.scale(SC,SC);ctx.fillStyle="#fff";ctx.fillRect(0,0,PW,PH);ctx.fillStyle="#000";ctx.strokeStyle="#000";ctx.textBaseline="alphabetic";cvs.push(c);cxs.push(ctx);y=M};
+const wrap=(t,w)=>{ctx.font=lsFont(10.5);const out=[];let cur="";t.split(" ").forEach(wd=>{const tr=cur?cur+" "+wd:wd;if(ctx.measureText(tr).width>w&&cur){out.push(cur);cur=wd}else cur=tr});if(cur)out.push(cur);return out};
+const tot=g.reduce((a,x)=>a+x[1].length,0);np();
+ctx.font=lsFont(20).replace(/^/,"bold ");ctx.fillText("FORMULA LIST",M,y+16);ctx.font=lsFont(10.5);ctx.fillStyle="#444";ctx.fillText(tot+" formulas",M,y+32);ctx.fillStyle="#000";y+=44;
+g.forEach(gr=>{const n=lsLab(gr),l=gr[1];if(y+58>PH-M-10)np();else y+=10;ctx.font="bold "+lsFont(12.5);ctx.fillText((n+" ("+l.length+")").toUpperCase(),M,y+12);ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(M,y+18);ctx.lineTo(PW-M,y+18);ctx.stroke();y+=24;
+l.forEach((f,j)=>{let fs=11,fb=lsBox(ctx,f.t,fs);if(fb.w>FW){fs=fs*FW/fb.w;fb=lsBox(ctx,f.t,fs)}const nl=wrap(f.n,NW),nh=nl.length*13,h=Math.max(nh,fb.a+fb.d)+9;
+if(y+h>PH-M-10){np();fb=lsBox(ctx,f.t,fs)}
+ctx.fillStyle="#666";ctx.font=lsFont(9.5);ctx.fillText((j+1)+".",M,y+h/2+3.5);ctx.fillStyle="#000";ctx.font=lsFont(10.5);nl.forEach((t,q)=>ctx.fillText(t,M+22,y+(h-nh)/2+10+q*13));
+ctx.strokeStyle="#000";ctx.lineWidth=.6;fb.draw(FX,y+h/2+(fb.a-fb.d)/2);
+ctx.strokeStyle="#ccc";ctx.lineWidth=.5;ctx.beginPath();ctx.moveTo(M,y+h);ctx.lineTo(PW-M,y+h);ctx.stroke();ctx.strokeStyle="#000";y+=h})});
+cxs.forEach((c,i)=>{c.fillStyle="#777";c.font=lsFont(9);c.textAlign="center";c.fillText((i+1)+" / "+cxs.length,PW/2,PH-20);c.textAlign="left"});
+const imgs=cvs.map(c=>{const b=atob(c.toDataURL("image/jpeg",.92).split(",")[1]),u=new Uint8Array(b.length);for(let q=0;q<b.length;q++)u[q]=b.charCodeAt(q);return{u,w:c.width,h:c.height}});
+const enc=new TextEncoder(),parts=[],off=[];let len=0;const push=x=>{const u=typeof x==="string"?enc.encode(x):x;parts.push(u);len+=u.length};
+const obj=(n,body)=>{off[n]=len;push(n+" 0 obj\n"+body+"\nendobj\n")};
+push("%PDF-1.4\n");obj(1,"<</Type/Catalog/Pages 2 0 R>>");obj(2,"<</Type/Pages/Kids["+imgs.map((_,i)=>(3+3*i)+" 0 R").join(" ")+"]/Count "+imgs.length+">>");
+imgs.forEach((im,i)=>{const pg=3+3*i,ct=pg+1,ig=pg+2,cs="q "+PW+" 0 0 "+PH+" 0 0 cm /Im0 Do Q";
+obj(pg,"<</Type/Page/Parent 2 0 R/MediaBox[0 0 "+PW+" "+PH+"]/Resources<</XObject<</Im0 "+ig+" 0 R>>>>/Contents "+ct+" 0 R>>");
+obj(ct,"<</Length "+cs.length+">>\nstream\n"+cs+"\nendstream");
+off[ig]=len;push(ig+" 0 obj\n<</Type/XObject/Subtype/Image/Width "+im.w+"/Height "+im.h+"/ColorSpace/DeviceRGB/BitsPerComponent 8/Filter/DCTDecode/Length "+im.u.length+">>\nstream\n");push(im.u);push("\nendstream\nendobj\n")});
+const N=3+3*imgs.length,xr=len;push("xref\n0 "+(N-0)+"\n0000000000 65535 f \n");for(let q=1;q<N;q++)push(String(off[q]).padStart(10,"0")+" 00000 n \n");
+push("trailer\n<</Size "+N+"/Root 1 0 R>>\nstartxref\n"+xr+"\n%%EOF");
+const out=new Uint8Array(len);let o=0;parts.forEach(u=>{out.set(u,o);o+=u.length});return out};
+const lsSave=()=>{const g=lsGroups();if(!g.length){toast("No formulas to save yet.");return}try{if(lsDl(lsPdf(g),"application/pdf",lsName("pdf"))!=="n")toast("PDF saved.")}catch(e){toast("Could not make the PDF here. Use Print list and choose Save as PDF.")}};
+const lsSaveTxt=()=>{if(!lsGroups().length){toast("No formulas to save yet.");return}if(lsDl(lsText(),"text/plain;charset=utf-8",lsName("txt"))!=="n")toast("List saved.")};
+$("#lk").addEventListener("input",lsDraw);$("#lt").addEventListener("change",lsDraw);$("#lpr").addEventListener("click",lsPrint);
+$("#lsv").addEventListener("click",lsSave);$("#lst").addEventListener("click",lsSaveTxt);$("#lcp").addEventListener("click",async()=>{const t=lsText();let ok=false;
+if(window.RR&&RR.copyText)ok=await RR.copyText(t);
+if(!ok){try{await navigator.clipboard.writeText(t);ok=true}catch(e){}}
+if(!ok){const a=document.createElement("textarea");a.value=t;a.style.cssText="position:fixed;opacity:0";document.body.appendChild(a);a.select();try{ok=document.execCommand("copy")}catch(x){}a.remove()}
+toast(ok?"List copied.":"Couldn't copy the list.","info")});
+$("#ll").addEventListener("click",e=>{const b=e.target.closest("[data-ls]");if(b)lsOpen(+b.dataset.ls)});
+const PG=["play","bank","review","list","progress"];
+const route=p=>{if(window.__flush)window.__flush();if(p==="folders")p="bank";if(!PG.includes(p)){const h=(location.hash||"").slice(1);p=PG.includes(h)?h:h==="folders"?"bank":"play"}
+PG.forEach(x=>{$("#pg-"+x).hidden=x!==p});$("#stats").hidden=p!=="play";
+document.querySelectorAll(".nav button").forEach(b=>{const on=b.dataset.go===p;b.classList.toggle("on",on);if(on)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current")});
+if(p==="play"&&!run)hub();if(p==="review")rvDraw();if(p==="list")lsDraw();if(p==="bank")fdraw();if(p==="progress"){prArm=false;prDraw()}window.scrollTo(0,0)};
+const go=p=>{try{if(location.hash.slice(1)!==p)location.hash=p}catch(e){}route(p)};
+document.addEventListener("click",e=>{const b=e.target.closest("[data-go]");if(b)go(b.dataset.go)});
+window.addEventListener("hashchange",()=>route());
+route();
+const check=()=>{if(stage!==1)return;if(!ed.e.length)return note("Type the formula first.","no");
+if(same(lin(ed.e),lin(cur.t))){gain(10*mult());sfx.ok();stage=2;draw()}else{rm++;streak=0;stats();sfx.bad();shake();note("Not equal yet. Check the symbols, powers, brackets and which side the = sits on.","no")}};
+const reveal=()=>{if(stage===3)return;streak=0;rvl.add(cur.n);if(run&&run.type!=="practice")grade(cur,false);if(deck.indexOf(cur,i+1)<0)deck.push(cur);saveP();ed.e=cur.t.slice();ed.pos=ed.e.length;stage=3;draw("Memorise it. It comes back later in this run and you must type it from memory.","no")};
+const check2=()=>{let pts=0,all=true;const u=$("#u");if(u){const uok=cur.u.includes(norm(u.value));u.className="tx "+(uok?"ok":"no");if(uok)pts+=5;else all=false}
+card.querySelectorAll("[data-pu]").forEach(x=>{const p=cur.p[x.dataset.pu],ok=p.u.includes(norm(x.value));x.className="tx "+(ok?"ok":"no");if(ok)pts+=2;else all=false});
+if(all){gain(pts*mult());streak++;const r=solved((pts+10)*mult());stats();sfx.ok();if(streak>=3)boom(streak>=10?90:streak>=5?50:25);note("All correct! "+PRAISE[Math.random()*PRAISE.length|0]+" +"+r.t+" this round."+r.x,"ok");card.querySelector("[data-a=ck2]").outerHTML='<button class="btn" data-a="nx">Next formula</button>';card.querySelector("[data-a=sh]").remove()}
+else{rm++;streak=0;stats();sfx.bad();note("Some answers are off. Fix the red ones and check again, or show answers.","no")}};
+const endPractice=()=>{const n=deckN,pc=n?RS.clean/n:0,st=pc>=.9?3:pc>=.6?2:1,kb=(mode.topic||"all")+"|"+mode.level,prev=P.b[kb]||0,nb=score>prev;
+if(nb)P.b[kb]=score;P.t.rounds++;if(st===3){P.t.stars3++;boom(80);sfx.big()}addXp(10*st);chkBadges();saveP();stats();
+const r=rk(P.xp),up=mode.level==="easy"?"medium":mode.level==="medium"?"hard":"",msg=["","Good start. Every run makes it stick.","Nice! Nearly flawless.","Flawless! You own this set. 🏆"][st];
+card.innerHTML=`<div class="rt end"><div class="stars" aria-label="${st} of 3 stars">${"★".repeat(st)}<span>${"★".repeat(3-st)}</span></div><h2 class="name">Practice complete</h2><p class="sub">${msg} Practice doesn’t count toward streaks or spacing.</p><div class="pillrow"><div class="pl2"><b>${score}</b>Score${nb?" · new best!":prev?" · best "+prev:""}</div><div class="pl2"><b>${RS.clean}/${n}</b>Clean solves</div><div class="pl2"><b>🔥 ${RS.combo}</b>Best combo</div><div class="pl2"><b>+${P.xp-RS.xp0}</b>XP earned</div></div>${RS.bd.length?`<p class="sub">New badges: ${RS.bd.map(x=>x[1]+" "+x[2]).join(" · ")}</p>`:""}<div class="bar"><i style="width:${r.p}%"></i></div><p class="sub">${r.e} ${r.n}${r.next?" · "+(r.next-P.xp)+" XP to "+r.nn:" · top rank!"}</p><button class="btn" data-a="rs">Practice again</button>${up?`<button class="btn g" data-lv="${up}">Try ${LV[up][0]} (×${LV[up][1]} points)</button>`:""}<button class="btn g" data-a="hub">Back to runs</button></div>`};
+const next=()=>{i++;if(i<deck.length)return round();if(!run||run.type==="practice")return endPractice();if(run.type==="daily")return endDaily();endBoss()};
+const endRun=()=>{if(!run&&!deck.length)return;if(!confirm("End this run now?"))return;clearTimeout(autoT);if(run&&run.match){if(RS.done>0)return endMatch();M=null;return hub()}
+if(run&&run.type!=="practice"){toast("Run ended. Your answers so far are saved.");return hub()}
+if(RS.done>0){deckN=RS.done;return endPractice()}
+hub()};
+const addTyped=()=>{const x=$("#ty"),v=x.value.trim();if(!v||stage!==1)return;ins([({"*":"×","/":"÷","-":"−"})[v]||symFor(v)]);x.value="";lcd()};
+const auto2=()=>{if(stage!==2||!card.querySelector("[data-a=ck2]"))return;const u=$("#u"),ps=[...card.querySelectorAll("[data-pu]")];if(!u&&!ps.length)return;
+let all=true;const mark=(el,arr)=>{const ok=arr.includes(norm(el.value));el.className="tx"+(ok?" ok":"");if(!ok)all=false};
+if(u)mark(u,cur.u);ps.forEach(x=>mark(x,cur.p[x.dataset.pu].u));if(all)check2()};
+card.addEventListener("input",e=>{if(e.target.id==="u"||e.target.dataset.pu!==undefined)auto2()});
+card.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;const d=b.dataset;
+if(d.lv){if(run&&run.type!=="practice")return;if(mode.level!==d.lv){mode.level=d.lv;if(run)startRun("practice");else hub()}return}
+if(d.k||d.t)b.blur();if(d.k)tap(d.k);else if(d.t){if(stage===1){ins([d.t]);lcd()}}
+else if(d.a==="end")endRun();else if(d.a==="ty")addTyped();else if(d.a==="chk")check();else if(d.a==="clr"){ed.e=[];ed.pos=0;lcd()}else if(d.a==="skp"||d.a==="sh")reveal();else if(d.a==="hint")hint();else if(d.a==="rdaily")startRun("daily",d.c);else if(d.a==="rboss")startRun("boss",d.c,d.r==="1");else if(d.a==="rprac")startRun("practice");else if(d.a==="hub")hub();
+else if(d.a==="ck2")check2();else if(d.a==="nx")next();else if(d.a==="rs")startRun("practice");else if(d.a==="chip"){$("#u").value=d.u;auto2()}});
+const KS=()=>new Set([...cur.t.filter(isSym),...pool]);
+const SUB={"0":"₀","1":"₁","2":"₂","3":"₃","4":"₄","5":"₅","6":"₆","7":"₇","8":"₈","9":"₉","r":"ᵣ","i":"ᵢ","x":"ₓ","n":"ₙ","m":"ₘ","a":"ₐ","e":"ₑ","o":"ₒ","p":"ₚ","s":"ₛ","t":"ₜ","u":"ᵤ","v":"ᵥ","k":"ₖ","l":"ₗ","h":"ₕ","j":"ⱼ"};
+const GA=[["epsilon","ε"],["omega","ω"],["lambda","λ"],["theta","θ"],["sigma","σ"],["gamma","γ"],["alpha","α"],["delta","δ"],["Delta","Δ"],["Sigma","Σ"],["Omega","Ω"],["Theta","Θ"],["Phi","Φ"],["beta","β"],["rho","ρ"],["tau","τ"],["phi","φ"],["eps","ε"],["eta","η"],["mu","μ"]];
+const canon=t=>{for(const[a,g]of GA)if(t.startsWith(a)){t=g+t.slice(a.length);break}const c=[...t];return c[0]+c.slice(1).map(x=>SUB[x]||x).join("")};
+const symMap=()=>{const M=new Map();KS().forEach(t=>M.set(canon(t),t));return M};
+const symFor=v=>{const t=symMap().get(canon(v));if(t)return t;return GA.some(([a])=>v.startsWith(a))?canon(v):v};
+const mergeSym=()=>{const M=symMap();for(let n=9;n>=2;n--){if(ed.pos<n)continue;const seg=ed.e.slice(ed.pos-n,ed.pos);if(!seg.every(x=>x.length===1&&/^[\p{L}\p{N}]$/u.test(x)))continue;const tok=M.get(canon(seg.join("")));if(tok){ed.e.splice(ed.pos-n,n,tok);ed.pos-=n-1;return}}};
+const typeCh=str=>{if(stage!==1)return;const M={"*":"×","/":"÷","-":"−","×":"×","÷":"÷","−":"−"};
+for(const c of str){if(M[c])ins([M[c]]);else if("+().=^".includes(c))ins([c]);else if(c==="²"||c==="³")ins(["^",c==="²"?"2":"3"]);else if(c==="\\"||c==="√")ins(["√("]);else if(c==="_"){}else if(/\d/.test(c)){ins([c]);mergeSym()}else if(/\p{L}/u.test(c)){ins([c]);mergeSym()}}
+note("");lcd()};
+document.addEventListener("keydown",e=>{if(stage!==1||$("#pg-play").hidden||e.ctrlKey||e.metaKey||e.altKey)return;
+const t=e.target;if(t&&t.id!=="kb"&&/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))return;const k=e.key;
+if(k.length===1){if(k!==" ")typeCh(k);return e.preventDefault()}
+const C={Backspace:"del",ArrowLeft:"lt",ArrowRight:"rt",ArrowUp:"up",ArrowDown:"dn",Home:"hm",End:"en",Enter:"chk",Escape:"ac"}[k];
+if(!C)return;e.preventDefault();note("");cmd(C);lcd()});
+document.addEventListener("input",e=>{if(e.target.id!=="kb")return;const v=e.target.value;e.target.value="\u200b";if(stage!==1)return;if(v==="")cmd("del");else typeCh(v.split("\u200b").join(""));lcd()});
+card.addEventListener("click",e=>{const L=e.target.closest(".disp");if(!L||stage!==1)return;const sp=e.target.closest("[data-ti]");
+if(sp){const r=sp.getBoundingClientRect();ed.pos=+sp.dataset.ti+(e.clientX>r.left+r.width/2?+(sp.dataset.tn||1):0)}
+else{const q=e.target.closest("[data-q]");ed.pos=q&&+q.dataset.q>=0?+q.dataset.q:ed.e.length}
+lcd();const kb=$("#kb");if(kb&&(KB.on||!KB.touch))kb.focus({preventScroll:true})});
+card.addEventListener("keydown",e=>{if(e.key!=="Enter")return;if(e.target.id==="ty")addTyped();else if(e.target.dataset.p!==undefined||e.target.id==="u")check2()});
+/* ---- phone keyboard control ----
+   On a touch screen the app's own keypad is the input, so the phone keyboard stays hidden: every typing field
+   on the play screen gets inputmode="none" (plus readonly as a second lock, for keyboards that ignore inputmode).
+   The ⌨ button in the calculator display switches the phone keyboard on and off. Not touch (laptop): nothing changes. */
+const KB={on:false,touch:false,base:innerHeight,w:innerWidth,seen:false};
+try{KB.touch=!!(window.RR&&window.RR.native)||matchMedia("(pointer:coarse)").matches}catch(e){}
+if(KB.touch)document.documentElement.classList.add("rr-touch");
+const kbVis=()=>KB.on&&(KB.seen?innerHeight<KB.base-120:true);
+window.addEventListener("resize",()=>{if(innerWidth!==KB.w){KB.w=innerWidth;KB.base=innerHeight;return}if(innerHeight>KB.base)KB.base=innerHeight;if(KB.on&&innerHeight<KB.base-120)KB.seen=true});
+const kbFocus=()=>{const t=stage===1?$("#kb"):($("#u")||card.querySelector("[data-pu]"));if(t&&!t.readOnly){try{t.blur();t.focus({preventScroll:true})}catch(e){}}};
+function kbApply(redraw){
+  document.querySelectorAll("#pg-play input,#pg-play textarea,#pg-play [contenteditable=true]").forEach(el=>{
+    el.setAttribute("inputmode",KB.on?"text":"none");
+    if(KB.touch){if(KB.on)el.removeAttribute("readonly");else el.setAttribute("readonly","")}
+    if(el.id==="ty")el.placeholder=KB.touch&&!KB.on?"tap ⌨ to type a symbol":"type a symbol, e.g. σ or Vrms"});
+  const b=$("#kbt");if(!b)return;
+  b.classList.toggle("on",KB.on);b.setAttribute("aria-pressed",KB.on?"true":"false");b.title=KB.on?"Hide the phone keyboard":"Show the phone keyboard";
+  const need=KB.touch&&!KB.on&&stage===2&&!!(card.querySelector("#u,[data-pu]"));
+  b.classList.toggle("need",need);
+  if(need){const m=$("#msg");if(m&&!m.textContent)note("Tap ⌨ to type the unit.")}
+  if(redraw&&KB.on&&KB.touch)kbFocus()}
+const kbToggle=()=>{
+  if(kbVis()){KB.on=false;kbApply();const a=document.activeElement;if(a&&a.blur)a.blur();return}
+  KB.on=true;kbApply();kbFocus()};
+/* capture phase: the display's own click handler would otherwise also run (it moves the cursor and focuses the typing field) */
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("#kbt");if(!b)return;e.stopPropagation();e.preventDefault();kbToggle()},true);
+/* with the phone keyboard on, tapping a keypad key must not take focus away (that would close the keyboard) */
+document.addEventListener("mousedown",e=>{if(KB.on&&KB.touch&&e.target.closest&&e.target.closest("#card .ck,#card .sy,#card .typ .btn"))e.preventDefault()});
+$("#snd").textContent=SND?"🔊":"🔇";$("#snd").addEventListener("click",()=>{SND=!SND;try{localStorage.setItem("ff_snd",SND?"1":"0")}catch(e){}$("#snd").textContent=SND?"🔊":"🔇";if(SND)sfx.ok()});
+/* ---- Match it: matching-style practice (name to formula, or formula to unit) ---- */
+function fmtUI(){const g=mode.game==="match",t=mode.mt==="units"?"units":"names";
+return `<div class="tl"><span>Format</span><div class="lv" role="group" aria-label="Practice format"><button data-mg="type" class="${g?"":"on"}" aria-pressed="${!g}" title="Type the whole formula from memory">⌨ Type it</button><button data-mg="match" class="${g?"on":""}" aria-pressed="${g}" title="Match names to formulas, like a matching-type exam">🔗 Match it</button></div>${g?`<span>Match</span><div class="lv" role="group" aria-label="What to match"><button data-mt="names" class="${t==="names"?"on":""}" aria-pressed="${t==="names"}">Name → Formula</button><button data-mt="units" class="${t==="units"?"on":""}" aria-pressed="${t==="units"}">Formula → Unit</button></div>`:""}</div>`}
+try{mode.game=localStorage.getItem("ff_game")==="match"?"match":"type"}catch(e){mode.game="type"}
+mode.mt=mode.mt||"names";
+let M=null;
+const mtRhs=f=>{const k=f.t.indexOf("=");return k<0?f.t:f.t.slice(k+1)};
+const mtKey=f=>mode.mt==="units"?(f.ud||""):mtRhs(f).join(" ");
+const mtBatches=L=>{const per={easy:4,medium:5,hard:6}[mode.level]||5;
+let pool=shuf(mode.mt==="units"?L.filter(f=>f.ud):L).slice(0,12);const bs=[];
+while(pool.length){const cur=[],ks=new Set(),rest=[];
+for(const f of pool){const k=mtKey(f);if(cur.length<per&&!ks.has(k)){cur.push(f);ks.add(k)}else rest.push(f)}
+bs.push(cur);pool=rest}
+return bs.filter(b=>b.length>1)};
+const mtSide=(s,f)=>{const u=mode.mt==="units";
+if(s==="L")return u?`<small>${esc(f.n)}</small><div class="ex">${rend(mtRhs(f),-1)}</div>`:`<b>${esc(f.n)}</b>`;
+return u?`<b>${esc(f.ud)}</b>`:`<div class="ex">${rend(mtRhs(f),-1)}</div>`};
+const mtGrid=()=>{const u=mode.mt==="units";
+const cls=(s,x,j)=>"mi"+(x.ok?" ok":"")+((s==="L"?M.sl:M.sr)===j?" sel":"")+(M.bad&&M.bad[s==="L"?0:1]===j?" bad":"");
+const col=(s,A,h)=>`<div class="mtc"><div class="gk">${h}</div>${A.map((x,j)=>`<button class="${cls(s,x,j)}" data-mi="${s}${j}"${x.ok?" disabled":""}>${mtSide(s,x.f)}</button>`).join("")}</div>`;
+return col("L",M.L,u?"Formulas":"Names")+col("R",M.R,u?"Units":"Formulas")};
+const mtProg=()=>`Set ${M.b+1} of ${M.bs.length} · ${M.L.filter(x=>x.ok).length}/${M.L.length} matched`;
+const mtPaint=(m,c)=>{const g=$("#mtg"),p=$("#mtp");if(!g||!M)return;g.innerHTML=mtGrid();if(p)p.textContent=mtProg();note(m||"",c)};
+const mtDraw=()=>{stats();const u=mode.mt==="units",tt={easy:"4 pairs per set",medium:"5 pairs per set",hard:"6 pairs per set, plus 2 decoys"};
+card.innerHTML=`<div class="gm"><div class="rt mtw"><h2 class="name">Match it</h2><p class="sub">${u?"Tap a formula, then tap the unit it gives.":"Tap a name, then tap its formula (the part after the “=”)."} Tap a wrong pick again to deselect it.</p>
+<div class="tl"><span>Level</span><div class="lv" role="group" aria-label="Level">${Object.entries(LV).map(([k,v])=>`<button data-lv="${k}" class="${mode.level===k?"on":""}" aria-pressed="${mode.level===k}" title="${tt[k]}">${v[0]} <small>×${v[1]}</small></button>`).join("")}</div></div>
+<div class="tl"><span>Match</span><div class="lv" role="group" aria-label="What to match"><button data-mt="names" class="${u?"":"on"}" aria-pressed="${!u}">Name → Formula</button><button data-mt="units" class="${u?"on":""}" aria-pressed="${u}">Formula → Unit</button></div></div>
+<div class="msg" id="msg"></div><p class="mtp" id="mtp">${mtProg()}</p><div class="mtg" id="mtg">${mtGrid()}</div>
+<div class="tb"><button class="btn g" data-a="end">■ End</button></div></div></div>`};
+const mtLoad=k=>{M.b=k;const fs=M.bs[k];
+M.L=shuf(fs.map(f=>({f,key:mtKey(f),ok:0,miss:0})));
+let R=fs.map(f=>({f,key:mtKey(f),ok:0}));
+if(mode.level==="hard"){const have=new Set(R.map(x=>x.key)),ex=[];
+shuf(F).forEach(f=>{const kk=mtKey(f);if(ex.length<2&&kk&&!have.has(kk)){have.add(kk);ex.push({f,key:kk,ok:0})}});R=R.concat(ex)}
+M.R=shuf(R);M.sl=M.sr=null;M.bad=null;M.lock=0;mtDraw()};
+const startMatch=L=>{run={type:"practice",match:1};const bs=mtBatches(L);
+if(!bs.length){toast(mode.mt==="units"?"You need at least 2 formulas with units saved to play this match.":"You need at least 2 formulas to play a match.");return hub()}
+const all=bs.flat();M={bs,all};deck=all;deckN=all.length;i=0;stage=0;mtLoad(0)};
+const mtPick=id=>{if(!M||M.lock)return;const s=id[0],j=+id.slice(1),it=(s==="L"?M.L:M.R)[j];if(!it||it.ok)return;
+if(s==="L")M.sl=M.sl===j?null:j;else M.sr=M.sr===j?null:j;
+if(M.sl!==null&&M.sr!==null){const l=M.L[M.sl],r=M.R[M.sr];
+if(l.key===r.key){l.ok=r.ok=1;const clean=!l.miss;RS.done++;if(clean){RS.clean++;P.t.perfect++}
+streak++;RS.combo=Math.max(RS.combo,streak);P.t.solved++;P.t.combo=Math.max(P.t.combo,streak);
+const bonus=streak>=3?Math.min(streak,10)*mult():0,pts=(clean?8:4)*mult()+bonus;gain(pts);i=RS.done;sfx.ok();M.sl=M.sr=null;stats();chkBadges();
+if(M.L.every(x=>x.ok)){M.lock=1;mtPaint("Set complete ✓ +"+pts,"ok");if(streak>=3)boom(25);
+setTimeout(()=>{if(!M||!run||!run.match)return;if(M.b+1<M.bs.length)mtLoad(M.b+1);else endMatch()},800);return}
+mtPaint("Matched! +"+pts+(streak>=2?" 🔥 "+streak+" in a row":""),"ok");return}
+l.miss=1;streak=0;stats();sfx.bad();M.bad=[M.sl,M.sr];M.lock=1;mtPaint("Not a match. Try again.","no");
+const g=$("#mtg");if(g){g.classList.remove("shake");void g.offsetWidth;g.classList.add("shake")}
+setTimeout(()=>{if(!M)return;M.bad=null;M.sl=M.sr=null;M.lock=0;mtPaint("","")},550);return}
+mtPaint("","")};
+const endMatch=()=>{const n=Math.max(RS.done,1),pc=RS.clean/n,st=pc>=.9?3:pc>=.6?2:1,kb=(mode.topic||"all")+"|"+mode.level+"|match-"+(mode.mt||"names"),prev=P.b[kb]||0,nb=score>prev;
+if(nb)P.b[kb]=score;P.t.rounds++;if(st===3){P.t.stars3++;boom(80);sfx.big()}addXp(10*st);chkBadges();saveP();stats();M=null;
+const r=rk(P.xp),up=mode.level==="easy"?"medium":mode.level==="medium"?"hard":"",msg=["","Good start. Every run makes it stick.","Nice! Nearly flawless.","Flawless! You matched them all. 🏆"][st];
+card.innerHTML=`<div class="rt end"><div class="stars" aria-label="${st} of 3 stars">${"★".repeat(st)}<span>${"★".repeat(3-st)}</span></div><h2 class="name">Matching complete</h2><p class="sub">${msg} Practice doesn’t count toward streaks or spacing.</p><div class="pillrow"><div class="pl2"><b>${score}</b>Score${nb?" · new best!":prev?" · best "+prev:""}</div><div class="pl2"><b>${RS.clean}/${RS.done}</b>First-try matches</div><div class="pl2"><b>🔥 ${RS.combo}</b>Best combo</div><div class="pl2"><b>+${P.xp-RS.xp0}</b>XP earned</div></div>${RS.bd.length?`<p class="sub">New badges: ${RS.bd.map(x=>x[1]+" "+x[2]).join(" · ")}</p>`:""}<div class="bar"><i style="width:${r.p}%"></i></div><p class="sub">${r.e} ${r.n}${r.next?" · "+(r.next-P.xp)+" XP to "+r.nn:" · top rank!"}</p><button class="btn" data-a="rs">Match again</button>${up?`<button class="btn g" data-lv="${up}">Try ${LV[up][0]} (×${LV[up][1]} points)</button>`:""}<button class="btn g" data-mg="type">Switch to typing</button><button class="btn g" data-a="hub">Back to runs</button></div>`};
+card.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;const d=b.dataset;
+if(d.mi!==undefined)return mtPick(d.mi);
+if(d.mg){mode.game=d.mg;try{localStorage.setItem("ff_game",d.mg)}catch(x){}if(run&&run.match){M=null;run=null}return hub()}
+if(d.mt){mode.mt=d.mt;if(run&&run.match)startRun("practice");else hub()}});
+/* ---- warnings, per-formula editing in Review ---- */
+function warnUI(){const bad=TP.filter(t=>cntT(t.n)&&!(t.f&&fcat(t.f)));if(!bad.length)return"";const n=bad.reduce((a,t)=>a+cntT(t.n),0);
+return `<div class="warn">⚠ ${n} formula${n===1?"":"s"} in ${bad.length} topic${bad.length===1?"":"s"} won’t count toward streaks or bosses (${bad.slice(0,4).map(t=>escA(t.n)).join(", ")}${bad.length>4?"…":""}). Put each topic in a folder, then give that folder a category.<button class="btn g" data-go="folders">Sort them into folders</button></div>`}
+const rvEd=c=>{const e=rv.ed;if(!e||e.n!==c.n)return"";
+return `<div class="edb"><p class="fe">One line: <code>name ; formula ; accepted units ; unit shown ; symbol units</code>. Renaming keeps your progress.</p><textarea id="edt" spellcheck="false">${escA(e.t)}</textarea><div><button class="btn" data-e="save">Save</button><button class="btn g" data-e="cancel">Cancel</button><button class="btn g" data-e="del">Delete formula</button></div><div class="rep ${e.c||""}">${escA(e.m||"")}</div></div>`};
+const rvLine=c=>{const tp=TP.find(t=>t.n===c.topic);if(!tp)return null;const L=tp.t.split(/\r?\n/);
+const nm=l=>{l=l.trim();if(!l||/^(#|\/\/)/.test(l))return null;if(l[0]==="["){try{return String(JSON.parse(l.replace(/,\s*$/,""))[0]).trim()}catch(x){return null}}return(l.includes("\t")?l.split("\t"):l.split(";"))[0].trim()};
+const k=L.findIndex(l=>nm(l)===c.n);return k<0?null:{tp,L,k}};
+const renameF=(a,b)=>{if(has(P.bx,a)&&!has(P.bx,b)){P.bx[b]=P.bx[a];delete P.bx[a]}
+CATS.forEach(c=>{const h=P.hist[c][dayN()],B=P.boss[c];[h,B].forEach(o=>{if(o&&o.ans&&has(o.ans,a)){o.ans[b]=o.ans[a];delete o.ans[a]}})});saveP()};
+const rvAfter=nn=>{saveT();applyAll();tdraw();start();const i0=rv.i;rv.l=rvList();rv.i=nn?Math.max(0,rv.l.findIndex(f=>f.n===nn)):Math.min(i0,Math.max(0,rv.l.length-1));rv.f=false;rvDraw();toast(nn?"Formula saved.":"Formula deleted.")};
+const rvFail=(t,m)=>{rv.ed.t=t;rv.ed.m=m;rv.ed.c="no";rvDraw()};
+$("#rv").addEventListener("click",e=>{const b=e.target.closest("[data-e]");if(!b)return;const c=rv.l[rv.i],a=b.dataset.e;if(!c)return;
+if(a==="cancel"){rv.ed=null;return rvDraw()}
+const r=rvLine(c);if(a==="open"){if(!r)return toast("Couldn’t find this formula in its topic.");rv.ed={n:c.n,t:r.L[r.k].trim()};return rvDraw()}
+if(!r){rv.ed=null;return rvDraw()}
+if(a==="del"){if(!confirm("Delete “"+c.n+"” from its topic?"))return;r.L.splice(r.k,1);r.tp.t=r.L.join("\n");rv.ed=null;return rvAfter(null)}
+if(a==="save"){const t=$("#edt").value.trim(),p=parseBank(t);if(p.items.length!==1)return rvFail(t,p.errs.join("\n")||"Enter exactly one formula line.");
+const nn=p.items[0].n;if(nn!==c.n&&F.some(f=>f.n.toLowerCase()===nn.toLowerCase()))return rvFail(t,"Another formula already has that name.");
+r.L[r.k]=t;r.tp.t=r.L.join("\n");if(nn!==c.n)renameF(c.n,nn);rv.ed=null;rvAfter(nn)}});
+$("#rk").addEventListener("input",e=>{rv.k=e.target.value;rv.ed=null;rvReset()});
+/* ---- minimal UI helpers ---- */
+const LAP=matchMedia("(orientation:landscape) and (min-width:900px) and (min-height:521px)");
+LAP.addEventListener&&LAP.addEventListener("change",()=>{const d=document.querySelector("details.greek");if(d)d.open=LAP.matches||!!window.__gk});
+function tidy(){const d0=card.querySelector(".dev");if(!d0)return;const k=[...d0.querySelectorAll(":scope>.kp")];if(k.length<9)return;
+const g=d0.querySelector(":scope>.gk");if(g)g.remove();
+const d=document.createElement("details");d.className="greek";d.innerHTML="<summary>Greek letters</summary>";
+[k[5],k[6],k[7]].forEach(x=>d.appendChild(x));if(window.__gk||LAP.matches)d.open=true;d.addEventListener("toggle",()=>{if(!LAP.matches)window.__gk=d.open});k[8].before(d)}
+/* ---- scope picker: Categories > Folders > Topics, like the file manager ---- */
+(()=>{const IDS=["ts","rs"],ST={ts:[],rs:[]};let open=null;
+const pan=document.createElement("div");pan.id="pkp";pan.hidden=true;document.body.appendChild(pan);
+const lab=v=>!v?"All formulas":v[0]==="\u0002"?"🗂️ "+v.slice(1):v[0]===FP?"📁 "+v.slice(1):"📄 "+v;
+const chain=f=>{const o=[];for(let x=f;x&&o.length<50;x=fpar(x))o.unshift(x);return o};
+const pathOf=v=>{if(!v||v[0]==="\u0002")return[];const f=v[0]===FP?v.slice(1):(TP.find(t=>t.n===v)||{}).f;if(!f||!FL.includes(f))return[];const ch=chain(f),c=fcat(f),a=[];if(CATS.includes(c)&&catSize(c).length)a.push("c:"+c);(v[0]===FP?ch.slice(0,-1):ch).forEach(x=>a.push("f:"+x));return a};
+const row=(k,v,ico,txt,n,cur)=>`<button type="button" class="pr${cur?" cur":""}" data-pk="${k}" data-v="${escA(v)}"><span class="pi">${ico}</span><span class="pt">${escA(txt)}</span><em>${n}</em>${k==="in"?"<i>›</i>":cur?"<i>✓</i>":""}</button>`;
+const build=id=>{const cur=$("#"+id).value,P=ST[id],top=P[P.length-1]||"";
+let h=`<div class="pkh">${P.length?'<button type="button" class="pr bk0" data-pk="back">‹ Back</button>':""}<span>${["All formulas"].concat(P.map(x=>x.slice(2))).map(escA).join(" › ")}</span></div>`;
+if(!top){h+=row("sel","","📚","All formulas",F.length,cur==="");
+CATS.filter(c=>catSize(c).length).forEach(c=>{h+=row("in","c:"+c,"🗂️",c,catSize(c).length)});
+FL.filter(x=>!fpar(x)&&!CATS.includes(FC[x])).forEach(x=>{h+=row("in","f:"+x,"📁",x,cntF(x))});
+TP.filter(t=>!t.f||!FL.includes(t.f)).forEach(t=>{h+=row("sel",t.n,"📄",t.n,cntT(t.n),cur===t.n)})}
+else if(top[0]==="c"){const c=top.slice(2);h+=row("sel","\u0002"+c,"🗂️","Whole "+c,catSize(c).length,cur==="\u0002"+c);FL.filter(x=>!fpar(x)&&FC[x]===c).forEach(x=>{h+=row("in","f:"+x,"📁",x,cntF(x))})}
+else{const f=top.slice(2);h+=row("sel",FP+f,"📁","Whole folder",cntF(f),cur===FP+f);FL.filter(x=>fpar(x)===f).forEach(x=>{h+=row("in","f:"+x,"📁",x,cntF(x))});TP.filter(t=>t.f===f).forEach(t=>{h+=row("sel",t.n,"📄",t.n,cntT(t.n),cur===t.n)})}
+pan.innerHTML=h;pan.scrollTop=0};
+const place=id=>{const b=document.querySelector('.pkb[data-pkid="'+id+'"]');if(!b)return;const r=b.getBoundingClientRect(),w=Math.min(360,innerWidth-16);pan.style.width=w+"px";pan.style.left=Math.max(8,Math.min(r.left,innerWidth-w-8))+"px";pan.style.top=(r.bottom+6)+"px";pan.style.maxHeight=Math.max(200,Math.min(innerHeight*.6,innerHeight-r.bottom-16))+"px"};
+const close=()=>{open=null;pan.hidden=true;document.querySelectorAll(".pkb").forEach(b=>b.setAttribute("aria-expanded","false"))};
+const sync=()=>{IDS.forEach(id=>{const sel=$("#"+id),l=document.querySelector('.pkb[data-pkid="'+id+'"] .pkl');if(sel&&l)l.textContent=lab(sel.value)});if(open&&!pan.hidden)build(open)};
+IDS.forEach(id=>{const sel=$("#"+id);if(!sel)return;const w=document.createElement("span");w.className="pkw";w.innerHTML=`<button type="button" class="pkb" data-pkid="${id}" aria-haspopup="true" aria-expanded="false"><span class="pkl"></span><i>▾</i></button>`;sel.insertAdjacentElement("afterend",w)});
+document.addEventListener("click",e=>{const t=e.target.closest(".pkb");
+if(t){const id=t.dataset.pkid;if(open===id&&!pan.hidden)return close();open=id;ST[id]=pathOf($("#"+id).value);build(id);pan.hidden=false;place(id);t.setAttribute("aria-expanded","true");return}
+const r=e.target.closest("[data-pk]");
+if(r&&pan.contains(r)){const k=r.dataset.pk,v=r.dataset.v;if(k==="back")ST[open].pop();else if(k==="in")ST[open].push(v);else{const sel=$("#"+open);sel.value=v;close();sel.dispatchEvent(new Event("change",{bubbles:true}));sync();return}build(open);return}
+if(!pan.hidden&&!pan.contains(e.target))close()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!pan.hidden){const id=open;close();const b=document.querySelector('.pkb[data-pkid="'+id+'"]');if(b)b.focus()}});
+addEventListener("resize",()=>{if(!pan.hidden)place(open)});addEventListener("scroll",e=>{if(!pan.hidden&&!pan.contains(e.target))close()},true);
+window.__pk={sync};sync()})();
+try{if(localStorage.getItem("ff_help")==="1")document.body.classList.add("help")}catch(e){}
+$("#hlp").addEventListener("click",()=>{const on=document.body.classList.toggle("help");try{localStorage.setItem("ff_help",on?"1":"0")}catch(e){}});
+document.addEventListener("click",e=>{const m=$(".mn");if(m&&m.open&&!m.contains(e.target))m.open=false});
+start();
+</script>
+<script>
+window.__rrStarted=false;
+window.__rrStart=function(){if(window.__rrStarted)return;window.__rrStarted=true;
+var s=document.createElement("script");s.text=document.getElementById("rr-main").textContent;document.body.appendChild(s);
+try{if(window.RR&&window.RR.afterStart)window.RR.afterStart()}catch(e){console.error(e)}};
+</script>
+<script src="rr-native.js" onerror="window.__rrStart()"></script>
+<script>setTimeout(function(){window.__rrStart()},6000)</script>
+</body></html>
