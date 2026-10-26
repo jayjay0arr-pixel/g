@@ -1,0 +1,88 @@
+name: Build APK
+
+on:
+  push:
+  workflow_dispatch:
+
+concurrency:
+  group: build-apk-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Install npm packages
+        run: |
+          if [ -f package-lock.json ]; then npm ci; else npm install; fi
+
+      - name: Fonts and PDF libraries into www/
+        run: npm run prepare-web
+
+      - name: Create the Android project (only if android/ is missing)
+        run: |
+          if [ ! -d android ]; then
+            npm run android:add
+          else
+            echo "android/ already exists, skipping cap add"
+          fi
+
+      - name: Patch the Android project (safe to repeat)
+        run: npm run android:patch
+
+      - name: Sync web files and plugins into the Android project
+        run: npx cap sync android
+
+      - name: Check every patch is in place (and targetSdk is 35)
+        run: |
+          npm run android:check
+          grep -E "targetSdkVersion\s*=\s*35\b" android/variables.gradle
+          grep -E "compileSdkVersion\s*=\s*3[5-9]" android/variables.gradle
+
+      - name: Make sure Android SDK 35 is installed
+        run: |
+          SDKM="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          yes | "$SDKM" --licenses > /dev/null || true
+          "$SDKM" "platforms;android-35" "build-tools;35.0.0" | tail -n 3
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Build debug APK
+        working-directory: android
+        run: ./gradlew assembleDebug --no-daemon --stacktrace
+
+      - name: Verify the APK (target SDK, name, signing key)
+        run: |
+          APK=android/app/build/outputs/apk/debug/app-debug.apk
+          test -f "$APK"
+          BT="$ANDROID_HOME/build-tools/35.0.0"
+          BADGING=$("$BT/aapt2" dump badging "$APK")
+          echo "$BADGING" | grep -E "^package:|^sdkVersion|^targetSdkVersion|^application-label:|^application-icon"
+          echo "$BADGING" | grep -q "targetSdkVersion:'35'" || { echo "::error::APK does not target SDK 35"; exit 1; }
+          echo "$BADGING" | grep -q "package: name='com.recallrush.app'" || { echo "::error::unexpected package name"; exit 1; }
+          echo "$BADGING" | grep -q "application-label:'Recall Rush'" || { echo "::error::unexpected app name"; exit 1; }
+          WANT=$(keytool -list -keystore signing/debug.keystore -storepass android 2>/dev/null | grep -i "SHA-256" | sed 's/.*: //' | tr -d ':' | tr 'A-F' 'a-f')
+          GOT=$("$BT/apksigner" verify --print-certs "$APK" | grep -i "certificate SHA-256" | head -1 | sed 's/.*: //' | tr -d ':' | tr 'A-F' 'a-f')
+          echo "keystore sha256: $WANT"; echo "apk sha256:      $GOT"
+          [ -n "$WANT" ] && [ "$WANT" = "$GOT" ] || { echo "::error::APK is not signed with signing/debug.keystore"; exit 1; }
+          cp "$APK" recall-rush-debug.apk
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: recall-rush-debug-apk
+          path: recall-rush-debug.apk
+          if-no-files-found: error
+          retention-days: 30
